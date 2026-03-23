@@ -1,0 +1,119 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* ============================================
+   NEOBRUTALISM + WIN98 AESTHETIC
+   ============================================ */
+
+:root {
+  --brutal-red: #FF2A2A;
+  --brutal-yellow: #FFD700;
+  --brutal-cyan: #00E5FF;
+  --brutal-black: #000000;
+  --brutal-white: #FFFFFF;
+  --win98-gray: #C0C0C0;
+  --win98-dark-gray: #808080;
+  --win98-light: #ffffff;
+  --border-brutal: 4px solid #000000;
+  --shadow-brutal: 8px 8px 0px #000000;
+  --shadow-hover: 12px 12px 0px #000000;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+body {
+  background: #ffffff;
+  overflow-x: hidden;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Marquee animation */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-scroll 20s linear infinite;
+}
+
+/* Blink for loading */
+@keyframes blink-text {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blink-text {
+  animation: blink-text 0.8s step-end infinite;
+}
+
+/* Brutal card */
+.card-brutal {
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+}
+
+/* Receipt row hover */
+.receipt-row:hover {
+  background: var(--brutal-yellow) !important;
+}
+
+/* Pizza card hover */
+.pizza-card {
+  cursor: default;
+  transition: none;
+}
+
+.pizza-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 12px 12px 0px #000 !important;
+}
+
+.pizza-card:hover .pizza-img {
+  transform: rotate(12deg) scale(1.04);
+}
+
+.pizza-img {
+  transition: none;
+}
+
+/* Win98 bevel button style */
+.win98-bevel {
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+}
+
+/* Win98 inset */
+.win98-inset {
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Brutal main button */
+.btn-brutal-red {
+  background: #FF2A2A;
+  color: #fff;
+  border: 4px solid #000;
+  box-shadow: 8px 8px 0px #000;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: none;
+}
+
+.btn-brutal-red:hover {
+  background: #00E5FF;
+  color: #000;
+  box-shadow: 12px 12px 0px #000;
+}
+
+.btn-brutal-red:active {
+  box-shadow: 2px 2px 0px #000;
+  transform: translate(6px, 6px);
+}
