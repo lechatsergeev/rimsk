@@ -34,8 +34,8 @@ function fitPizzaModel(model: THREE.Object3D) {
 
   model.position.sub(center);
   model.scale.setScalar(scale);
-  model.rotation.x = -0.58;
-  model.rotation.y = 0.18;
+  model.rotation.x = 0.88;
+  model.rotation.y = Math.PI / 2 + 0.18;
   model.rotation.z = 0.14;
 }
 
