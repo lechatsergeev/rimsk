@@ -28,12 +28,14 @@ function fitPizzaModel(model: THREE.Object3D) {
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
   const maxAxis = Math.max(size.x, size.y, size.z);
-  const scale = 4.8 / maxAxis;
+  const viewportWidth = window.innerWidth;
+  const targetSize = viewportWidth < 640 ? 4.05 : 4.8;
+  const scale = targetSize / maxAxis;
 
   model.position.sub(center);
   model.scale.setScalar(scale);
   model.rotation.x = -0.58;
-  model.rotation.y = Math.PI + 0.18;
+  model.rotation.y = 0.18;
   model.rotation.z = 0.14;
 }
 
