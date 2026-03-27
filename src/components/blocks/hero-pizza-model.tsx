@@ -3,8 +3,39 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import pizzaLowModel from '../../../images/pizza-low.glb';
 import pizzaModel from '../../../images/pizza.glb';
+
+function disposeObject3D(root: THREE.Object3D) {
+  root.traverse((object) => {
+    const mesh = object as THREE.Mesh;
+    if (mesh.geometry) mesh.geometry.dispose();
+    if (mesh.material) {
+      if (Array.isArray(mesh.material)) {
+        mesh.material.forEach((material) => material.dispose());
+      } else {
+        mesh.material.dispose();
+      }
+    }
+  });
+}
+
+function fitPizzaModel(model: THREE.Object3D) {
+  const box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const maxAxis = Math.max(size.x, size.y, size.z);
+  const scale = 4.8 / maxAxis;
+
+  model.position.sub(center);
+  model.scale.setScalar(scale);
+  model.rotation.x = -0.58;
+  model.rotation.y = Math.PI + 0.18;
+  model.rotation.z = 0.14;
+}
 
 export function HeroPizzaModel() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,6 +60,10 @@ export function HeroPizzaModel() {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
+
+    const ktx2Loader = new KTX2Loader();
+    ktx2Loader.setTranscoderPath(`${import.meta.env.BASE_URL}basis/`);
+    ktx2Loader.detectSupport(renderer);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false;
@@ -60,30 +95,59 @@ export function HeroPizzaModel() {
     scene.add(group);
 
     let animationId = 0;
-    let model: THREE.Object3D | null = null;
+    let activeModel: THREE.Object3D | null = null;
+    let highModelLoaded = false;
+    let disposed = false;
 
     const loader = new GLTFLoader();
+    loader.setKTX2Loader(ktx2Loader);
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    const setActiveModel = (nextModel: THREE.Object3D) => {
+      fitPizzaModel(nextModel);
+
+      if (activeModel) {
+        group.remove(activeModel);
+        disposeObject3D(activeModel);
+      }
+
+      activeModel = nextModel;
+      group.add(nextModel);
+    };
+
     loader.load(
-      pizzaModel,
+      pizzaLowModel,
       (gltf) => {
-        model = gltf.scene;
+        if (disposed) {
+          disposeObject3D(gltf.scene);
+          return;
+        }
 
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
-        const maxAxis = Math.max(size.x, size.y, size.z);
-        const scale = 4.8 / maxAxis;
-
-        model.position.sub(center);
-        model.scale.setScalar(scale);
-        model.rotation.x = -0.58;
-        model.rotation.y = Math.PI + 0.18;
-        model.rotation.z = 0.14;
-        group.add(model);
+        if (!highModelLoaded) {
+          setActiveModel(gltf.scene);
+        } else {
+          disposeObject3D(gltf.scene);
+        }
       },
       undefined,
       (error) => {
-        console.error('Failed to load pizza model', error);
+        console.error('Failed to load low pizza model', error);
+      }
+    );
+
+    loader.load(
+      pizzaModel,
+      (gltf) => {
+        if (disposed) {
+          disposeObject3D(gltf.scene);
+          return;
+        }
+
+        highModelLoaded = true;
+        setActiveModel(gltf.scene);
+      },
+      undefined,
+      (error) => {
+        console.error('Failed to load detailed pizza model', error);
       }
     );
 
@@ -102,7 +166,7 @@ export function HeroPizzaModel() {
       animationId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      if (model) {
+      if (activeModel) {
         group.position.y = 0.25 + Math.sin(elapsed * 1.2) * 0.05;
       }
 
@@ -115,9 +179,11 @@ export function HeroPizzaModel() {
     window.addEventListener('resize', onResize);
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', onResize);
       controls.dispose();
+      ktx2Loader.dispose();
       renderer.dispose();
       scene.traverse((object) => {
         const mesh = object as THREE.Mesh;

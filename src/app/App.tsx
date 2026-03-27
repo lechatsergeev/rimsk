@@ -336,6 +336,71 @@ function Hero() {
   );
 }
 
+function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  isMobile,
+  titleMaxWidth = "12ch",
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  isMobile: boolean;
+  titleMaxWidth?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.35 }}
+      style={{ marginBottom: isMobile ? 26 : 34 }}
+    >
+      <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
+        <div
+          style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: "11px",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.14em",
+            color: C.black,
+          }}
+        >
+          {eyebrow}
+        </div>
+        <h2
+          style={{
+            margin: isMobile ? "12px 0 0" : "14px 0 0",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: isMobile ? "30px" : "42px",
+            fontWeight: 500,
+            lineHeight: 0.96,
+            letterSpacing: "-0.05em",
+            color: C.black,
+            maxWidth: titleMaxWidth,
+          }}
+        >
+          {title}
+        </h2>
+        <p
+          style={{
+            margin: isMobile ? "12px 0 0" : "14px 0 0",
+            maxWidth: "58ch",
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: isMobile ? "12px" : "13px",
+            lineHeight: 1.7,
+            color: "#4a4b4d",
+          }}
+        >
+          {description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 function Scenarios() {
   const { isMobile } = useBreakpoint();
 
@@ -345,29 +410,13 @@ function Scenarios() {
       style={{ background: C.white, padding: isMobile ? "28px 20px" : "56px 40px" }}
     >
       <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.35 }}
-          style={{ marginBottom: isMobile ? 10 : 14 }}
-        >
-          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: 14 }}>
-            <h2
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "11px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                color: C.black,
-                margin: 0,
-              }}
-            >
-              scenarios / рабочие ситуации
-            </h2>
-          </div>
-        </motion.div>
+        <SectionHeader
+          eyebrow="scenarios / рабочие ситуации"
+          title="Когда такая пицца действительно нужна"
+          description="Не всем форматам подряд, а точкам с понятным ограничением: удержать гостя дольше, добавить горячее без новой кухни или проверить спрос без тяжёлого запуска."
+          isMobile={isMobile}
+          titleMaxWidth="14ch"
+        />
 
         <div style={{ display: "grid" }}>
           {SCENARIOS.map((item, index) => (
@@ -459,55 +508,13 @@ function Economics() {
       style={{ background: C.bg, padding: isMobile ? "56px 20px" : "116px 40px" }}
     >
       <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.35 }}
-          style={{ marginBottom: isMobile ? 26 : 34 }}
-        >
-          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
-            <div
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "11px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                color: C.black,
-              }}
-            >
-              economics / экономика тестового входа
-            </div>
-            <h2
-              style={{
-                margin: isMobile ? "12px 0 0" : "14px 0 0",
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: isMobile ? "30px" : "42px",
-                fontWeight: 500,
-                lineHeight: 0.96,
-                letterSpacing: "-0.05em",
-                color: C.black,
-                maxWidth: "10ch",
-              }}
-            >
-              Экономика тестового запуска
-            </h2>
-            <p
-              style={{
-                margin: isMobile ? "12px 0 0" : "14px 0 0",
-                maxWidth: "54ch",
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: isMobile ? "12px" : "13px",
-                lineHeight: 1.7,
-                color: "#4a4b4d",
-              }}
-            >
-              Простой ориентир для первой партии: сколько стоит вход, какой может
-              быть розничная цена и как выглядит стартовый расчёт без сложной кухни.
-            </p>
-          </div>
-        </motion.div>
+        <SectionHeader
+          eyebrow="economics / экономика тестового входа"
+          title="Сколько стоит первый тестовый запуск"
+          description="Простой ориентир для первой партии: входной объём, закупка, возможная цена в меню и разница до учёта операционных расходов."
+          isMobile={isMobile}
+          titleMaxWidth="14ch"
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -684,29 +691,13 @@ function Assortment() {
       style={{ background: C.silver, padding: isMobile ? "56px 20px" : "116px 40px" }}
     >
       <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4 }}
-          style={{ marginBottom: 14 }}
-        >
-          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: 14 }}>
-            <h2
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "11px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                color: C.black,
-                margin: 0,
-              }}
-            >
-              assortment / что увидит гость
-            </h2>
-          </div>
-        </motion.div>
+        <SectionHeader
+          eyebrow="assortment / что увидит гость"
+          title="Какие вкусы стоит поставить в меню сначала"
+          description="На старте важнее не большая карта, а 2-3 понятные позиции, которые быстро считываются гостем и дают нормальный тест спроса в реальной смене."
+          isMobile={isMobile}
+          titleMaxWidth="15ch"
+        />
 
         <div>
           <motion.div
@@ -873,21 +864,13 @@ function FAQ() {
       style={{ background: C.bg, padding: isMobile ? "60px 20px" : "124px 40px" }}
     >
       <div style={{ maxWidth: "980px", margin: "0 auto" }}>
-        <div style={{ marginBottom: 30 }}>
-          <h2
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 700,
-              fontSize: "12px",
-              textTransform: "uppercase",
-              color: C.black,
-              letterSpacing: "0.16em",
-              margin: 0,
-            }}
-          >
-            objections / что обычно останавливает
-          </h2>
-        </div>
+        <SectionHeader
+          eyebrow="objections / что обычно останавливает"
+          title="Какие сомнения возникают перед запуском"
+          description="Самые частые возражения обычно связаны не со вкусом, а с лишней кухней, неровным спросом и страхом усложнить смену ради одной позиции."
+          isMobile={isMobile}
+          titleMaxWidth="15ch"
+        />
 
         <div style={{ display: "flex", flexDirection: "column", borderTop: `1px solid ${C.black}` }}>
           {OBJECTIONS.map((faq, i) => (
@@ -1036,6 +1019,14 @@ function Order() {
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <SectionHeader
+          eyebrow="offer / тестовый запуск"
+          title="Как обсудить первую поставку"
+          description="Оставьте контакт, если хотите спокойно проверить спрос на горячую позицию: без большой кухни, без длинного входа и без лишней сложности на старте."
+          isMobile={isMobile}
+          titleMaxWidth="13ch"
+        />
+
         <div
           style={{
             display: "grid",
@@ -1071,7 +1062,7 @@ function Order() {
                   marginBottom: 24,
                 }}
               >
-                offer / тестовая поставка
+                что будет дальше
               </div>
               <div
                 style={{
@@ -1085,12 +1076,12 @@ function Order() {
                   textTransform: "none",
                   letterSpacing: "-0.04em",
                 }}
-              >
-                Обсудить
+                >
+                Первая партия
                 <br />
-                тестовый
+                как аккуратный
                 <br />
-                запуск
+                тест
               </div>
             </div>
 
@@ -1198,17 +1189,17 @@ function Order() {
                   style={{
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontWeight: 500,
-                    fontSize: "16px",
+                    fontSize: "24px",
                     textTransform: "none",
                     color: C.black,
                     borderBottom: `1px solid ${C.black}`,
-                    paddingBottom: 12,
-                    marginBottom: 2,
+                    paddingBottom: 14,
+                    marginBottom: 4,
                     letterSpacing: "-0.04em",
                     margin: 0,
                   }}
                 >
-                  ОБСУДИТЬ ЗАПУСК
+                  Оставить заявку на тест
                 </h2>
 
                 {[
