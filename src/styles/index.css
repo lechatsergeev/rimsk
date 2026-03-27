@@ -3,26 +3,33 @@
 @import './theme.css';
 
 /* ============================================
-   NEOBRUTALISM + WIN98 AESTHETIC
+   PACKAGING / PRINT IDENTITY
    ============================================ */
 
 :root {
-  --navy: #1C3F6E;
-  --gold: #B8920A;
-  --win98-gray: #C0C0C0;
-  --win98-dark-gray: #808080;
-  --win98-light: #ffffff;
-  --bg: #FAFAF8;
-  --border-brutal: 3px solid #000000;
-  --shadow-brutal: 6px 6px 0px #000000;
-  --shadow-hover: 8px 8px 0px #000000;
+  --ink: #1a1d20;
+  --accent: #d95c3c;
+  --paper: #ffffff;
+  --board: #ffffff;
+  --line: #a8a39a;
+  --sheet: #ffffff;
+  --border-print: 1px solid #1a1d20;
+  --border-soft: 1px solid #a8a39a;
   font-family: 'IBM Plex Mono', monospace;
 }
 
 body {
-  background: #FAFAF8;
+  background: #ffffff;
   overflow-x: hidden;
   font-family: 'IBM Plex Mono', monospace;
+  color: var(--ink);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Marquee animation */
@@ -45,57 +52,695 @@ body {
   animation: blink-text 0.8s step-end infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Brutal card */
-.card-brutal {
-  border: 4px solid #000;
-  box-shadow: 8px 8px 0px #000;
-}
-
-/* Receipt row hover */
 .receipt-row:hover {
-  background: #E8E6E0 !important;
+  background: var(--board) !important;
 }
 
-/* Pizza card — subtle lift only, no spin */
 .pizza-card {
   cursor: default;
 }
 
-/* Win98 bevel button style */
-.win98-bevel {
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-right: 2px solid #808080;
-  border-bottom: 2px solid #808080;
-}
-
-/* Win98 inset */
+.win98-bevel,
 .win98-inset {
-  border-top: 2px solid #808080;
-  border-left: 2px solid #808080;
-  border-right: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
+  border: var(--border-print);
+  background: var(--sheet);
+  box-shadow: none;
 }
 
 /* Main button */
 .btn-brutal-navy {
-  background: #1C3F6E;
-  color: #fff;
-  border: 3px solid #000;
-  box-shadow: 5px 5px 0px #000;
-  font-family: 'Space Grotesk', sans-serif;
+  background: var(--ink);
+  color: var(--sheet);
+  border: var(--border-print);
+  box-shadow: none;
+  font-family: 'IBM Plex Mono', monospace;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
 .btn-brutal-navy:hover {
-  background: #2D6B6B;
-  box-shadow: 7px 7px 0px #000;
+  background: var(--accent);
 }
 
 .btn-brutal-navy:active {
-  box-shadow: 2px 2px 0px #000;
-  transform: translate(3px, 3px);
+  background: var(--ink);
+}
+
+.btn-brutal-light {
+  background: transparent;
+  color: var(--ink);
+  border: var(--border-print);
+  box-shadow: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.btn-brutal-light:hover {
+  background: var(--board);
+}
+
+.btn-brutal-light:active {
+  background: var(--sheet);
+}
+
+.section-chip {
+  display: inline-block;
+  padding: 4px 0;
+  border-bottom: var(--border-print);
+  background: transparent;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.section-title-block {
+  margin: 16px 0 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  text-transform: none;
+  max-width: 11ch;
+  color: var(--ink);
+}
+
+.section-text-block {
+  margin: 12px 0 0;
+  max-width: 500px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: #4a4b4d;
+}
+
+.formats-grid,
+.panel-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.scenario-grid,
+.scenario-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.card-window {
+  position: relative;
+  border: var(--border-print);
+  background: var(--sheet);
+  box-shadow: none;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.card-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.45), transparent 18%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 18px,
+      rgba(0,0,0,0.02) 18px 19px
+    );
+  opacity: 0.42;
+}
+
+.card-window:hover {
+  background: #f7f4ee;
+  border-color: var(--accent);
+}
+
+.format-card,
+.requirement-card {
+  padding: 16px;
+}
+
+.format-topline,
+.requirement-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.format-index,
+.requirement-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #66625d;
+}
+
+.format-stamp {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.scenario-card,
+.scenario-floor {
+  padding: 16px;
+}
+
+.scenario-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.scenario-visual {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0 14px;
+  min-height: 34px;
+  align-items: end;
+}
+
+.scenario-floor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) 320px;
+  gap: 0;
+  align-items: stretch;
+}
+
+.scenario-floor-copy {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 20px;
+}
+
+.scenario-floor-visual {
+  display: flex;
+  border-left: var(--border-print);
+}
+
+.scenario-visual-panel {
+  width: 100%;
+  background: var(--board);
+}
+
+.scenario-visual-head {
+  min-height: 34px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: var(--border-print);
+  background: transparent;
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.scenario-visual-body {
+  padding: 14px;
+}
+
+.scenario-scene {
+  display: grid;
+  gap: 10px;
+}
+
+.scenario-scene-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 10px;
+  border: var(--border-soft);
+  background: var(--sheet);
+}
+
+.scenario-scene-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  min-height: 22px;
+  border: var(--border-print);
+  background: transparent;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.scenario-scene-text {
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: lowercase;
+  color: #222;
+}
+
+.scenario-card h3,
+.requirement-card h3,
+.flow-title {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.scenario-card p,
+.requirement-card p,
+.flow-copy,
+.proof-list li {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #4a4b4d;
+}
+
+.scenario-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.scenario-tags span {
+  min-height: 26px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border: var(--border-soft);
+  background: transparent;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scenario-caption {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: var(--border-soft);
+  font-size: 11px;
+  line-height: 1.6;
+  color: #5a5854;
+  text-transform: lowercase;
+}
+
+.requirement-visual {
+  min-width: 66px;
+  min-height: 30px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-print);
+  background: transparent;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.flow-board {
+  border: var(--border-print);
+  background: var(--sheet);
+  overflow: hidden;
+}
+
+.flow-board-head,
+.proof-panel-head {
+  padding: 12px 18px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: var(--border-print);
+}
+
+.flow-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 24px 58px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 18px;
+  border-top: var(--border-soft);
+  background: var(--sheet);
+  transition: background 180ms ease;
+}
+
+.flow-row:hover {
+  background: var(--board);
+}
+
+.flow-step {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 1;
+}
+
+.flow-arrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: #8a847b;
+}
+
+.flow-meta {
+  min-height: 28px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-print);
+  background: transparent;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.proof-panel {
+  border: var(--border-print);
+  background: var(--board);
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.proof-number {
+  position: absolute;
+  top: 48px;
+  right: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 92px;
+  line-height: 1;
+  color: rgba(26, 29, 32, 0.08);
+  letter-spacing: -0.08em;
+}
+
+.proof-list {
+  margin: 0;
+  padding: 16px 18px 16px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.economics-intro-panel {
+  min-height: 100%;
+}
+
+.economics-highlight {
+  padding: 18px 18px 8px;
+}
+
+.economics-highlight-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #67625c;
+}
+
+.economics-highlight-value {
+  margin-top: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 88px;
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+  color: var(--accent);
+}
+
+.economics-sheet {
+  border: var(--border-print);
+  background: var(--sheet);
+  overflow: hidden;
+}
+
+.economics-sheet-head {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: var(--border-print);
+}
+
+.economics-breakdown {
+  display: grid;
+}
+
+.economics-breakdown-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+  padding: 18px;
+  background: var(--sheet);
+}
+
+.economics-breakdown-divider {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.economics-breakdown-copy {
+  min-width: 0;
+}
+
+.economics-breakdown-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-align: right;
+  color: var(--ink);
+}
+
+.economics-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #66625d;
+}
+
+.economics-card-value {
+  margin-top: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.economics-card-sub {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #4a4b4d;
+}
+
+.economics-visual-meter {
+  padding: 16px 18px 18px;
+  border-top: var(--border-soft);
+  border-bottom: var(--border-soft);
+  background: var(--board);
+}
+
+.economics-meter-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #66625d;
+}
+
+.economics-meter-bars {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.economics-meter-bar {
+  height: 18px;
+  border: var(--border-print);
+}
+
+.economics-meter-bar-cost {
+  width: 44%;
+  background: #d1cbc1;
+}
+
+.economics-meter-bar-retail {
+  width: 100%;
+  background: var(--ink);
+}
+
+.economics-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.economics-bottom-item {
+  min-height: 98px;
+  padding: 16px 18px;
+  background: var(--board);
+  border-right: var(--border-soft);
+}
+
+.economics-bottom-item:last-child {
+  border-right: 0;
+}
+
+.economics-bottom-item span {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #66625d;
+}
+
+.economics-bottom-item strong {
+  display: block;
+  margin-top: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.economics-bottom-item em {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #4a4b4d;
+}
+
+.proof-list li {
+  color: #333533;
+  margin-top: 0;
+}
+
+.proof-list li + li {
+  margin-top: 10px;
+}
+
+.receipt-board,
+.proof-panel {
+  align-self: start;
+}
+
+@keyframes screen-flicker {
+  0%, 100% { opacity: 1; }
+  48% { opacity: 0.98; }
+  50% { opacity: 0.92; }
+  52% { opacity: 1; }
+}
+
+@keyframes stamp-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.hero-image-frame {
+  animation: screen-flicker 5s step-end infinite;
+}
+
+.hero-overlay-top,
+.hero-overlay-bottom {
+  animation: stamp-drift 4.2s ease-in-out infinite;
+}
+
+.hero-overlay-bottom {
+  animation-delay: 0.7s;
+}
+
+@media (max-width: 1023px) {
+  .scenario-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .scenario-floor {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .section-title-block {
+    font-size: clamp(22px, 9vw, 30px);
+    max-width: none;
+  }
+
+  .flow-row {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .flow-arrow,
+  .flow-meta {
+    display: none;
+  }
+
+  .economics-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .economics-bottom-item {
+    border-right: 0;
+    border-top: 2px solid #000;
+  }
 }

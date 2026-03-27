@@ -1,20 +1,80 @@
-import { useState, useEffect } from "react";
+import { useId, useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { HeroSection } from "@/components/blocks/hero-section-1";
 
 // =============================================
 // DESIGN TOKENS
 // =============================================
 const C = {
-  navy: "#1C3F6E",
-  gold: "#B8920A",
-  silver: "#C0C0C0",
-  gray: "#808080",
-  black: "#000000",
+  navy: "#1A1D20",
+  gold: "#D95C3C",
+  silver: "#FFFFFF",
+  gray: "#A8A39A",
+  black: "#1A1D20",
   white: "#FFFFFF",
-  lightGray: "#E8E6E0",
-  teal: "#2D6B6B",
-  bg: "#FAFAF8",
+  lightGray: "#FFFFFF",
+  teal: "#6C645A",
+  bg: "#FFFFFF",
 };
+
+const SCENARIOS = [
+  {
+    stamp: "СЦЕНАРИЙ 01 · БАРЫ И КОФЕЙНИ",
+    title: "Гость уходит есть в другое место",
+    text: "Когда в заведении можно только выпить, вечер часто обрывается на середине. Гость допивает свой заказ и уходит туда, где есть что-то горячее. Вместе с ним уходит и следующий заказ.",
+    proofTitle: "что происходит",
+    proofItems: [
+      "гость сидит дольше одного заказа",
+      "напитки уже проданы, а еды в меню почти нет",
+      "после этого человек уходит поесть в соседнюю точку",
+    ],
+    note: "Еда здесь нужна не ради красоты меню, а чтобы не отдавать гостя дальше по улице.",
+  },
+  {
+    stamp: "СЦЕНАРИЙ 02 · КАФЕ И БАРЫ С МАЛОЙ КУХНЕЙ",
+    title: "Под одну позицию не хотят заводить ещё одну кухонную жизнь",
+    text: "Заведению может быть нужна ещё одна горячая позиция, но вместе с ней не хотят получать тесто, соусы, отдельную сборку, новые остатки и ещё один кусок работы на смене. Если еда усложняет жизнь, её просто не запускают.",
+    proofTitle: "что мешает запуску",
+    proofItems: [
+      "под одну позицию тянется новая заготовка",
+      "появляются отдельные продукты и сроки хранения",
+      "смена получает ещё один процесс вместо простой выдачи",
+    ],
+    note: "Проблема не в печи. Проблема в лишних действиях, которые прилипают к новой позиции.",
+  },
+  {
+    stamp: "СЦЕНАРИЙ 03 · МИНИ-ОТЕЛИ И КЕЙТЕРИНГ",
+    title: "Горячее нужно не весь день",
+    text: "В мини-отеле, апартах и кейтеринге еда нужна не потоком, а по ситуации. Сегодня поздний заезд, завтра небольшой заказ на мероприятие, послезавтра тишина. В таком формате неудобно держать полноценную кухню в постоянной готовности.",
+    proofTitle: "почему это больно",
+    proofItems: [
+      "спрос неровный и зависит от дня и часа",
+      "готовить заранее неудобно",
+      "нужна еда, которую можно запускать под конкретный заказ",
+    ],
+    note: "Здесь выигрывает не большой ассортимент, а возможность отдать горячее тогда, когда его реально попросили.",
+  },
+  {
+    stamp: "СЦЕНАРИЙ 04 · ТЕСТОВЫЙ ЗАПУСК",
+    title: "Спрос на еду хотят проверить без большого запуска",
+    text: "О горячей позиции начинают думать, когда видно: гости могли бы оставаться дольше и заказывать больше. Но никто не хочет сразу строить под это отдельную кухню. Сначала хочется проверить спрос на реальной смене и только потом принимать большие решения.",
+    proofTitle: "что здесь важно",
+    proofItems: [
+      "не вкладываться в новую кухню вслепую",
+      "проверить спрос на одном понятном продукте",
+      "сначала увидеть заказы вживую, потом расширяться",
+    ],
+    note: "Это не запуск большого food-направления, а аккуратная проверка гипотезы.",
+  },
+];
+
+const ECONOMICS_FACTS = [
+  { label: "ОПТ", value: "270 ₽", sub: "за одну пиццу" },
+  { label: "РОЗНИЦА", value: "620 ₽", sub: "ориентир для меню" },
+  { label: "ВРЕМЯ", value: "8 МИН", sub: "до подачи" },
+];
+
+const CONTACT_EMAIL = "b2b@rimsk.ru";
 
 // =============================================
 // BREAKPOINT HOOK
@@ -36,15 +96,15 @@ function useBreakpoint() {
 // =============================================
 function Marquee() {
   const text =
-    "ПОДАЧА БЕЗ ПОВАРА • НАЦЕНКА 130% • ИЗ МОРОЗИЛКИ В ПЕЧЬ • ГОТОВО ЗА 8 МИНУТ • ПОСТАВКИ B2B • ";
+    "ХРАНЕНИЕ В МОРОЗИЛЬНИКЕ • ПЕЧЬ ИЛИ КОНВЕКТОМАТ • 8 МИНУТ ДО ПОДАЧИ • МИН. ЗАКАЗ 15 ШТ • B2B ПОСТАВКИ • ";
   return (
     <div
       style={{
-        background: C.navy,
+        background: C.bg,
         overflow: "hidden",
-        borderTop: `3px solid ${C.black}`,
-        borderBottom: `3px solid ${C.black}`,
-        padding: "9px 0",
+        borderTop: `1px solid ${C.black}`,
+        borderBottom: `1px solid ${C.black}`,
+        padding: "8px 0",
       }}
     >
       <div
@@ -53,11 +113,11 @@ function Marquee() {
       >
         <span
           style={{
-            color: C.gold,
-            fontFamily: "'Space Grotesk', sans-serif",
+            color: C.black,
+            fontFamily: "'IBM Plex Mono', monospace",
             fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.05em",
+            fontSize: "12px",
+            letterSpacing: "0.08em",
             paddingRight: "40px",
           }}
         >
@@ -77,6 +137,8 @@ function Marquee() {
 function Navigation() {
   const { isMobile } = useBreakpoint();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showDesktopLinks, setShowDesktopLinks] = useState(false);
+  const mobileMenuId = useId();
   const [time, setTime] = useState(
     () =>
       new Date().toLocaleTimeString("ru-RU", {
@@ -99,46 +161,65 @@ function Navigation() {
     return () => clearInterval(t);
   }, []);
 
+  useEffect(() => {
+    const onScroll = () => setShowDesktopLinks(window.scrollY > 280);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const links = [
-    { label: "Экономика", href: "#economics" },
+    { label: "Сценарии", href: "#scenarios" },
     { label: "Ассортимент", href: "#assortment" },
-    { label: "Приготовление", href: "#howtocook" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Заказать", href: "#order" },
+    { label: "Экономика", href: "#economics" },
+    { label: "Возражения", href: "#objections" },
+    { label: "Оффер", href: "#order" },
   ];
 
   return (
-    <div
+    <header
       style={{
-        background: C.silver,
-        borderBottom: `3px solid ${C.black}`,
+        background: C.bg,
+        borderBottom: `1px solid ${C.black}`,
         position: "sticky",
         top: 0,
         zIndex: 100,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
           justifyContent: "space-between",
           padding: isMobile ? "7px 20px" : "7px 40px",
         }}
       >
-        <div
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700,
-            fontSize: "18px",
-            letterSpacing: "-0.5px",
-            color: C.black,
-          }}
-        >
-          РИМСК
-        </div>
+          <a
+            href="#top"
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 700,
+              fontSize: "18px",
+              letterSpacing: "-0.04em",
+              color: C.black,
+              textDecoration: "none",
+            }}
+          >
+            РИМСК
+          </a>
 
         {!isMobile && (
-          <nav style={{ display: "flex", gap: 2 }}>
+          <nav
+            style={{
+              display: "flex",
+              gap: 2,
+              opacity: showDesktopLinks ? 1 : 0,
+              pointerEvents: showDesktopLinks ? "auto" : "none",
+              transform: showDesktopLinks ? "translateY(0)" : "translateY(-4px)",
+              transition: "opacity 180ms ease, transform 180ms ease",
+            }}
+            aria-hidden={!showDesktopLinks}
+          >
             {links.map(({ label, href }) => (
               <a
                 key={href}
@@ -155,16 +236,13 @@ function Navigation() {
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = "#d4d0c8";
-                  el.style.borderTop = "2px solid #fff";
-                  el.style.borderLeft = "2px solid #fff";
-                  el.style.borderRight = "2px solid #808080";
-                  el.style.borderBottom = "2px solid #808080";
+                  el.style.background = C.silver;
+                  el.style.borderBottom = `1px solid ${C.black}`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.background = "transparent";
-                  el.style.border = "none";
+                  el.style.borderBottom = "1px solid transparent";
                 }}
               >
                 {label}
@@ -181,7 +259,7 @@ function Navigation() {
               fontFamily: "'IBM Plex Mono', monospace",
               fontSize: "11px",
               color: C.black,
-              background: C.silver,
+              background: C.white,
             }}
           >
             {time}
@@ -190,9 +268,12 @@ function Navigation() {
           {isMobile && (
             <button
               onClick={() => setMenuOpen(!menuOpen)}
+              aria-expanded={menuOpen}
+              aria-controls={mobileMenuId}
+              aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
               style={{
-                background: menuOpen ? C.navy : "transparent",
-                border: `2px solid ${C.black}`,
+                background: menuOpen ? C.black : "transparent",
+                border: `1px solid ${C.black}`,
                 padding: "4px 8px",
                 cursor: "pointer",
                 fontFamily: "'IBM Plex Mono', monospace",
@@ -209,10 +290,11 @@ function Navigation() {
 
       {isMobile && menuOpen && (
         <div
+          id={mobileMenuId}
           style={{
-            background: C.silver,
-            borderTop: `2px solid ${C.gray}`,
-            borderBottom: `3px solid ${C.black}`,
+            background: C.bg,
+            borderTop: `1px solid ${C.gray}`,
+            borderBottom: `1px solid ${C.black}`,
           }}
         >
           {links.map(({ label, href }) => (
@@ -236,7 +318,7 @@ function Navigation() {
           ))}
         </div>
       )}
-    </div>
+    </header>
   );
 }
 
@@ -244,539 +326,302 @@ function Navigation() {
 // HERO
 // =============================================
 function Hero() {
-  const { isMobile, isTablet } = useBreakpoint();
+  return (
+    <>
+      <HeroSection />
+      <div style={{ marginTop: 0 }}>
+        <Marquee />
+      </div>
+    </>
+  );
+}
+
+function Scenarios() {
+  const { isMobile } = useBreakpoint();
 
   return (
     <section
-      style={{
-        background: C.bg,
-        padding: isMobile ? "48px 20px 0" : "80px 40px 0",
-        minHeight: isMobile ? "auto" : "85vh",
-      }}
+      id="scenarios"
+      style={{ background: C.white, padding: isMobile ? "28px 20px" : "56px 40px" }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr",
-            gap: isMobile ? "40px" : "64px",
-            alignItems: "center",
-          }}
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.35 }}
+          style={{ marginBottom: isMobile ? 10 : 14 }}
         >
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45 }}
-          >
-            <div
+          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: 14 }}>
+            <h2
               style={{
-                display: "inline-block",
-                background: C.navy,
-                border: `2px solid ${C.black}`,
                 fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "10px",
+                fontSize: "11px",
                 fontWeight: 700,
                 textTransform: "uppercase",
-                letterSpacing: "2px",
-                padding: "4px 10px",
-                marginBottom: 20,
-                color: C.white,
-              }}
-            >
-              Замороженная пицца для B2B
-            </div>
-
-            <div
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 700,
-                fontSize: isMobile
-                  ? "clamp(32px, 10vw, 44px)"
-                  : "clamp(32px, 4vw, 52px)",
-                lineHeight: 1.0,
+                letterSpacing: "0.14em",
                 color: C.black,
-                textTransform: "uppercase",
-                letterSpacing: "-1.5px",
-                marginBottom: 24,
+                margin: 0,
               }}
             >
-              ЗАМОРОЖЕННАЯ
-              <br />
-              РИМСКАЯ
-              <br />
-              ПИЦЦА
-            </div>
+              scenarios / рабочие ситуации
+            </h2>
+          </div>
+        </motion.div>
 
-            <div
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "13px",
-                color: "#333",
-                marginBottom: 36,
-                lineHeight: 1.8,
-              }}
-            >
-              Оптовые поставки для кафе, баров и кейтеринга.
-              <br />
-              Готово за 8 минут. Наценка 130%.
-            </div>
-
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <a
-                href="#order"
-                style={{
-                  display: "inline-block",
-                  background: C.navy,
-                  color: C.white,
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  padding: "14px 36px",
-                  border: `3px solid ${C.black}`,
-                  boxShadow: `5px 5px 0px ${C.black}`,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = C.teal;
-                  el.style.boxShadow = `7px 7px 0px ${C.black}`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = C.navy;
-                  el.style.boxShadow = `5px 5px 0px ${C.black}`;
-                }}
-              >
-                ЗАКАЗАТЬ
-              </a>
-              <a
-                href="#economics"
-                style={{
-                  display: "inline-block",
-                  background: C.white,
-                  color: C.black,
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "14px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  padding: "14px 28px",
-                  border: `3px solid ${C.black}`,
-                  boxShadow: `5px 5px 0px ${C.black}`,
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = C.silver;
-                  el.style.boxShadow = `7px 7px 0px ${C.black}`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = C.white;
-                  el.style.boxShadow = `5px 5px 0px ${C.black}`;
-                }}
-              >
-                УЗНАТЬ ЦЕНЫ
-              </a>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: 0,
-                marginTop: 44,
-                borderTop: `3px solid ${C.black}`,
-                flexWrap: "wrap",
-              }}
-            >
-              {[
-                { val: "8 мин", label: "до подачи" },
-                { val: "130%", label: "наценка" },
-                { val: "15 шт", label: "мин. заказ" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  style={{
-                    flex: "1 1 33%",
-                    padding: "14px 0",
-                    borderRight: i < 2 ? `3px solid ${C.black}` : "none",
-                    paddingLeft: i > 0 ? 20 : 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "26px",
-                      color: C.navy,
-                      lineHeight: 1,
-                      letterSpacing: "-0.5px",
-                    }}
-                  >
-                    {s.val}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "11px",
-                      color: "#555",
-                      marginTop: 4,
-                    }}
-                  >
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {!isMobile && (
+        <div style={{ display: "grid" }}>
+          {SCENARIOS.map((item, index) => (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.15 }}
-              style={{ position: "relative" }}
+              key={item.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
+                columnGap: isMobile ? 0 : 26,
+                borderBottom: `1px solid ${C.gray}`,
+                padding: isMobile ? "18px 0 20px" : "26px 0 28px",
+              }}
             >
               <div
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: C.navy,
-                  transform: "translate(10px, 10px)",
-                  border: `3px solid ${C.black}`,
-                  zIndex: 0,
-                }}
-              />
-              <div
-                style={{
-                  position: "relative",
-                  zIndex: 1,
-                  border: `3px solid ${C.black}`,
-                  overflow: "hidden",
-                  background: C.black,
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "#4f4b46",
+                  paddingTop: isMobile ? 0 : 4,
+                  marginBottom: isMobile ? 10 : 0,
                 }}
               >
-                <img
-                  src="https://images.unsplash.com/photo-1773901435878-a996dee9270e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
-                  alt="Римская пицца"
-                  style={{
-                    width: "100%",
-                    height: isTablet ? "320px" : "420px",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
+                No. {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div>
                 <div
                   style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: C.black,
-                    padding: "10px 16px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 500,
+                    fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 42px)",
+                    lineHeight: 1.02,
+                    letterSpacing: "-0.05em",
+                    color: C.black,
+                    maxWidth: index === 1 ? "16ch" : index === 3 ? "15ch" : "13ch",
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "11px",
-                      color: C.silver,
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    RIMSK_pizza_001.bmp
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "10px",
-                      color: C.gold,
-                    }}
-                  >
-                    ■ LIVE
-                  </span>
+                  {item.title}
+                </div>
+                <div
+                  style={{
+                    marginTop: 12,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: isMobile ? "12px" : "13px",
+                    lineHeight: 1.8,
+                    color: "#4a4b4d",
+                    maxWidth: "60ch",
+                  }}
+                >
+                  {item.text}
+                </div>
+
+                <div
+                  style={{
+                    marginTop: 14,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: "10px",
+                    lineHeight: 1.7,
+                    color: "#6a665f",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    maxWidth: "62ch",
+                  }}
+                >
+                  {item.note}
                 </div>
               </div>
             </motion.div>
-          )}
+          ))}
         </div>
-      </div>
-
-      <div style={{ marginTop: 56 }}>
-        <Marquee />
       </div>
     </section>
   );
 }
 
-// =============================================
-// ECONOMICS
-// =============================================
 function Economics() {
-  const { isMobile, isTablet } = useBreakpoint();
-
-  const rows = [
-    {
-      label: "Себестоимость единицы",
-      value: "270 ₽",
-      sub: "включая упаковку и заморозку",
-    },
-    {
-      label: "Рекомендованная розница",
-      value: "620 ₽",
-      sub: "средний чек по рынку",
-    },
-    {
-      label: "Трудозатраты на подачу",
-      value: "0 ₽",
-      sub: "повар не требуется",
-    },
-    {
-      label: "Прибыль в неделю",
-      value: "5 250 ₽",
-      sub: "при минимальном заказе 15 пицц",
-    },
-  ];
+  const { isMobile } = useBreakpoint();
 
   return (
     <section
       id="economics"
-      style={{ background: C.bg, padding: isMobile ? "64px 20px" : "112px 40px" }}
+      style={{ background: C.bg, padding: isMobile ? "56px 20px" : "116px 40px" }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4 }}
-          style={{ marginBottom: 48 }}
+          transition={{ duration: 0.35 }}
+          style={{ marginBottom: isMobile ? 26 : 34 }}
         >
-          <div
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 700,
-              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(26px, 3vw, 44px)",
-              textTransform: "uppercase",
-              color: C.black,
-              letterSpacing: "-1px",
-              lineHeight: 1,
-            }}
-          >
-            ЮНИТ-ЭКОНОМИКА
-          </div>
-          <div
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: "13px",
-              color: "#444",
-              marginTop: 14,
-              maxWidth: 480,
-              lineHeight: 1.7,
-            }}
-          >
-            Оптовая цена достаточно низкая, чтобы вы зарабатывали — без потери
-            качества. Цифры рассчитаны для минимального заказа 15 пицц.
+          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
+            <div
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: C.black,
+              }}
+            >
+              economics / экономика тестового входа
+            </div>
+            <h2
+              style={{
+                margin: isMobile ? "12px 0 0" : "14px 0 0",
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: isMobile ? "30px" : "42px",
+                fontWeight: 500,
+                lineHeight: 0.96,
+                letterSpacing: "-0.05em",
+                color: C.black,
+                maxWidth: "10ch",
+              }}
+            >
+              Экономика тестового запуска
+            </h2>
+            <p
+              style={{
+                margin: isMobile ? "12px 0 0" : "14px 0 0",
+                maxWidth: "54ch",
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: isMobile ? "12px" : "13px",
+                lineHeight: 1.7,
+                color: "#4a4b4d",
+              }}
+            >
+              Простой ориентир для первой партии: сколько стоит вход, какой может
+              быть розничная цена и как выглядит стартовый расчёт без сложной кухни.
+            </p>
           </div>
         </motion.div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr",
-            gap: isMobile ? 32 : 48,
-            alignItems: "start",
-          }}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.35 }}
+          style={{ borderTop: `1px solid ${C.black}` }}
         >
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4 }}
-          >
+          {[
+            { label: "Тестовый вход", value: "15 шт", sub: "минимальный заказ на первый запуск" },
+            { label: "Закупка партии", value: "4 050 ₽", sub: "15 пицц по 270 ₽" },
+            { label: "Продажа в меню", value: "9 300 ₽", sub: "если продавать по 620 ₽" },
+            { label: "Разница", value: "5 250 ₽", sub: "до учёта операционных расходов" },
+          ].map((row, index) => (
             <div
+              key={row.label}
               style={{
-                background: C.navy,
-                color: C.gold,
-                display: "flex",
-                justifyContent: "space-between",
-                padding: "11px 22px",
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontWeight: 700,
-                fontSize: "11px",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                border: `3px solid ${C.black}`,
-                borderBottom: "0",
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) auto",
+                gap: 10,
+                alignItems: "start",
+                padding: isMobile ? "18px 0 20px" : "22px 0 24px",
+                borderBottom: `1px solid ${C.gray}`,
               }}
             >
-              <span>ПОКАЗАТЕЛЬ</span>
-              <span>СТОИМОСТЬ</span>
-            </div>
-
-            {rows.map((row, i) => (
-              <div
-                key={i}
-                className="receipt-row"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "18px 22px",
-                  border: `3px solid ${C.black}`,
-                  borderBottom:
-                    i < rows.length - 1 ? `2px solid ${C.black}` : `3px solid ${C.black}`,
-                  background: C.white,
-                  cursor: "default",
-                  gap: 16,
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      color: C.black,
-                    }}
-                  >
-                    {row.label}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "10px",
-                      color: C.gray,
-                      marginTop: 2,
-                    }}
-                  >
-                    {row.sub}
-                  </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.14em",
+                    color: "#66625d",
+                  }}
+                >
+                  {row.label}
                 </div>
                 <div
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "22px",
-                    color: C.black,
-                    whiteSpace: "nowrap",
-                    letterSpacing: "-0.5px",
+                    marginTop: 9,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: "12px",
+                    lineHeight: 1.7,
+                    color: "#4a4b4d",
                   }}
                 >
-                  {row.value}
+                  {row.sub}
                 </div>
-              </div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            style={{ display: "flex", flexDirection: "column", gap: 20 }}
-          >
-            <div
-              style={{
-                background: C.navy,
-                border: `3px solid ${C.black}`,
-                boxShadow: `6px 6px 0px ${C.black}`,
-                padding: "36px",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "2px",
-                  color: "rgba(255,255,255,0.6)",
-                  marginBottom: 10,
-                }}
-              >
-                ИТОГОВАЯ МАРЖА
               </div>
               <div
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "72px",
-                  color: C.gold,
+                  fontWeight: 500,
+                  fontSize: isMobile ? "24px" : "32px",
                   lineHeight: 1,
-                  letterSpacing: "-3px",
+                  letterSpacing: "-0.04em",
+                  color: C.black,
+                  textAlign: isMobile ? "left" : "right",
                 }}
               >
-                130%
+                {row.value}
               </div>
+            </div>
+          ))}
+
+          <div
+            style={{
+              borderTop: `1px solid ${C.black}`,
+              padding: isMobile ? "22px 0 0" : "30px 0 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "inline-flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                padding: isMobile ? "18px 20px 16px" : "22px 28px 18px",
+                border: `1px solid ${C.black}`,
+                background: "#fff",
+                minWidth: isMobile ? "220px" : "280px",
+              }}
+            >
               <div
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "13px",
-                  color: "rgba(255,255,255,0.85)",
-                  marginTop: 14,
-                  lineHeight: 1.7,
+                  fontSize: isMobile ? "12px" : "13px",
+                  lineHeight: 1.6,
+                  color: "#4a4b4d",
                 }}
               >
-                Прибыль с одной пиццы — около 350 ₽.
-                <br />
-                10 штук в день = 105 000 ₽ в месяц.
+                рекомендуемая цена
+              </div>
+              <div
+                style={{
+                  marginTop: 6,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 500,
+                  fontSize: isMobile ? "46px" : "72px",
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.07em",
+                  color: C.black,
+                }}
+              >
+                620 ₽
               </div>
             </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                border: `3px solid ${C.black}`,
-                boxShadow: `6px 6px 0px ${C.black}`,
-              }}
-            >
-              {[
-                { val: "0 мин", label: "обучение персонала" },
-                { val: "8 мин", label: "от печи до стола" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  style={{
-                    padding: "22px",
-                    borderRight: i === 0 ? `3px solid ${C.black}` : "none",
-                    background: i === 0 ? C.lightGray : C.white,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "28px",
-                      color: C.black,
-                      letterSpacing: "-1px",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {s.val}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "11px",
-                      color: "#444",
-                      marginTop: 6,
-                    }}
-                  >
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -788,36 +633,45 @@ function Economics() {
 const PIZZAS = [
   {
     name: "МАРГАРИТА",
-    bg: C.navy,
-    textColor: "#fff",
-    accentColor: C.gold,
     price: "270 ₽",
     priceLabel: "от",
-    desc: "Томаты · Моцарелла · Базилик",
-    tag: "ХИТ ПРОДАЖ",
+    desc: "Понятный вкус для бара, кофейни и первой тестовой поставки.",
+    tag: "СТАРТ",
     img: "https://images.unsplash.com/photo-1592229005296-735b0f6c0722?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
   },
   {
     name: "ПЕППЕРОНИ",
-    bg: C.lightGray,
-    textColor: "#000",
-    accentColor: C.navy,
     price: "320 ₽",
     priceLabel: "от",
-    desc: "Пепперони · Сметана · Моцарелла",
-    tag: "ПОПУЛЯРНОЕ",
+    desc: "Рабочая позиция, когда в меню нужен более очевидный хит.",
+    tag: "ХИТ",
     img: "https://images.unsplash.com/photo-1763478156969-4d7c0ab35590?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
   },
   {
     name: "ГРУША–ГОРГОНЗОЛА",
-    bg: C.teal,
-    textColor: "#fff",
-    accentColor: C.gold,
     price: "390 ₽",
     priceLabel: "от",
-    desc: "Груша · Горгонзола · Грецкий орех",
-    tag: "ПРЕМИУМ",
+    desc: "Позиция для точек, которым нужен более сложный вкус в том же формате.",
+    tag: "СЛОЖНЕЕ ВКУС",
     img: "https://images.unsplash.com/photo-1586934729750-2e32c19c2320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+  },
+];
+const OBJECTIONS = [
+  {
+    q: "Нам не нужна ещё одна большая кухня",
+    a: "И не нужно. Этот продукт нужен точкам, которым нужна одна рабочая горячая позиция, а не отдельное food-направление со своей жизнью.",
+  },
+  {
+    q: "Мы не уверены, что еду будут брать стабильно",
+    a: "Поэтому вход и должен быть маленьким. Минимальный заказ — 15 штук: этого хватает, чтобы проверить спрос в реальной смене и не строить большие планы заранее.",
+  },
+  {
+    q: "У нас уже мало места и мало внимания на смене",
+    a: "Если под новую еду приходится тащить отдельные заготовки и лишние процессы, проект обычно стопорится. Здесь смысл как раз в том, чтобы этого хвоста было меньше.",
+  },
+  {
+    q: "Нам не нужен сложный гастрономический продукт",
+    a: "Здесь важнее другое: понятный вкус, стабильная выдача и возможность удержать гостя у себя, а не отправлять его дальше по улице.",
   },
 ];
 
@@ -827,356 +681,187 @@ function Assortment() {
   return (
     <section
       id="assortment"
-      style={{ background: C.silver, padding: isMobile ? "64px 20px" : "112px 40px" }}
+      style={{ background: C.silver, padding: isMobile ? "56px 20px" : "116px 40px" }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.4 }}
-          style={{ marginBottom: 48 }}
+          style={{ marginBottom: 14 }}
         >
-          <div
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 700,
-              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(26px, 3vw, 44px)",
-              textTransform: "uppercase",
-              color: C.black,
-              letterSpacing: "-1px",
-              lineHeight: 1,
-            }}
-          >
-            АССОРТИМЕНТ
-          </div>
-          <div
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: "13px",
-              color: "#333",
-              marginTop: 14,
-              lineHeight: 1.7,
-            }}
-          >
-            Базовая линейка всегда в наличии. Разрабатываем рецептуру под ваш
-            бренд.
+          <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: 14 }}>
+            <h2
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: C.black,
+                margin: 0,
+              }}
+            >
+              assortment / что увидит гость
+            </h2>
           </div>
         </motion.div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)",
-            gap: 20,
-            alignItems: "stretch",
-          }}
-        >
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.35 }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
+              columnGap: isMobile ? 0 : 26,
+              borderTop: `1px solid ${C.black}`,
+              borderBottom: `1px solid ${C.gray}`,
+              padding: isMobile ? "18px 0 20px" : "26px 0 28px",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: "#4f4b46",
+                marginBottom: isMobile ? 10 : 0,
+                paddingTop: isMobile ? 0 : 4,
+              }}
+            >
+              Menu
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 500,
+                  fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 40px)",
+                  lineHeight: 1.02,
+                  letterSpacing: "-0.05em",
+                  color: C.black,
+                  maxWidth: "14ch",
+                }}
+              >
+                На старте достаточно нескольких понятных вкусов
+              </div>
+              <p
+                style={{
+                  margin: "12px 0 0",
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: isMobile ? "12px" : "13px",
+                  lineHeight: 1.8,
+                  color: "#4a4b4d",
+                  maxWidth: "60ch",
+                }}
+              >
+                Важнее не раздувать карту, а поставить в меню 2-3 позиции, которые
+                быстро считываются гостем и подходят для первого теста.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        <div style={{ display: "grid", marginTop: isMobile ? 0 : 0 }}>
           {PIZZAS.map((pizza, i) => (
             <motion.div
               key={pizza.name}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              style={{ height: "100%" }}
-            >
-              <div
-                style={{
-                  background: pizza.bg,
-                  border: `3px solid ${C.black}`,
-                  boxShadow: `6px 6px 0px ${C.black}`,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                  transition: "box-shadow 0.15s ease, transform 0.15s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLDivElement;
-                  el.style.transform = "translateY(-4px)";
-                  el.style.boxShadow = `8px 8px 0px ${C.black}`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLDivElement;
-                  el.style.transform = "translateY(0)";
-                  el.style.boxShadow = `6px 6px 0px ${C.black}`;
-                }}
-              >
-                <div
-                  style={{
-                    height: "220px",
-                    overflow: "hidden",
-                    borderBottom: `3px solid ${C.black}`,
-                    position: "relative",
-                    flexShrink: 0,
-                    background: "#f0efea",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img
-                    src={pizza.img}
-                    alt={pizza.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      display: "block",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      left: 10,
-                      background: C.black,
-                      color: C.gold,
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "10px",
-                      fontWeight: 700,
-                      padding: "3px 7px",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    {pizza.tag}
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    background: C.black,
-                    padding: "12px 18px",
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: 5,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "11px",
-                      color: C.gray,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {pizza.priceLabel}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "30px",
-                      color: pizza.accentColor,
-                      lineHeight: 1,
-                      letterSpacing: "-0.5px",
-                    }}
-                  >
-                    {pizza.price}
-                  </span>
-                </div>
-
-                <div
-                  style={{
-                    padding: "18px",
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "18px",
-                      color: pizza.textColor,
-                      textTransform: "uppercase",
-                      letterSpacing: "-0.3px",
-                      lineHeight: 1.1,
-                    }}
-                  >
-                    {pizza.name}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "12px",
-                      color: pizza.textColor,
-                      opacity: 0.8,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {pizza.desc}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================
-// HOW TO COOK
-// =============================================
-const STEPS = [
-  {
-    num: "01",
-    title: "ДОСТАНЬТЕ",
-    text: "Извлеките пиццу из морозильной камеры. Предварительная разморозка не требуется.",
-  },
-  {
-    num: "02",
-    title: "ЗАПЕКАЙТЕ",
-    text: "Поместите в разогретую до 220°C печь на 8 минут. Результат — хрустящее тесто.",
-  },
-  {
-    num: "03",
-    title: "ПОДАВАЙТЕ",
-    text: "Нарежьте и немедленно подавайте гостям. Никаких дополнительных манипуляций.",
-  },
-];
-
-function HowToCook() {
-  const { isMobile } = useBreakpoint();
-
-  return (
-    <section
-      id="howtocook"
-      style={{ background: C.bg, padding: isMobile ? "64px 20px" : "112px 40px" }}
-    >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4 }}
-          style={{ marginBottom: 48 }}
-        >
-          <div
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 700,
-              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(26px, 3vw, 44px)",
-              textTransform: "uppercase",
-              color: C.black,
-              letterSpacing: "-1px",
-              lineHeight: 1,
-            }}
-          >
-            КАК ГОТОВИТЬ
-          </div>
-          <div
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: "13px",
-              color: "#444",
-              marginTop: 14,
-            }}
-          >
-            Три шага. Повар не нужен.
-          </div>
-        </motion.div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
-            gap: 0,
-          }}
-        >
-          {STEPS.map((step, i) => (
-            <motion.div
-              key={step.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
+              transition={{ duration: 0.35, delay: i * 0.08 }}
               style={{
-                border: `3px solid ${C.black}`,
-                borderRight: !isMobile && i < STEPS.length - 1 ? `2px solid ${C.black}` : `3px solid ${C.black}`,
-                borderBottom: isMobile && i < STEPS.length - 1 ? `2px solid ${C.black}` : `3px solid ${C.black}`,
-                padding: "36px 28px",
-                background: C.white,
-                cursor: "default",
-                transition: "background 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.background = C.lightGray;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.background = C.white;
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr) auto",
+                columnGap: isMobile ? 0 : 26,
+                borderBottom: `1px solid ${C.gray}`,
+                padding: isMobile ? "16px 0 18px" : "18px 0 20px",
               }}
             >
-              <div
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "36px",
-                  lineHeight: 1,
-                  color: C.navy,
-                  letterSpacing: "-3px",
-                  marginBottom: 18,
-                  opacity: 0.5,
-                }}
-              >
-                {step.num}
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "28px",
-                  color: C.black,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.3px",
-                  marginBottom: 10,
-                }}
-              >
-                {step.title}
-              </div>
               <div
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "12px",
-                  color: "#444",
-                  lineHeight: 1.75,
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "#4f4b46",
+                  marginBottom: isMobile ? 8 : 0,
+                  paddingTop: isMobile ? 0 : 4,
                 }}
               >
-                {step.text}
+                No. {String(i + 1).padStart(2, "0")}
+              </div>
+
+              <div>
+                <div
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 500,
+                    fontSize: isMobile ? "22px" : "26px",
+                    lineHeight: 1.02,
+                    letterSpacing: "-0.04em",
+                    color: C.black,
+                  }}
+                >
+                  {pizza.name}
+                </div>
+                <div
+                  style={{
+                    marginTop: 10,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: isMobile ? "12px" : "13px",
+                    color: "#4a4b4d",
+                    lineHeight: 1.8,
+                    maxWidth: "54ch",
+                  }}
+                >
+                  {pizza.desc}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: "11px",
+                  color: C.black,
+                  whiteSpace: "nowrap",
+                  alignSelf: isMobile ? "start" : "center",
+                  marginTop: isMobile ? 10 : 0,
+                }}
+              >
+                {pizza.priceLabel} {pizza.price}
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div
+          style={{
+            borderTop: `1px solid ${C.black}`,
+            paddingTop: isMobile ? 16 : 20,
+            marginTop: 0,
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: "11px",
+            lineHeight: 1.75,
+            color: "#5a5854",
+            maxWidth: "58ch",
+          }}
+        >
+          Этого набора обычно хватает, чтобы понять, какой вкус работает у вас лучше:
+          самый понятный, самый очевидный или чуть более сложный.
         </div>
       </div>
     </section>
   );
 }
-
-// =============================================
-// FAQ
-// =============================================
-const FAQS = [
-  {
-    q: "Какой срок годности?",
-    a: "12 месяцев в замороженном виде при температуре −18°C. После разморозки — сразу в печь, не хранить.",
-  },
-  {
-    q: "Какой минимальный заказ?",
-    a: "Минимальный заказ — 15 пицц. Комбинирование вкусов доступно с первого заказа.",
-  },
-  {
-    q: "Какое оборудование нужно?",
-    a: "Стандартная конвекционная печь или пицца-печь. Специальное оборудование не требуется.",
-  },
-  {
-    q: "Как происходит доставка?",
-    a: "Доставляем в заморозке по Санкт-Петербургу и ЛО собственной логистикой. Другие регионы — по согласованию.",
-  },
-];
 
 function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
@@ -1184,34 +869,28 @@ function FAQ() {
 
   return (
     <section
-      id="faq"
-      style={{ background: C.silver, padding: isMobile ? "64px 20px" : "112px 40px" }}
+      id="objections"
+      style={{ background: C.bg, padding: isMobile ? "60px 20px" : "124px 40px" }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4 }}
-          style={{ marginBottom: 40 }}
-        >
-          <div
+      <div style={{ maxWidth: "980px", margin: "0 auto" }}>
+        <div style={{ marginBottom: 30 }}>
+          <h2
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 700,
-              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(26px, 3vw, 44px)",
+              fontSize: "12px",
               textTransform: "uppercase",
               color: C.black,
-              letterSpacing: "-1px",
-              lineHeight: 1,
+              letterSpacing: "0.16em",
+              margin: 0,
             }}
           >
-            ВОПРОСЫ И ОТВЕТЫ
-          </div>
-        </motion.div>
+            objections / что обычно останавливает
+          </h2>
+        </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {FAQS.map((faq, i) => (
+        <div style={{ display: "flex", flexDirection: "column", borderTop: `1px solid ${C.black}` }}>
+          {OBJECTIONS.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 15 }}
@@ -1221,39 +900,38 @@ function FAQ() {
             >
               <div
                 style={{
-                  border: `3px solid ${C.black}`,
-                  borderBottom:
-                    i < FAQS.length - 1 && open !== i
-                      ? `2px solid ${C.black}`
-                      : `3px solid ${C.black}`,
-                  background: open === i ? C.lightGray : C.white,
-                  marginBottom: open === i ? 6 : 0,
-                  boxShadow: open === i ? `5px 5px 0px ${C.black}` : "none",
+                  width: "100%",
+                  borderBottom: `1px solid ${C.black}`,
+                  background: open === i ? C.silver : C.bg,
+                  transition: "background 160ms ease",
                 }}
               >
                 <button
                   onClick={() => setOpen(open === i ? null : i)}
+                  aria-expanded={open === i}
+                  aria-controls={`faq-panel-${i}`}
+                  id={`faq-trigger-${i}`}
                   style={{
                     width: "100%",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "18px 24px",
+                    gap: 16,
+                    padding: isMobile ? "22px 0" : "30px 0",
                     background: "transparent",
                     border: "none",
                     cursor: "pointer",
                     textAlign: "left",
-                    gap: 16,
                   }}
                 >
                   <span
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: isMobile ? "14px" : "16px",
+                      fontWeight: 500,
+                      fontSize: isMobile ? "20px" : "clamp(20px, 2.1vw, 30px)",
                       color: C.black,
-                      textTransform: "uppercase",
-                      letterSpacing: "-0.2px",
+                      lineHeight: 1.04,
+                      letterSpacing: "-0.03em",
                     }}
                   >
                     {faq.q}
@@ -1261,27 +939,28 @@ function FAQ() {
                   <span
                     style={{
                       fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "18px",
-                      fontWeight: 700,
+                      fontSize: "22px",
                       color: C.black,
                       flexShrink: 0,
-                      display: "inline-block",
-                      transform: open === i ? "rotate(45deg)" : "none",
+                      width: 24,
+                      textAlign: "center",
                     }}
                   >
-                    +
+                    {open === i ? "−" : "+"}
                   </span>
                 </button>
                 {open === i && (
                   <div
+                    id={`faq-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-trigger-${i}`}
                     style={{
-                      padding: "0 24px 20px",
-                      paddingTop: 16,
+                      padding: isMobile ? "0 0 24px" : "0 36px 30px 0",
                       fontFamily: "'IBM Plex Mono', monospace",
                       fontSize: "12px",
-                      color: "#333",
-                      lineHeight: 1.8,
-                      borderTop: "1px solid rgba(0,0,0,0.2)",
+                      color: "#4a4b4d",
+                      lineHeight: 1.85,
+                      maxWidth: "58ch",
                     }}
                   >
                     {faq.a}
@@ -1302,20 +981,58 @@ function FAQ() {
 function Order() {
   const { isMobile, isTablet } = useBreakpoint();
   const [form, setForm] = useState({ name: "", company: "", email: "" });
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [errors, setErrors] = useState({ name: "", company: "", email: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const validateForm = () => {
+    const nextErrors = {
+      name: form.name.trim() ? "" : "Введите имя.",
+      company: form.company.trim() ? "" : "Укажите заведение.",
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
+        ? ""
+        : "Введите корректный email.",
+    };
+
+    setErrors(nextErrors);
+    return Object.values(nextErrors).every((value) => !value);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) {
+      setStatus("error");
+      return;
+    }
+
     setStatus("loading");
-    setTimeout(() => setStatus("success"), 1800);
+
+    try {
+      const subject = encodeURIComponent(
+        `Запрос на тестовую поставку от ${form.company.trim()}`
+      );
+      const body = encodeURIComponent(
+        [
+          `Имя: ${form.name.trim()}`,
+          `Заведение: ${form.company.trim()}`,
+          `Email: ${form.email.trim()}`,
+          "",
+          "Интерес: первая тестовая партия римской пиццы.",
+        ].join("\n")
+      );
+
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
     <section
       id="order"
       style={{
-        background: "#111",
-        padding: isMobile ? "64px 20px" : "112px 40px",
+        background: C.bg,
+        padding: isMobile ? "60px 20px" : "124px 40px",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -1333,9 +1050,9 @@ function Order() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.4 }}
             style={{
-              background: "#1a1a1a",
-              border: "3px solid #333",
-              padding: isMobile ? "36px 28px" : "44px",
+              background: C.silver,
+              border: `1px solid ${C.black}`,
+              padding: isMobile ? "30px 24px" : "36px 32px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -1347,35 +1064,33 @@ function Order() {
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: "10px",
-                  color: C.gold,
+                  color: "#6a665f",
                   textTransform: "uppercase",
-                  letterSpacing: "3px",
+                  letterSpacing: "0.14em",
                   fontWeight: 700,
-                  marginBottom: 18,
+                  marginBottom: 24,
                 }}
               >
-                ★ СПЕЦИАЛЬНОЕ ПРЕДЛОЖЕНИЕ
+                offer / тестовая поставка
               </div>
               <div
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 700,
+                  fontWeight: 500,
                   fontSize: isMobile
-                    ? "clamp(36px, 12vw, 52px)"
-                    : "clamp(36px, 4.5vw, 56px)",
-                  color: C.gold,
-                  lineHeight: 1,
-                  textTransform: "uppercase",
-                  letterSpacing: "-1.5px",
+                    ? "clamp(28px, 8vw, 38px)"
+                    : "clamp(30px, 3vw, 40px)",
+                  color: C.black,
+                  lineHeight: 1.02,
+                  textTransform: "none",
+                  letterSpacing: "-0.04em",
                 }}
               >
-                СКИДКА
+                Обсудить
                 <br />
-                15%
+                тестовый
                 <br />
-                НА ПЕРВУЮ
-                <br />
-                ОТГРУЗКУ
+                запуск
               </div>
             </div>
 
@@ -1383,58 +1098,30 @@ function Order() {
               <div
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "12px",
-                  color: "#aaa",
+                  fontSize: "11px",
+                  color: "#3f3f40",
                   lineHeight: 1.8,
-                  marginBottom: 20,
+                  marginBottom: 24,
+                  maxWidth: "44ch",
                 }}
               >
-                Оставьте заявку — получите скидку 15% на первую отгрузку.
-                Пицца от 270 ₽. Ответим в течение 1 часа.
+                Если вы хотите проверить спрос на горячую позицию без большого запуска,
+                оставьте заявку. Поможем собрать первую партию и выбрать вкусы под ваш формат.
               </div>
 
               <div
                 style={{
+                  borderTop: `1px solid ${C.gray}`,
+                  paddingTop: 16,
                   fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "10px",
-                  color: C.gray,
-                  marginBottom: 7,
-                  letterSpacing: "1px",
+                  fontSize: "11px",
+                  lineHeight: 1.75,
+                  color: "#3f3f40",
+                  maxWidth: "42ch",
                 }}
               >
-                МЕСТ ДЛЯ НОВЫХ ПАРТНЁРОВ:
-              </div>
-              <div
-                className="win98-inset"
-                style={{
-                  height: "20px",
-                  background: "#333",
-                  overflow: "hidden",
-                  display: "flex",
-                  padding: "2px",
-                }}
-              >
-                <motion.div
-                  initial={{ width: "0%" }}
-                  whileInView={{ width: "73%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
-                  style={{
-                    height: "100%",
-                    background: C.navy,
-                    display: "flex",
-                    alignItems: "center",
-                    paddingLeft: 8,
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: "10px",
-                    color: "#fff",
-                    fontWeight: 700,
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
-                >
-                  73%
-                </motion.div>
+                Первый заказ обычно собирают как тест: посмотреть, как позиция ведет себя
+                в вашей смене, какие вкусы заказывают чаще и нужен ли следующий шаг.
               </div>
             </div>
           </motion.div>
@@ -1446,9 +1133,9 @@ function Order() {
             transition={{ duration: 0.4, delay: 0.1 }}
             style={{
               background: C.white,
-              border: `3px solid ${C.white}`,
-              padding: isMobile ? "32px 28px" : "40px",
-              boxShadow: `6px 6px 0px ${C.navy}`,
+              border: `1px solid ${C.black}`,
+              padding: isMobile ? "26px 22px" : "32px 28px",
+              boxShadow: "none",
             }}
           >
             {status === "success" ? (
@@ -1466,10 +1153,12 @@ function Order() {
                 }}
               >
                 <div
+                  role="status"
+                  aria-live="polite"
                   style={{
-                    background: C.navy,
-                    border: `3px solid ${C.black}`,
-                    boxShadow: `6px 6px 0px ${C.black}`,
+                    background: C.silver,
+                    border: `1px solid ${C.black}`,
+                    boxShadow: "none",
                     padding: "24px 28px",
                     width: "100%",
                   }}
@@ -1477,47 +1166,50 @@ function Order() {
                   <div
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 700,
-                      fontSize: "28px",
-                      textTransform: "uppercase",
-                      color: C.gold,
+                      fontWeight: 500,
+                      fontSize: "24px",
+                      textTransform: "none",
+                      color: C.black,
                       lineHeight: 1,
                     }}
                   >
-                    ✓ ЗАЯВКА ПРИНЯТА
+                    Заявка принята
                   </div>
                   <div
                     style={{
                       fontFamily: "'IBM Plex Mono', monospace",
                       fontSize: "12px",
-                      color: "rgba(255,255,255,0.8)",
+                      color: "#4a4b4d",
                       marginTop: 10,
                     }}
                   >
-                    Ответим в течение 1 часа.
+                    Почтовый клиент открыт. Если письмо не создалось автоматически,
+                    напишите на {CONTACT_EMAIL}.
                   </div>
                 </div>
               </motion.div>
             ) : (
               <form
                 onSubmit={handleSubmit}
+                noValidate
                 style={{ display: "flex", flexDirection: "column", gap: 18 }}
               >
-                <div
+                <h2
                   style={{
                     fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "18px",
-                    textTransform: "uppercase",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    textTransform: "none",
                     color: C.black,
-                    borderBottom: `3px solid ${C.black}`,
+                    borderBottom: `1px solid ${C.black}`,
                     paddingBottom: 12,
                     marginBottom: 2,
-                    letterSpacing: "-0.3px",
+                    letterSpacing: "-0.04em",
+                    margin: 0,
                   }}
                 >
-                  ОСТАВИТЬ ЗАЯВКУ
-                </div>
+                  ОБСУДИТЬ ЗАПУСК
+                </h2>
 
                 {[
                   { key: "name", label: "ИМЯ", placeholder: "Иван Иванов" },
@@ -1538,6 +1230,7 @@ function Order() {
                     style={{ display: "flex", flexDirection: "column", gap: 5 }}
                   >
                     <label
+                      htmlFor={`order-${field.key}`}
                       style={{
                         fontFamily: "'IBM Plex Mono', monospace",
                         fontSize: "10px",
@@ -1550,6 +1243,8 @@ function Order() {
                       {field.label}
                     </label>
                     <input
+                      id={`order-${field.key}`}
+                      name={field.key}
                       type={field.type || "text"}
                       placeholder={field.placeholder}
                       value={form[field.key as keyof typeof form]}
@@ -1561,57 +1256,96 @@ function Order() {
                       }
                       style={{
                         background: C.bg,
-                        border: `3px solid ${C.black}`,
+                        border: `1px solid ${C.black}`,
                         padding: "12px 14px",
                         fontFamily: "'IBM Plex Mono', monospace",
                         fontSize: "13px",
                         color: C.black,
-                        outline: "none",
                         width: "100%",
                         boxSizing: "border-box" as const,
                       }}
-                      onFocus={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = C.navy;
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = C.black;
+                      autoComplete={
+                        field.key === "name"
+                          ? "name"
+                          : field.key === "email"
+                            ? "email"
+                            : "organization"
+                      }
+                      aria-invalid={Boolean(errors[field.key as keyof typeof errors])}
+                      aria-describedby={
+                        errors[field.key as keyof typeof errors]
+                          ? `order-${field.key}-error`
+                          : undefined
+                      }
+                      onBlur={() => {
+                        validateForm();
                       }}
                     />
+                    {errors[field.key as keyof typeof errors] && (
+                      <div
+                        id={`order-${field.key}-error`}
+                        role="alert"
+                        style={{
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          fontSize: "11px",
+                          color: C.gold,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {errors[field.key as keyof typeof errors]}
+                      </div>
+                    )}
                   </div>
                 ))}
 
+                {status === "error" && (
+                  <div
+                    role="alert"
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: "11px",
+                      color: C.gold,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Проверьте обязательные поля. Если почтовый клиент не откроется,
+                    напишите на {CONTACT_EMAIL}.
+                  </div>
+                )}
+
                 <button
                   type="submit"
+                  disabled={status === "loading"}
                   style={{
                     background: C.navy,
                     color: C.white,
-                    border: `3px solid ${C.black}`,
-                    boxShadow: `5px 5px 0px ${C.black}`,
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    border: `1px solid ${C.black}`,
+                    boxShadow: "none",
+                    fontFamily: "'IBM Plex Mono', monospace",
                     fontWeight: 700,
                     textTransform: "uppercase" as const,
-                    letterSpacing: "0.05em",
+                    letterSpacing: "0.12em",
                     cursor: "pointer",
                     padding: "15px",
-                    fontSize: "16px",
+                    fontSize: "13px",
                     width: "100%",
                     marginTop: 4,
+                    transition: "background 160ms ease",
+                    opacity: status === "loading" ? 0.8 : 1,
                   }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLButtonElement;
-                    el.style.background = C.teal;
-                    el.style.boxShadow = `7px 7px 0px ${C.black}`;
+                    el.style.background = C.gold;
                   }}
                   onMouseLeave={(e) => {
                     const el = e.currentTarget as HTMLButtonElement;
                     el.style.background = C.navy;
-                    el.style.boxShadow = `5px 5px 0px ${C.black}`;
                   }}
                 >
                   {status === "loading" ? (
-                    <span className="blink-text">ОТПРАВЛЯЮ...</span>
+                    <span className="blink-text">ОТКРЫВАЮ ПОЧТУ...</span>
                   ) : (
-                    "ЗАКАЗАТЬ →"
+                    "ОТПРАВИТЬ ЗАПРОС →"
                   )}
                 </button>
                 <div
@@ -1625,10 +1359,10 @@ function Order() {
                 >
                   Нажимая кнопку, вы соглашаетесь с{" "}
                   <a
-                    href="#"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     style={{ color: C.black, textDecoration: "underline" }}
                   >
-                    политикой обработки данных
+                    обработкой заявки по email
                   </a>
                 </div>
               </form>
@@ -1651,8 +1385,8 @@ function Footer() {
     <footer
       style={{
         background: C.silver,
-        borderTop: `3px solid ${C.black}`,
-        padding: isMobile ? "44px 20px 20px" : "52px 40px 24px",
+        borderTop: `1px solid ${C.black}`,
+        padding: isMobile ? "48px 20px 20px" : "84px 40px 28px",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -1664,20 +1398,20 @@ function Footer() {
               : isTablet
               ? "1fr 1fr 1fr"
               : "2fr 1fr 1fr 1fr",
-            gap: isMobile ? 28 : 36,
-            paddingBottom: 36,
-            borderBottom: `3px solid ${C.black}`,
+            gap: isMobile ? 28 : 40,
+            paddingBottom: 40,
+            borderBottom: `1px solid ${C.black}`,
           }}
         >
           <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
             <div
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 700,
-                fontSize: "26px",
-                letterSpacing: "-0.5px",
+                fontWeight: 500,
+                fontSize: "22px",
+                letterSpacing: "-0.04em",
                 color: C.black,
-                marginBottom: 10,
+                marginBottom: 14,
               }}
             >
               РИМСК
@@ -1687,14 +1421,14 @@ function Footer() {
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "11px",
                 color: "#333",
-                lineHeight: 1.8,
+                lineHeight: 1.75,
               }}
             >
-              Замороженная римская пицца
+              Замороженная римская пицца для заведений,
               <br />
-              для B2B-сегмента.
+              которым нужна горячая позиция
               <br />
-              Производство — Санкт-Петербург.
+              без отдельной пицца-кухни.
             </div>
           </div>
 
@@ -1705,9 +1439,9 @@ function Footer() {
                 fontSize: "10px",
                 fontWeight: 700,
                 textTransform: "uppercase",
-                letterSpacing: "2px",
+                letterSpacing: "0.14em",
                 color: C.black,
-                marginBottom: 12,
+                marginBottom: 14,
                 borderBottom: `1px solid ${C.gray}`,
                 paddingBottom: 7,
               }}
@@ -1726,7 +1460,7 @@ function Footer() {
                     fontSize: "9px",
                     color: "#666",
                     textTransform: "uppercase",
-                    letterSpacing: "1px",
+                    letterSpacing: "0.1em",
                   }}
                 >
                   {c.label}
@@ -1752,9 +1486,9 @@ function Footer() {
                 fontSize: "10px",
                 fontWeight: 700,
                 textTransform: "uppercase",
-                letterSpacing: "2px",
+                letterSpacing: "0.14em",
                 color: C.black,
-                marginBottom: 12,
+                marginBottom: 14,
                 borderBottom: `1px solid ${C.gray}`,
                 paddingBottom: 7,
               }}
@@ -1774,7 +1508,7 @@ function Footer() {
                     fontSize: "9px",
                     color: "#666",
                     textTransform: "uppercase",
-                    letterSpacing: "1px",
+                    letterSpacing: "0.1em",
                   }}
                 >
                   {c.label}
@@ -1801,9 +1535,9 @@ function Footer() {
                   fontSize: "10px",
                   fontWeight: 700,
                   textTransform: "uppercase",
-                  letterSpacing: "2px",
+                letterSpacing: "0.14em",
                   color: C.black,
-                  marginBottom: 12,
+                marginBottom: 14,
                   borderBottom: `1px solid ${C.gray}`,
                   paddingBottom: 7,
                 }}
@@ -1818,7 +1552,7 @@ function Footer() {
               ].map((doc) => (
                 <a
                   key={doc}
-                  href="#"
+                  href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(doc)}`}
                   style={{
                     display: "block",
                     fontFamily: "'IBM Plex Mono', monospace",
@@ -1847,7 +1581,7 @@ function Footer() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingTop: 18,
+            paddingTop: 20,
             flexWrap: "wrap",
             gap: 10,
           }}
@@ -1863,10 +1597,9 @@ function Footer() {
             НДС.
           </div>
           <div
-            className="win98-inset"
             style={{
-              background: C.silver,
-              padding: "3px 10px",
+              border: `1px solid ${C.gray}`,
+              padding: "4px 10px",
               fontFamily: "'IBM Plex Mono', monospace",
               fontSize: "10px",
               color: C.black,
@@ -1885,15 +1618,18 @@ function Footer() {
 // =============================================
 export default function App() {
   return (
-    <div style={{ minHeight: "100vh" }}>
-      <Navigation />
-      <Hero />
-      <Economics />
-      <Assortment />
-      <HowToCook />
-      <FAQ />
-      <Order />
-      <Footer />
+    <div id="top" style={{ minHeight: "100vh", position: "relative" }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <main>
+          <Hero />
+          <Scenarios />
+          <Assortment />
+          <Economics />
+          <FAQ />
+          <Order />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
