@@ -25,6 +25,10 @@ body {
   color: var(--ink);
 }
 
+main section[id] {
+  scroll-margin-top: 120px;
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {

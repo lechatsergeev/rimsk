@@ -20,61 +20,60 @@ const C = {
 const SCENARIOS = [
   {
     stamp: "СЦЕНАРИЙ 01 · БАРЫ И КОФЕЙНИ",
-    title: "Гость уходит есть в другое место",
-    text: "Когда в заведении можно только выпить, вечер часто обрывается на середине. Гость допивает свой заказ и уходит туда, где есть что-то горячее. Вместе с ним уходит и следующий заказ.",
+    title: "Гость уходит за горячим",
+    text: "Если в точке можно только выпить, вечер заканчивается раньше. Гость уходит туда, где есть горячее, и забирает с собой следующий чек.",
     proofTitle: "что происходит",
     proofItems: [
-      "гость сидит дольше одного заказа",
-      "напитки уже проданы, а еды в меню почти нет",
-      "после этого человек уходит поесть в соседнюю точку",
+      "еды в меню почти нет",
+      "следующий заказ уходит соседям",
     ],
-    note: "Еда здесь нужна не ради красоты меню, а чтобы не отдавать гостя дальше по улице.",
+    takeaway: "что это даёт",
+    takeawayText: "Горячая позиция помогает удержать гостя у себя.",
   },
   {
     stamp: "СЦЕНАРИЙ 02 · КАФЕ И БАРЫ С МАЛОЙ КУХНЕЙ",
-    title: "Под одну позицию не хотят заводить ещё одну кухонную жизнь",
-    text: "Заведению может быть нужна ещё одна горячая позиция, но вместе с ней не хотят получать тесто, соусы, отдельную сборку, новые остатки и ещё один кусок работы на смене. Если еда усложняет жизнь, её просто не запускают.",
+    title: "Не хотят заводить новую кухню",
+    text: "Точке нужна горячая позиция, но не нужен хвост из заготовок, остатков и лишней работы. Если еда усложняет смену, её просто не запускают.",
     proofTitle: "что мешает запуску",
     proofItems: [
       "под одну позицию тянется новая заготовка",
-      "появляются отдельные продукты и сроки хранения",
-      "смена получает ещё один процесс вместо простой выдачи",
+      "смена получает ещё один процесс",
     ],
-    note: "Проблема не в печи. Проблема в лишних действиях, которые прилипают к новой позиции.",
+    takeaway: "что это даёт",
+    takeawayText: "Горячее появляется без лишнего хвоста из процессов.",
   },
   {
     stamp: "СЦЕНАРИЙ 03 · МИНИ-ОТЕЛИ И КЕЙТЕРИНГ",
     title: "Горячее нужно не весь день",
-    text: "В мини-отеле, апартах и кейтеринге еда нужна не потоком, а по ситуации. Сегодня поздний заезд, завтра небольшой заказ на мероприятие, послезавтра тишина. В таком формате неудобно держать полноценную кухню в постоянной готовности.",
+    text: "В мини-отеле, апартах и кейтеринге горячее нужно по ситуации: поздний заезд, маленькое мероприятие, единичный заказ. Ради этого неудобно держать полноценную кухню.",
     proofTitle: "почему это больно",
     proofItems: [
-      "спрос неровный и зависит от дня и часа",
-      "готовить заранее неудобно",
-      "нужна еда, которую можно запускать под конкретный заказ",
+      "спрос зависит от дня и часа",
+      "кухня нужна не постоянно",
     ],
-    note: "Здесь выигрывает не большой ассортимент, а возможность отдать горячее тогда, когда его реально попросили.",
+    takeaway: "что это даёт",
+    takeawayText: "Горячее работает под запрос, а не требует кухни наготове.",
   },
   {
     stamp: "СЦЕНАРИЙ 04 · ТЕСТОВЫЙ ЗАПУСК",
-    title: "Спрос на еду хотят проверить без большого запуска",
-    text: "О горячей позиции начинают думать, когда видно: гости могли бы оставаться дольше и заказывать больше. Но никто не хочет сразу строить под это отдельную кухню. Сначала хочется проверить спрос на реальной смене и только потом принимать большие решения.",
+    title: "Сначала хотят проверить спрос",
+    text: "Когда видно, что гости могли бы оставаться дольше и заказывать больше, сначала важно проверить спрос в смене. Большой запуск до проверки здесь только мешает.",
     proofTitle: "что здесь важно",
     proofItems: [
-      "не вкладываться в новую кухню вслепую",
-      "проверить спрос на одном понятном продукте",
-      "сначала увидеть заказы вживую, потом расширяться",
+      "не вкладываться в кухню вслепую",
+      "сначала увидеть заказы вживую",
     ],
-    note: "Это не запуск большого food-направления, а аккуратная проверка гипотезы.",
+    takeaway: "что это даёт",
+    takeawayText: "Сначала проверяете гипотезу, потом принимаете большие решения.",
   },
 ];
 
-const ECONOMICS_FACTS = [
-  { label: "ОПТ", value: "270 ₽", sub: "за одну пиццу" },
-  { label: "РОЗНИЦА", value: "620 ₽", sub: "ориентир для меню" },
-  { label: "ВРЕМЯ", value: "8 МИН", sub: "до подачи" },
-];
-
 const CONTACT_EMAIL = "b2b@rimsk.ru";
+
+type SideFact = {
+  value: string;
+  label: string;
+};
 
 // =============================================
 // BREAKPOINT HOOK
@@ -355,7 +354,7 @@ function SectionHeader({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.35 }}
-      style={{ marginBottom: isMobile ? 26 : 34 }}
+      style={{ marginBottom: isMobile ? 22 : 28 }}
     >
       <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
         <div
@@ -401,37 +400,109 @@ function SectionHeader({
   );
 }
 
+function SideFactoid({
+  fact,
+  isMobile,
+}: {
+  fact: SideFact;
+  isMobile: boolean;
+}) {
+  return (
+    <aside
+      style={{
+        justifySelf: "end",
+        alignSelf: "start",
+        maxWidth: "170px",
+        textAlign: "right",
+        paddingTop: isMobile ? 0 : 10,
+      }}
+    >
+      <div
+        style={{
+          borderTop: `1px solid ${C.gray}`,
+          paddingTop: 12,
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "'Martian Grotesk', sans-serif",
+            fontSize: isMobile ? "34px" : "56px",
+            fontWeight: 500,
+            lineHeight: 0.88,
+            letterSpacing: "-0.07em",
+            color: C.black,
+          }}
+        >
+          {fact.value}
+        </div>
+        <div
+          style={{
+            marginTop: 10,
+            marginLeft: "auto",
+            maxWidth: "15ch",
+            fontFamily: "'Martian Mono', monospace",
+            fontSize: "10px",
+            lineHeight: 1.55,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            color: "#5a5854",
+          }}
+        >
+          {fact.label}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 function Scenarios() {
   const { isMobile } = useBreakpoint();
 
   return (
     <section
       id="scenarios"
-      style={{ background: C.white, padding: isMobile ? "28px 20px" : "56px 40px" }}
+      style={{ background: C.white, padding: isMobile ? "22px 20px" : "44px 40px" }}
     >
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <SectionHeader
-          eyebrow="scenarios / рабочие ситуации"
-          title="Когда такая пицца действительно нужна"
-          description="Не всем форматам подряд, а точкам с понятным ограничением: удержать гостя дольше, добавить горячее без новой кухни или проверить спрос без тяжёлого запуска."
-          isMobile={isMobile}
-          titleMaxWidth="14ch"
-        />
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 960px)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <SectionHeader
+            eyebrow="scenarios / рабочие ситуации"
+            title="Где это работает"
+            description="Это не универсальное блюдо для всех подряд. Формат нужен там, где важно удержать гостя, добавить горячее без новой кухни или проверить спрос без большого запуска."
+            isMobile={isMobile}
+            titleMaxWidth="10ch"
+          />
 
-        <div style={{ display: "grid" }}>
-          {SCENARIOS.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.35, delay: index * 0.05 }}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+              gap: 18,
+            }}
+          >
+            {SCENARIOS.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
               style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
-                columnGap: isMobile ? 0 : 26,
-                borderBottom: `1px solid ${C.gray}`,
-                padding: isMobile ? "18px 0 20px" : "26px 0 28px",
+                border: `1px solid ${C.gray}`,
+                padding: isMobile ? "16px 14px 18px" : "18px 18px 20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                minHeight: isMobile ? "auto" : 420,
               }}
             >
               <div
@@ -442,11 +513,9 @@ function Scenarios() {
                   textTransform: "uppercase",
                   letterSpacing: "0.14em",
                   color: "#4f4b46",
-                  paddingTop: isMobile ? 0 : 4,
-                  marginBottom: isMobile ? 10 : 0,
                 }}
               >
-                No. {String(index + 1).padStart(2, "0")}
+                No. {String(index + 1).padStart(2, "0")} · {item.stamp.split("·")[1]?.trim() ?? ""}
               </div>
 
               <div>
@@ -454,45 +523,96 @@ function Scenarios() {
                   style={{
                     fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
-                    fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 42px)",
+                    fontSize: isMobile ? "26px" : "clamp(28px, 2.4vw, 36px)",
                     lineHeight: 1.02,
                     letterSpacing: "-0.05em",
-                    color: C.black,
-                    maxWidth: index === 1 ? "16ch" : index === 3 ? "15ch" : "13ch",
-                  }}
-                >
-                  {item.title}
-                </div>
+                  color: C.black,
+                  maxWidth: "14ch",
+                  minHeight: isMobile ? "auto" : 74,
+                }}
+              >
+                {item.title}
+              </div>
                 <div
                   style={{
-                    marginTop: 12,
+                    marginTop: 10,
                     fontFamily: "'Martian Mono', monospace",
-                    fontSize: isMobile ? "12px" : "13px",
-                    lineHeight: 1.8,
+                    fontSize: isMobile ? "12px" : "12px",
+                    lineHeight: 1.7,
                     color: "#4a4b4d",
-                    maxWidth: "60ch",
+                    maxWidth: "42ch",
+                    minHeight: isMobile ? "auto" : 84,
                   }}
                 >
                   {item.text}
                 </div>
+              </div>
 
+              <div
+                style={{
+                  borderTop: `1px solid ${C.gray}`,
+                  paddingTop: 12,
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: 10,
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "'Martian Mono', monospace",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.12em",
+                      color: "#66625d",
+                    }}
+                  >
+                    {item.proofTitle}
+                  </div>
+                  <ul
+                    style={{
+                      margin: "8px 0 0",
+                      paddingLeft: 18,
+                      fontFamily: "'Martian Mono', monospace",
+                      fontSize: "11px",
+                      lineHeight: 1.65,
+                      color: "#4a4b4d",
+                      minHeight: isMobile ? "auto" : 48,
+                    }}
+                  >
+                    {item.proofItems.map((proof) => (
+                      <li key={proof}>{proof}</li>
+                    ))}
+                  </ul>
+                </div>
                 <div
                   style={{
-                    marginTop: 14,
                     fontFamily: "'Martian Mono', monospace",
                     fontSize: "10px",
                     lineHeight: 1.7,
-                    color: "#6a665f",
+                    color: "#66625d",
                     textTransform: "uppercase",
                     letterSpacing: "0.12em",
-                    maxWidth: "62ch",
                   }}
                 >
-                  {item.note}
+                  {item.takeaway}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Martian Mono', monospace",
+                    fontSize: "11px",
+                    lineHeight: 1.65,
+                    color: C.black,
+                    maxWidth: "40ch",
+                  }}
+                >
+                  {item.takeawayText}
                 </div>
               </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -501,134 +621,194 @@ function Scenarios() {
 
 function Economics() {
   const { isMobile } = useBreakpoint();
+  const rows = [
+    { label: "Тестовый вход", value: "15 шт", sub: "минимальный заказ на первый запуск" },
+    { label: "Закупка партии", value: "4 050 ₽", sub: "15 пицц по 270 ₽" },
+    { label: "Продажа в меню", value: "9 300 ₽", sub: "если продавать по 620 ₽" },
+    { label: "Потенциал", value: "5 250 ₽", sub: "до операционных расходов" },
+  ];
 
   return (
     <section
       id="economics"
-      style={{ background: C.bg, padding: isMobile ? "56px 20px" : "116px 40px" }}
+      style={{ background: C.bg, padding: isMobile ? "44px 20px" : "80px 40px" }}
     >
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <SectionHeader
-          eyebrow="economics / экономика тестового входа"
-          title="Сколько стоит первый тестовый запуск"
-          description="Простой ориентир для первой партии: входной объём, закупка, возможная цена в меню и разница до учёта операционных расходов."
-          isMobile={isMobile}
-          titleMaxWidth="14ch"
-        />
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 960px) minmax(0, 1fr)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <SectionHeader
+            eyebrow="economics / экономика тестового входа"
+            title="Экономика теста"
+            description="Простой расчёт первого входа: минимальный заказ, закупка партии, ориентир по цене в меню и потенциал до расходов."
+            isMobile={isMobile}
+            titleMaxWidth="11ch"
+          />
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.35 }}
-          style={{ borderTop: `1px solid ${C.black}` }}
-        >
-          {[
-            { label: "Тестовый вход", value: "15 шт", sub: "минимальный заказ на первый запуск" },
-            { label: "Закупка партии", value: "4 050 ₽", sub: "15 пицц по 270 ₽" },
-            { label: "Продажа в меню", value: "9 300 ₽", sub: "если продавать по 620 ₽" },
-            { label: "Разница", value: "5 250 ₽", sub: "до учёта операционных расходов" },
-          ].map((row, index) => (
-            <div
-              key={row.label}
-              style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) auto",
-                gap: 10,
-                alignItems: "start",
-                padding: isMobile ? "18px 0 20px" : "22px 0 24px",
-                borderBottom: `1px solid ${C.gray}`,
-              }}
-            >
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.35 }}
+            style={{ borderTop: `1px solid ${C.black}` }}
+          >
+            {rows.map((row) => (
               <div>
                 <div
+                  key={row.label}
                   style={{
-                    fontFamily: "'Martian Mono', monospace",
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.14em",
-                    color: "#66625d",
+                    display: "grid",
+                    gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1fr) auto",
+                    gap: 10,
+                    alignItems: "start",
+                    padding: isMobile ? "16px 0 18px" : "18px 0 20px",
+                    borderBottom: `1px solid ${C.gray}`,
                   }}
                 >
-                  {row.label}
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: "'Martian Mono', monospace",
+                        fontSize: "10px",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.14em",
+                        color: "#66625d",
+                      }}
+                    >
+                      {row.label}
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 9,
+                        fontFamily: "'Martian Mono', monospace",
+                        fontSize: "12px",
+                        lineHeight: 1.7,
+                        color: "#4a4b4d",
+                      }}
+                    >
+                      {row.sub}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Martian Grotesk', sans-serif",
+                      fontWeight: 500,
+                      fontSize: isMobile ? "24px" : "32px",
+                      lineHeight: 1,
+                      letterSpacing: "-0.04em",
+                      color: C.black,
+                      textAlign: isMobile ? "left" : "right",
+                    }}
+                  >
+                    {row.value}
+                  </div>
                 </div>
+              </div>
+            ))}
+
+            <div
+              style={{
+                borderTop: `1px solid ${C.black}`,
+                padding: isMobile ? "18px 0 0" : "22px 0 0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "inline-flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  padding: isMobile ? "16px 18px 14px" : "18px 24px 16px",
+                  border: `1px solid ${C.black}`,
+                  background: "#fff",
+                  minWidth: isMobile ? "220px" : "280px",
+                }}
+              >
                 <div
                   style={{
-                    marginTop: 9,
                     fontFamily: "'Martian Mono', monospace",
-                    fontSize: "12px",
-                    lineHeight: 1.7,
+                    fontSize: isMobile ? "12px" : "13px",
+                    lineHeight: 1.6,
                     color: "#4a4b4d",
                   }}
                 >
-                  {row.sub}
+                  рекомендуемая цена
+                </div>
+                <div
+                  style={{
+                    marginTop: 4,
+                    fontFamily: "'Martian Grotesk', sans-serif",
+                    fontWeight: 500,
+                    fontSize: isMobile ? "42px" : "64px",
+                    lineHeight: 0.9,
+                    letterSpacing: "-0.07em",
+                    color: C.black,
+                  }}
+                >
+                  620 ₽
                 </div>
               </div>
-              <div
-                style={{
-                  fontFamily: "'Martian Grotesk', sans-serif",
-                  fontWeight: 500,
-                  fontSize: isMobile ? "24px" : "32px",
-                  lineHeight: 1,
-                  letterSpacing: "-0.04em",
-                  color: C.black,
-                  textAlign: isMobile ? "left" : "right",
-                }}
-              >
-                {row.value}
-              </div>
             </div>
-          ))}
 
-          <div
-            style={{
-              borderTop: `1px solid ${C.black}`,
-              padding: isMobile ? "22px 0 0" : "30px 0 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
             <div
               style={{
-                display: "inline-flex",
+                marginTop: 16,
+                display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                padding: isMobile ? "18px 20px 16px" : "22px 28px 18px",
-                border: `1px solid ${C.black}`,
-                background: "#fff",
-                minWidth: isMobile ? "220px" : "280px",
+                gap: 10,
               }}
             >
               <div
                 style={{
+                  maxWidth: "48ch",
+                  textAlign: "center",
                   fontFamily: "'Martian Mono', monospace",
-                  fontSize: isMobile ? "12px" : "13px",
-                  lineHeight: 1.6,
+                  fontSize: "11px",
+                  lineHeight: 1.7,
                   color: "#4a4b4d",
                 }}
               >
-                рекомендуемая цена
+                Такого входа хватает, чтобы проверить спрос на реальной смене и не
+                строить новую кухню вслепую.
               </div>
-              <div
+              <a
+                href="#order"
                 style={{
-                  marginTop: 6,
-                  fontFamily: "'Martian Grotesk', sans-serif",
-                  fontWeight: 500,
-                  fontSize: isMobile ? "46px" : "72px",
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.07em",
+                  border: `1px solid ${C.black}`,
+                  padding: "11px 14px",
+                  fontFamily: "'Martian Mono', monospace",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
                   color: C.black,
+                  textDecoration: "none",
                 }}
               >
-                620 ₽
-              </div>
+                Обсудить тестовую партию
+              </a>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+        {!isMobile && (
+          <SideFactoid
+            isMobile={isMobile}
+            fact={{ value: "4 050 ₽", label: "закупка первой тестовой партии" }}
+          />
+        )}
       </div>
     </section>
   );
@@ -644,7 +824,7 @@ const PIZZAS = [
     priceLabel: "от",
     desc: "Понятный вкус для бара, кофейни и первой тестовой поставки.",
     tag: "СТАРТ",
-    img: "https://images.unsplash.com/photo-1592229005296-735b0f6c0722?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+    helper: "для первого теста",
   },
   {
     name: "ПЕППЕРОНИ",
@@ -652,7 +832,7 @@ const PIZZAS = [
     priceLabel: "от",
     desc: "Рабочая позиция, когда в меню нужен более очевидный хит.",
     tag: "ХИТ",
-    img: "https://images.unsplash.com/photo-1763478156969-4d7c0ab35590?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+    helper: "самый очевидный вкус",
   },
   {
     name: "ГРУША–ГОРГОНЗОЛА",
@@ -660,60 +840,70 @@ const PIZZAS = [
     priceLabel: "от",
     desc: "Позиция для точек, которым нужен более сложный вкус в том же формате.",
     tag: "СЛОЖНЕЕ ВКУС",
-    img: "https://images.unsplash.com/photo-1586934729750-2e32c19c2320?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+    helper: "для более выразительного меню",
   },
 ];
 const OBJECTIONS = [
   {
     q: "Нам не нужна ещё одна большая кухня",
-    a: "И не нужно. Этот продукт нужен точкам, которым нужна одна рабочая горячая позиция, а не отдельное food-направление со своей жизнью.",
+    a: "Вам не нужна большая кухня. Нужна одна рабочая горячая позиция, которая не тянет за собой отдельное food-направление.",
   },
   {
     q: "Мы не уверены, что еду будут брать стабильно",
-    a: "Поэтому вход и должен быть маленьким. Минимальный заказ — 15 штук: этого хватает, чтобы проверить спрос в реальной смене и не строить большие планы заранее.",
+    a: "Минимальный заказ — 15 штук. Этого хватает, чтобы проверить спрос в реальной смене и не строить большие планы заранее.",
   },
   {
     q: "У нас уже мало места и мало внимания на смене",
-    a: "Если под новую еду приходится тащить отдельные заготовки и лишние процессы, проект обычно стопорится. Здесь смысл как раз в том, чтобы этого хвоста было меньше.",
+    a: "Если новая еда тянет за собой отдельные заготовки и лишние процессы, проект стопорится. Здесь задача обратная: дать горячее без этого хвоста.",
   },
   {
     q: "Нам не нужен сложный гастрономический продукт",
-    a: "Здесь важнее другое: понятный вкус, стабильная выдача и возможность удержать гостя у себя, а не отправлять его дальше по улице.",
+    a: "Сложный гастрономический продукт и не нужен. Важнее понятный вкус, стабильная выдача и возможность удержать гостя у себя.",
   },
 ];
 
 function Assortment() {
-  const { isMobile, isTablet } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
 
   return (
     <section
       id="assortment"
-      style={{ background: C.silver, padding: isMobile ? "56px 20px" : "116px 40px" }}
+      style={{ background: C.silver, padding: isMobile ? "44px 20px" : "80px 40px" }}
     >
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <SectionHeader
-          eyebrow="assortment / что увидит гость"
-          title="Какие вкусы стоит поставить в меню сначала"
-          description="На старте важнее не большая карта, а 2-3 понятные позиции, которые быстро считываются гостем и дают нормальный тест спроса в реальной смене."
-          isMobile={isMobile}
-          titleMaxWidth="15ch"
-        />
-
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 960px)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.35 }}
-            style={{
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
-              columnGap: isMobile ? 0 : 26,
-              borderTop: `1px solid ${C.black}`,
-              borderBottom: `1px solid ${C.gray}`,
-              padding: isMobile ? "18px 0 20px" : "26px 0 28px",
-            }}
-          >
+          <SectionHeader
+            eyebrow="assortment / что увидит гость"
+            title="С чего начать"
+            description="Для первого теста не нужен длинный список. Нужны несколько вкусов, которые быстро считываются гостем и показывают реальный спрос."
+            isMobile={isMobile}
+            titleMaxWidth="12ch"
+          />
+
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.35 }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
+                columnGap: isMobile ? 0 : 26,
+                borderTop: `1px solid ${C.black}`,
+                borderBottom: `1px solid ${C.gray}`,
+                padding: isMobile ? "16px 0 18px" : "20px 0 22px",
+              }}
+            >
             <div
               style={{
                 fontFamily: "'Martian Mono', monospace",
@@ -732,6 +922,21 @@ function Assortment() {
             <div>
               <div
                 style={{
+                  display: "inline-block",
+                  border: `1px solid ${C.black}`,
+                  padding: "5px 8px",
+                  fontFamily: "'Martian Mono', monospace",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: C.black,
+                }}
+              >
+                стартовый набор: 2 понятных + 1 более выразительный вкус
+              </div>
+              <div
+                style={{
                   fontFamily: "'Martian Grotesk', sans-serif",
                   fontWeight: 500,
                   fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 40px)",
@@ -739,29 +944,30 @@ function Assortment() {
                   letterSpacing: "-0.05em",
                   color: C.black,
                   maxWidth: "14ch",
+                  marginTop: 10,
                 }}
               >
-                На старте достаточно нескольких понятных вкусов
+                На старте хватает нескольких понятных вкусов
               </div>
               <p
                 style={{
-                  margin: "12px 0 0",
+                  margin: "10px 0 0",
                   fontFamily: "'Martian Mono', monospace",
                   fontSize: isMobile ? "12px" : "13px",
-                  lineHeight: 1.8,
+                  lineHeight: 1.7,
                   color: "#4a4b4d",
                   maxWidth: "60ch",
                 }}
               >
-                Важнее не раздувать карту, а поставить в меню 2-3 позиции, которые
-                быстро считываются гостем и подходят для первого теста.
+                Сначала важен не ассортимент, а читаемость: гость быстро понимает, что
+                заказать, а вы видите, какие позиции действительно работают.
               </p>
             </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
 
-        <div style={{ display: "grid", marginTop: isMobile ? 0 : 0 }}>
-          {PIZZAS.map((pizza, i) => (
+          <div style={{ display: "grid", marginTop: isMobile ? 0 : 0 }}>
+            {PIZZAS.map((pizza, i) => (
             <motion.div
               key={pizza.name}
               initial={{ opacity: 0, y: 32 }}
@@ -773,7 +979,7 @@ function Assortment() {
                 gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr) auto",
                 columnGap: isMobile ? 0 : 26,
                 borderBottom: `1px solid ${C.gray}`,
-                padding: isMobile ? "16px 0 18px" : "18px 0 20px",
+                padding: isMobile ? "14px 0 16px" : "14px 0 16px",
               }}
             >
               <div
@@ -794,6 +1000,9 @@ function Assortment() {
               <div>
                 <div
                   style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
                     fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
                     fontSize: isMobile ? "22px" : "26px",
@@ -802,52 +1011,79 @@ function Assortment() {
                     color: C.black,
                   }}
                 >
-                  {pizza.name}
+                  <span>{pizza.name}</span>
+                  <span
+                    style={{
+                      border: `1px solid ${C.gray}`,
+                      padding: "4px 6px",
+                      fontFamily: "'Martian Mono', monospace",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      lineHeight: 1.2,
+                      letterSpacing: "0.12em",
+                    }}
+                  >
+                    {pizza.tag}
+                  </span>
                 </div>
                 <div
                   style={{
-                    marginTop: 10,
+                    marginTop: 8,
                     fontFamily: "'Martian Mono', monospace",
                     fontSize: isMobile ? "12px" : "13px",
                     color: "#4a4b4d",
-                    lineHeight: 1.8,
+                    lineHeight: 1.7,
                     maxWidth: "54ch",
                   }}
                 >
                   {pizza.desc}
+                </div>
+                <div
+                  style={{
+                    marginTop: 6,
+                    fontFamily: "'Martian Mono', monospace",
+                    fontSize: "10px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    color: "#66625d",
+                  }}
+                >
+                  {pizza.helper}
                 </div>
               </div>
 
               <div
                 style={{
                   fontFamily: "'Martian Mono', monospace",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   color: C.black,
                   whiteSpace: "nowrap",
                   alignSelf: isMobile ? "start" : "center",
                   marginTop: isMobile ? 10 : 0,
+                  textAlign: isMobile ? "left" : "right",
                 }}
               >
                 {pizza.priceLabel} {pizza.price}
               </div>
             </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div
-          style={{
-            borderTop: `1px solid ${C.black}`,
-            paddingTop: isMobile ? 16 : 20,
-            marginTop: 0,
-            fontFamily: "'Martian Mono', monospace",
-            fontSize: "11px",
-            lineHeight: 1.75,
-            color: "#5a5854",
-            maxWidth: "58ch",
-          }}
-        >
-          Этого набора обычно хватает, чтобы понять, какой вкус работает у вас лучше:
-          самый понятный, самый очевидный или чуть более сложный.
+          <div
+            style={{
+              borderTop: `1px solid ${C.black}`,
+              paddingTop: isMobile ? 14 : 16,
+              marginTop: 0,
+              fontFamily: "'Martian Mono', monospace",
+              fontSize: "11px",
+              lineHeight: 1.65,
+              color: "#5a5854",
+              maxWidth: "62ch",
+            }}
+          >
+            По первому набору видно главное: что считывается сразу, что берут чаще и
+            стоит ли расширять меню дальше.
+          </div>
         </div>
       </div>
     </section>
@@ -855,25 +1091,35 @@ function Assortment() {
 }
 
 function FAQ() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
   const { isMobile } = useBreakpoint();
 
   return (
     <section
       id="objections"
-      style={{ background: C.bg, padding: isMobile ? "60px 20px" : "124px 40px" }}
+      style={{ background: C.bg, padding: isMobile ? "44px 20px" : "80px 40px" }}
     >
-      <div style={{ maxWidth: "980px", margin: "0 auto" }}>
-        <SectionHeader
-          eyebrow="objections / что обычно останавливает"
-          title="Какие сомнения возникают перед запуском"
-          description="Самые частые возражения обычно связаны не со вкусом, а с лишней кухней, неровным спросом и страхом усложнить смену ради одной позиции."
-          isMobile={isMobile}
-          titleMaxWidth="15ch"
-        />
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 980px)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <SectionHeader
+            eyebrow="objections / что обычно останавливает"
+            title="Что мешает"
+            description="Обычно дело не во вкусе. Точку останавливают лишняя кухня, неровный спрос и страх усложнить смену ради одной позиции."
+            isMobile={isMobile}
+            titleMaxWidth="9ch"
+          />
 
-        <div style={{ display: "flex", flexDirection: "column", borderTop: `1px solid ${C.black}` }}>
-          {OBJECTIONS.map((faq, i) => (
+          <div style={{ display: "flex", flexDirection: "column", borderTop: `1px solid ${C.black}` }}>
+            {OBJECTIONS.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 15 }}
@@ -900,7 +1146,7 @@ function FAQ() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     gap: 16,
-                    padding: isMobile ? "22px 0" : "30px 0",
+                    padding: isMobile ? "18px 0" : "20px 0",
                     background: "transparent",
                     border: "none",
                     cursor: "pointer",
@@ -911,9 +1157,9 @@ function FAQ() {
                     style={{
                       fontFamily: "'Martian Grotesk', sans-serif",
                       fontWeight: 500,
-                      fontSize: isMobile ? "20px" : "clamp(20px, 2.1vw, 30px)",
+                      fontSize: isMobile ? "18px" : "clamp(18px, 1.6vw, 22px)",
                       color: C.black,
-                      lineHeight: 1.04,
+                      lineHeight: 1.1,
                       letterSpacing: "-0.03em",
                     }}
                   >
@@ -938,11 +1184,11 @@ function FAQ() {
                     role="region"
                     aria-labelledby={`faq-trigger-${i}`}
                     style={{
-                      padding: isMobile ? "0 0 24px" : "0 36px 30px 0",
+                      padding: isMobile ? "0 0 18px" : "0 24px 20px 0",
                       fontFamily: "'Martian Mono', monospace",
-                      fontSize: "12px",
+                      fontSize: "11px",
                       color: "#4a4b4d",
-                      lineHeight: 1.85,
+                      lineHeight: 1.7,
                       maxWidth: "58ch",
                     }}
                   >
@@ -951,7 +1197,8 @@ function FAQ() {
                 )}
               </div>
             </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -965,18 +1212,26 @@ function Order() {
   const { isMobile, isTablet } = useBreakpoint();
   const [form, setForm] = useState({ name: "", company: "", email: "" });
   const [errors, setErrors] = useState({ name: "", company: "", email: "" });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [touched, setTouched] = useState({ name: false, company: false, email: false });
+  const [status, setStatus] = useState<"idle" | "loading" | "mailFallback" | "error">("idle");
+
+  const validateField = (key: keyof typeof form, value: string) => {
+    if (key === "name") return value.trim() ? "" : "Введите имя.";
+    if (key === "company") return value.trim() ? "" : "Укажите заведение.";
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+      ? ""
+      : "Введите корректный email.";
+  };
 
   const validateForm = () => {
     const nextErrors = {
-      name: form.name.trim() ? "" : "Введите имя.",
-      company: form.company.trim() ? "" : "Укажите заведение.",
-      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
-        ? ""
-        : "Введите корректный email.",
+      name: validateField("name", form.name),
+      company: validateField("company", form.company),
+      email: validateField("email", form.email),
     };
 
     setErrors(nextErrors);
+    setTouched({ name: true, company: true, email: true });
     return Object.values(nextErrors).every((value) => !value);
   };
 
@@ -1004,7 +1259,9 @@ function Order() {
       );
 
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-      setStatus("success");
+      window.setTimeout(() => {
+        setStatus("mailFallback");
+      }, 400);
     } catch {
       setStatus("error");
     }
@@ -1015,181 +1272,175 @@ function Order() {
       id="order"
       style={{
         background: C.bg,
-        padding: isMobile ? "60px 20px" : "124px 40px",
+        padding: isMobile ? "44px 20px" : "84px 40px",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <SectionHeader
-          eyebrow="offer / тестовый запуск"
-          title="Как обсудить первую поставку"
-          description="Оставьте контакт, если хотите спокойно проверить спрос на горячую позицию: без большой кухни, без длинного входа и без лишней сложности на старте."
-          isMobile={isMobile}
-          titleMaxWidth="13ch"
-        />
+      <div
+        style={{
+          maxWidth: "1440px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "minmax(0, 1200px) minmax(0, 1fr)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <SectionHeader
+            eyebrow="offer / тестовый запуск"
+            title="Запросить тест"
+            description="Оставьте контакт, если хотите проверить спрос на горячую позицию без большой кухни, длинного входа и лишней операционки."
+            isMobile={isMobile}
+            titleMaxWidth="11ch"
+          />
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr",
-            gap: isMobile ? 32 : 48,
-            alignItems: "stretch",
-          }}
-        >
-          <motion.div
+          <div
             initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4 }}
             style={{
-              background: C.silver,
-              border: `1px solid ${C.black}`,
-              padding: isMobile ? "30px 24px" : "36px 32px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: 28,
+              display: "grid",
+              gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr",
+              gap: isMobile ? 24 : 36,
+              alignItems: "stretch",
             }}
           >
-            <div>
-              <div
-                style={{
-                  fontFamily: "'Martian Mono', monospace",
-                  fontSize: "10px",
-                  color: "#6a665f",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.14em",
-                  fontWeight: 700,
-                  marginBottom: 24,
-                }}
-              >
-                что будет дальше
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Martian Grotesk', sans-serif",
-                  fontWeight: 500,
-                  fontSize: isMobile
-                    ? "clamp(28px, 8vw, 38px)"
-                    : "clamp(30px, 3vw, 40px)",
-                  color: C.black,
-                  lineHeight: 1.02,
-                  textTransform: "none",
-                  letterSpacing: "-0.04em",
-                }}
-                >
-                Первая партия
-                <br />
-                как аккуратный
-                <br />
-                тест
-              </div>
-            </div>
-
-            <div>
-              <div
-                style={{
-                  fontFamily: "'Martian Mono', monospace",
-                  fontSize: "11px",
-                  color: "#3f3f40",
-                  lineHeight: 1.8,
-                  marginBottom: 24,
-                  maxWidth: "44ch",
-                }}
-              >
-                Если вы хотите проверить спрос на горячую позицию без большого запуска,
-                оставьте заявку. Поможем собрать первую партию и выбрать вкусы под ваш формат.
-              </div>
-
-              <div
-                style={{
-                  borderTop: `1px solid ${C.gray}`,
-                  paddingTop: 16,
-                  fontFamily: "'Martian Mono', monospace",
-                  fontSize: "11px",
-                  lineHeight: 1.75,
-                  color: "#3f3f40",
-                  maxWidth: "42ch",
-                }}
-              >
-                Первый заказ обычно собирают как тест: посмотреть, как позиция ведет себя
-                в вашей смене, какие вкусы заказывают чаще и нужен ли следующий шаг.
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            style={{
-              background: C.white,
-              border: `1px solid ${C.black}`,
-              padding: isMobile ? "26px 22px" : "32px 28px",
-              boxShadow: "none",
-            }}
-          >
-            {status === "success" ? (
-              <motion.div
-                initial={{ scale: 0.85 }}
-                animate={{ scale: 1 }}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  minHeight: 280,
-                  textAlign: "center",
-                }}
-              >
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                background: C.silver,
+                border: `1px solid ${C.black}`,
+                padding: isMobile ? "24px 20px" : "28px 24px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: 20,
+              }}
+            >
+              <div>
                 <div
-                  role="status"
-                  aria-live="polite"
                   style={{
-                    background: C.silver,
-                    border: `1px solid ${C.black}`,
-                    boxShadow: "none",
-                    padding: "24px 28px",
-                    width: "100%",
+                    fontFamily: "'Martian Mono', monospace",
+                    fontSize: "10px",
+                    color: "#6a665f",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.14em",
+                    fontWeight: 700,
+                    marginBottom: 18,
                   }}
                 >
-                  <div
-                    style={{
-                      fontFamily: "'Martian Grotesk', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "24px",
-                      textTransform: "none",
-                      color: C.black,
-                      lineHeight: 1,
-                    }}
-                  >
-                    Заявка принята
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "'Martian Mono', monospace",
-                      fontSize: "12px",
-                      color: "#4a4b4d",
-                      marginTop: 10,
-                    }}
-                  >
-                    Почтовый клиент открыт. Если письмо не создалось автоматически,
-                    напишите на {CONTACT_EMAIL}.
-                  </div>
+                  что будет дальше
                 </div>
-              </motion.div>
-            ) : (
+                <div
+                  style={{
+                    fontFamily: "'Martian Grotesk', sans-serif",
+                    fontWeight: 500,
+                    fontSize: isMobile
+                      ? "clamp(26px, 7vw, 34px)"
+                      : "clamp(28px, 2.8vw, 36px)",
+                    color: C.black,
+                    lineHeight: 1.02,
+                    textTransform: "none",
+                    letterSpacing: "-0.04em",
+                  }}
+                >
+                  Первая партия
+                  <br />
+                  как проверяемый
+                  <br />
+                  тест спроса
+                </div>
+              </div>
+
+              <div>
+                <div
+                  style={{
+                    fontFamily: "'Martian Mono', monospace",
+                    fontSize: "11px",
+                    color: "#3f3f40",
+                    lineHeight: 1.8,
+                    marginBottom: 18,
+                    maxWidth: "44ch",
+                  }}
+                >
+                  Сначала не строим новую кухню. Сначала собираем понятный тест:
+                  небольшую партию, стартовые вкусы и простой сценарий для смены.
+                </div>
+
+                <div
+                  style={{
+                    borderTop: `1px solid ${C.gray}`,
+                    paddingTop: 14,
+                    display: "grid",
+                    gap: 10,
+                  }}
+                >
+                  {[
+                    "Собираем тестовую партию под ваш формат точки.",
+                    "Помогаем выбрать стартовые вкусы без раздутого меню.",
+                    "Смотрите спрос в реальной смене и решаете, что делать дальше.",
+                  ].map((step, index) => (
+                    <div
+                      key={step}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "28px minmax(0, 1fr)",
+                        gap: 10,
+                        alignItems: "start",
+                      }}
+                    >
+                      <div
+                        style={{
+                          border: `1px solid ${C.gray}`,
+                          padding: "4px 0",
+                          textAlign: "center",
+                          fontFamily: "'Martian Mono', monospace",
+                          fontSize: "10px",
+                          fontWeight: 700,
+                          color: C.black,
+                        }}
+                      >
+                        0{index + 1}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "'Martian Mono', monospace",
+                          fontSize: "11px",
+                          lineHeight: 1.65,
+                          color: "#3f3f40",
+                        }}
+                      >
+                        {step}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              style={{
+                background: C.white,
+                border: `1px solid ${C.black}`,
+                padding: isMobile ? "22px 20px" : "26px 24px",
+                boxShadow: "none",
+              }}
+            >
               <form
                 onSubmit={handleSubmit}
                 noValidate
-                style={{ display: "flex", flexDirection: "column", gap: 18 }}
+                style={{ display: "flex", flexDirection: "column", gap: 14 }}
               >
                 <h2
                   style={{
                     fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
-                    fontSize: "24px",
+                    fontSize: "26px",
                     textTransform: "none",
                     color: C.black,
                     borderBottom: `1px solid ${C.black}`,
@@ -1201,6 +1452,16 @@ function Order() {
                 >
                   Оставить заявку на тест
                 </h2>
+                <div
+                  style={{
+                    fontFamily: "'Martian Mono', monospace",
+                    fontSize: "11px",
+                    lineHeight: 1.6,
+                    color: "#4a4b4d",
+                  }}
+                >
+                  Ответим по заявке и поможем собрать первую тестовую партию под ваш формат.
+                </div>
 
                 {[
                   { key: "name", label: "ИМЯ", placeholder: "Иван Иванов" },
@@ -1248,7 +1509,7 @@ function Order() {
                       style={{
                         background: C.bg,
                         border: `1px solid ${C.black}`,
-                        padding: "12px 14px",
+                        padding: "11px 12px",
                         fontFamily: "'Martian Mono', monospace",
                         fontSize: "13px",
                         color: C.black,
@@ -1268,11 +1529,17 @@ function Order() {
                           ? `order-${field.key}-error`
                           : undefined
                       }
-                      onBlur={() => {
-                        validateForm();
+                      onBlur={(e) => {
+                        const key = field.key as keyof typeof form;
+                        setTouched((prev) => ({ ...prev, [key]: true }));
+                        setErrors((prev) => ({
+                          ...prev,
+                          [key]: validateField(key, e.target.value),
+                        }));
                       }}
                     />
-                    {errors[field.key as keyof typeof errors] && (
+                    {touched[field.key as keyof typeof touched] &&
+                      errors[field.key as keyof typeof errors] && (
                       <div
                         id={`order-${field.key}-error`}
                         role="alert"
@@ -1285,9 +1552,28 @@ function Order() {
                       >
                         {errors[field.key as keyof typeof errors]}
                       </div>
-                    )}
+                      )}
                   </div>
                 ))}
+
+                {status === "mailFallback" && (
+                  <div
+                    role="status"
+                    aria-live="polite"
+                    style={{
+                      background: C.silver,
+                      border: `1px solid ${C.black}`,
+                      padding: "14px 16px",
+                      fontFamily: "'Martian Mono', monospace",
+                      fontSize: "11px",
+                      color: C.black,
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    Откроем письмо в почтовом клиенте. Если он не настроен, используйте email
+                    или WhatsApp ниже.
+                  </div>
+                )}
 
                 {status === "error" && (
                   <div
@@ -1317,10 +1603,10 @@ function Order() {
                     textTransform: "uppercase" as const,
                     letterSpacing: "0.12em",
                     cursor: "pointer",
-                    padding: "15px",
+                    padding: "13px",
                     fontSize: "13px",
                     width: "100%",
-                    marginTop: 4,
+                    marginTop: 2,
                     transition: "background 160ms ease",
                     opacity: status === "loading" ? 0.8 : 1,
                   }}
@@ -1339,11 +1625,48 @@ function Order() {
                     "ОТПРАВИТЬ ЗАПРОС →"
                   )}
                 </button>
+
+                {status === "mailFallback" && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 10,
+                    }}
+                  >
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      style={{
+                        border: `1px solid ${C.black}`,
+                        padding: "10px 12px",
+                        fontFamily: "'Martian Mono', monospace",
+                        fontSize: "11px",
+                        color: C.black,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Написать на email
+                    </a>
+                    <a
+                      href="https://wa.me/78120000000"
+                      style={{
+                        border: `1px solid ${C.black}`,
+                        padding: "10px 12px",
+                        fontFamily: "'Martian Mono', monospace",
+                        fontSize: "11px",
+                        color: C.black,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Открыть WhatsApp
+                    </a>
+                  </div>
+                )}
                 <div
                   style={{
                     fontFamily: "'Martian Mono', monospace",
                     fontSize: "10px",
-                    color: C.gray,
+                    color: "#66625d",
                     textAlign: "center",
                     lineHeight: 1.6,
                   }}
@@ -1357,9 +1680,15 @@ function Order() {
                   </a>
                 </div>
               </form>
-            )}
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
+        {!isMobile && (
+          <SideFactoid
+            isMobile={isMobile}
+            fact={{ value: "15 шт", label: "минимальный заказ на первый тест" }}
+          />
+        )}
       </div>
     </section>
   );
@@ -1377,29 +1706,39 @@ function Footer() {
       style={{
         background: C.silver,
         borderTop: `1px solid ${C.black}`,
-        padding: isMobile ? "48px 20px 20px" : "84px 40px 28px",
+        padding: isMobile ? "36px 20px 18px" : "56px 40px 24px",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr 1fr"
-              : isTablet
-              ? "1fr 1fr 1fr"
-              : "2fr 1fr 1fr 1fr",
-            gap: isMobile ? 28 : 40,
-            paddingBottom: 40,
-            borderBottom: `1px solid ${C.black}`,
-          }}
-        >
+      <div
+        style={{
+          maxWidth: "1440px",
+          margin: "0",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1200px)",
+          gap: isMobile ? 20 : 24,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile
+                ? "1fr 1fr"
+                : isTablet
+                ? "1fr 1fr 1fr"
+                : "2fr 1fr 1fr 1fr",
+              gap: isMobile ? 24 : 32,
+              paddingBottom: 28,
+              borderBottom: `1px solid ${C.black}`,
+            }}
+          >
           <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
             <div
               style={{
                 fontFamily: "'Martian Grotesk', sans-serif",
-                fontWeight: 500,
-                fontSize: "22px",
+                fontWeight: 600,
+                fontSize: "24px",
                 letterSpacing: "-0.04em",
                 color: C.black,
                 marginBottom: 14,
@@ -1410,9 +1749,10 @@ function Footer() {
             <div
               style={{
                 fontFamily: "'Martian Mono', monospace",
-                fontSize: "11px",
+                fontSize: "12px",
                 color: "#333",
                 lineHeight: 1.75,
+                maxWidth: "30ch",
               }}
             >
               Замороженная римская пицца для заведений,
@@ -1439,10 +1779,21 @@ function Footer() {
             >
               Контакты
             </div>
+            <div
+              style={{
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: "10px",
+                lineHeight: 1.6,
+                color: "#4a4b4d",
+                marginBottom: 12,
+              }}
+            >
+              Для тестовой поставки и B2B-вопросов
+            </div>
             {[
-              { label: "Телефон", val: "+7 (812) 000-00-00" },
-              { label: "Email", val: "b2b@rimsk.ru" },
-              { label: "WhatsApp", val: "+7 (812) 000-00-00" },
+              { label: "Телефон", val: "+7 (812) 000-00-00", href: "tel:+78120000000" },
+              { label: "Email", val: "b2b@rimsk.ru", href: "mailto:b2b@rimsk.ru" },
+              { label: "WhatsApp", val: "+7 (812) 000-00-00", href: "https://wa.me/78120000000" },
             ].map((c) => (
               <div key={c.label} style={{ marginBottom: 9 }}>
                 <div
@@ -1456,16 +1807,19 @@ function Footer() {
                 >
                   {c.label}
                 </div>
-                <div
+                <a
+                  href={c.href}
                   style={{
+                    display: "inline-block",
                     fontFamily: "'Martian Mono', monospace",
-                    fontSize: "11px",
+                    fontSize: "12px",
                     color: C.black,
-                    fontWeight: 500,
+                    fontWeight: 700,
+                    textDecoration: "none",
                   }}
                 >
                   {c.val}
-                </div>
+                </a>
               </div>
             ))}
           </div>
@@ -1547,8 +1901,8 @@ function Footer() {
                   style={{
                     display: "block",
                     fontFamily: "'Martian Mono', monospace",
-                    fontSize: "11px",
-                    color: C.black,
+                    fontSize: "10px",
+                    color: "#5a5854",
                     textDecoration: "none",
                     marginBottom: 9,
                     borderBottom: "1px solid transparent",
@@ -1565,38 +1919,39 @@ function Footer() {
               ))}
             </div>
           )}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: 20,
-            flexWrap: "wrap",
-            gap: 10,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "'Martian Mono', monospace",
-              fontSize: "10px",
-              color: "#666",
-            }}
-          >
-            © 1998–{year} ООО «РИМСК». Все права защищены. Все цены указаны без
-            НДС.
           </div>
+
           <div
             style={{
-              border: `1px solid ${C.gray}`,
-              padding: "4px 10px",
-              fontFamily: "'Martian Mono', monospace",
-              fontSize: "10px",
-              color: C.black,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingTop: 20,
+              flexWrap: "wrap",
+              gap: 10,
             }}
           >
-            v1.0.98
+            <div
+              style={{
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: "10px",
+                color: "#666",
+              }}
+            >
+              © 1998–{year} ООО «РИМСК». Все права защищены. Все цены указаны без
+              НДС.
+            </div>
+            <div
+              style={{
+                border: `1px solid ${C.gray}`,
+                padding: "4px 10px",
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: "10px",
+                color: C.black,
+              }}
+            >
+              v1.0.98
+            </div>
           </div>
         </div>
       </div>

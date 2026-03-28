@@ -33,13 +33,15 @@ const menuItems = [
   { name: "Возражения", href: "#objections" },
 ];
 
+const heroFacts = ["ОТ 15 ШТ НА ТЕСТ", "8 МИНУТ ДО ПОДАЧИ", "ОТ 270 ₽ ОПТ"];
+
 export function HeroSection() {
   return (
     <>
       <HeroHeader />
       <main className="overflow-hidden bg-[var(--paper)]">
         <section>
-          <div className="relative overflow-hidden pt-22 md:pt-28">
+          <div className="relative overflow-hidden pt-18 md:pt-22">
             <div
               aria-hidden
               className="absolute inset-0 z-0 bg-white"
@@ -76,19 +78,30 @@ export function HeroSection() {
                     </div>
                   </a>
 
-                  <h1 className="mx-auto mt-8 max-w-4xl text-balance font-['Martian_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-10 md:text-6xl lg:text-[4.5rem]">
+                  <h1 className="mx-auto mt-6 max-w-4xl text-balance font-['Martian_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-8 md:text-6xl lg:text-[4.25rem]">
                     Римская пицца для бизнеса
                   </h1>
-                  <p className="mx-auto mt-8 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-black/72 md:text-[15px]">
-                    Горячая позиция для баров, кафе, мини-отелей и кейтеринга
-                    без отдельной кухни, сложной заготовки и лишней операционки.
+                  <p className="mx-auto mt-6 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-black/72 md:text-[15px]">
+                    Помогает добавить горячее в меню без новой кухни,
+                    сложной заготовки и лишней операционки.
                   </p>
 
-                  <div className="mt-10 flex flex-col items-center justify-center gap-2 md:flex-row">
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-2 md:gap-3">
+                    {heroFacts.map((fact) => (
+                      <span
+                        key={fact}
+                        className="rounded-full border border-[var(--line)] bg-white/80 px-3 py-1.5 font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-[var(--ink)]"
+                      >
+                        {fact}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 flex flex-col items-center justify-center gap-2 md:flex-row">
                     <div className="rounded-[14px] border border-[var(--line)] p-0.5">
                       <Button asChild size="lg" className="rounded-xl px-5 text-base">
                         <a href="#order">
-                          <span className="text-nowrap">Обсудить запуск</span>
+                          <span className="text-nowrap">Запросить тестовую партию</span>
                         </a>
                       </Button>
                     </div>
@@ -117,9 +130,9 @@ export function HeroSection() {
                     },
                     ...transitionVariants,
                   }}
-                  className="relative mt-2 md:mt-3"
+                  className="relative mt-1 md:mt-2"
                 >
-                  <div className="relative mx-auto h-[280px] w-full max-w-[760px] md:h-[460px]">
+                  <div className="relative mx-auto h-[220px] w-full max-w-[720px] md:h-[340px]">
                     <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
                     <HeroPizzaModel />
                   </div>
@@ -136,6 +149,8 @@ export function HeroSection() {
 const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const mobileMenuId = React.useId();
+  const [activeSection, setActiveSection] = React.useState<string>("#top");
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -143,6 +158,32 @@ const HeroHeader = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  React.useEffect(() => {
+    const sections = ["top", "scenarios", "assortment", "economics", "objections", "order"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target.id) {
+          setActiveSection(`#${visible.target.id}`);
+        }
+      },
+      {
+        rootMargin: "-25% 0px -55% 0px",
+        threshold: [0.15, 0.4, 0.7],
+      }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -167,7 +208,9 @@ const HeroHeader = () => {
 
               <button
                 onClick={() => setMenuState(!menuState)}
-                aria-label={menuState ? "Close Menu" : "Open Menu"}
+                aria-expanded={menuState}
+                aria-controls={mobileMenuId}
+                aria-label={menuState ? "Закрыть меню" : "Открыть меню"}
                 className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
               >
                 <Menu className="m-auto size-6 duration-200 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0" />
@@ -181,7 +224,10 @@ const HeroHeader = () => {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className="block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-black/65 duration-150 hover:text-[var(--ink)]"
+                      className={cn(
+                        "block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] duration-150 hover:text-[var(--ink)]",
+                        activeSection === item.href ? "text-[var(--ink)]" : "text-black/65"
+                      )}
                     >
                       <span>{item.name}</span>
                     </a>
@@ -191,13 +237,23 @@ const HeroHeader = () => {
             </div>
 
             <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-[var(--line)] bg-[var(--sheet)] p-6 shadow-2xl shadow-zinc-300/20 group-data-[state=active]:block md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
-              <div className="lg:hidden">
+              <div
+                id={mobileMenuId}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Мобильная навигация"
+                className="lg:hidden"
+              >
                 <ul className="space-y-6 text-base">
                   {menuItems.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] text-black/72 duration-150 hover:text-[var(--ink)]"
+                        onClick={() => setMenuState(false)}
+                        className={cn(
+                          "block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] duration-150 hover:text-[var(--ink)]",
+                          activeSection === item.href ? "text-[var(--ink)]" : "text-black/72"
+                        )}
                       >
                         <span>{item.name}</span>
                       </a>

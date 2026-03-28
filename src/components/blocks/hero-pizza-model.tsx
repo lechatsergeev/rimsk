@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -41,8 +41,32 @@ function fitPizzaModel(model: THREE.Object3D) {
 
 export function HeroPizzaModel() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (media.matches) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldLoad) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -204,11 +228,12 @@ export function HeroPizzaModel() {
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [shouldLoad]);
 
   return (
     <div
       ref={containerRef}
+      aria-hidden="true"
       className="relative z-[2] h-full w-full cursor-grab touch-none active:cursor-grabbing"
     />
   );
