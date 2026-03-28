@@ -1,2 +1,25 @@
-/* Local font files are currently not present in this repo clone.
-   The UI falls back to installed/system fonts until the assets are restored. */
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;700&display=swap');
+
+@font-face {
+  font-family: 'Martian Grotesk';
+  src: url('../../webfonts/MartianGrotesk-StdRg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Martian Grotesk';
+  src: url('../../webfonts/MartianGrotesk-StdMd.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Martian Grotesk';
+  src: url('../../webfonts/MartianGrotesk-StdBd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

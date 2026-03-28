@@ -114,7 +114,7 @@ function Marquee() {
         <span
           style={{
             color: C.black,
-            fontFamily: "'IBM Plex Mono', monospace",
+            fontFamily: "'Martian Mono', monospace",
             fontWeight: 700,
             fontSize: "12px",
             letterSpacing: "0.08em",
@@ -197,7 +197,7 @@ function Navigation() {
           <a
             href="#top"
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Martian Grotesk', sans-serif",
               fontWeight: 700,
               fontSize: "18px",
               letterSpacing: "-0.04em",
@@ -225,7 +225,7 @@ function Navigation() {
                 key={href}
                 href={href}
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   fontWeight: 500,
                   color: C.black,
@@ -256,7 +256,7 @@ function Navigation() {
             className="win98-inset"
             style={{
               padding: "3px 10px",
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: "'Martian Mono', monospace",
               fontSize: "11px",
               color: C.black,
               background: C.white,
@@ -276,7 +276,7 @@ function Navigation() {
                 border: `1px solid ${C.black}`,
                 padding: "4px 8px",
                 cursor: "pointer",
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "14px",
                 color: menuOpen ? C.white : C.black,
                 lineHeight: 1,
@@ -304,7 +304,7 @@ function Navigation() {
               onClick={() => setMenuOpen(false)}
               style={{
                 display: "block",
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "13px",
                 fontWeight: 500,
                 color: C.black,
@@ -360,7 +360,7 @@ function SectionHeader({
       <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
         <div
           style={{
-            fontFamily: "'IBM Plex Mono', monospace",
+            fontFamily: "'Martian Mono', monospace",
             fontSize: "11px",
             fontWeight: 700,
             textTransform: "uppercase",
@@ -373,7 +373,7 @@ function SectionHeader({
         <h2
           style={{
             margin: isMobile ? "12px 0 0" : "14px 0 0",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Martian Grotesk', sans-serif",
             fontSize: isMobile ? "30px" : "42px",
             fontWeight: 500,
             lineHeight: 0.96,
@@ -388,7 +388,7 @@ function SectionHeader({
           style={{
             margin: isMobile ? "12px 0 0" : "14px 0 0",
             maxWidth: "58ch",
-            fontFamily: "'IBM Plex Mono', monospace",
+            fontFamily: "'Martian Mono', monospace",
             fontSize: isMobile ? "12px" : "13px",
             lineHeight: 1.7,
             color: "#4a4b4d",
@@ -436,7 +436,7 @@ function Scenarios() {
             >
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -452,7 +452,7 @@ function Scenarios() {
               <div>
                 <div
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
                     fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 42px)",
                     lineHeight: 1.02,
@@ -466,7 +466,7 @@ function Scenarios() {
                 <div
                   style={{
                     marginTop: 12,
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: isMobile ? "12px" : "13px",
                     lineHeight: 1.8,
                     color: "#4a4b4d",
@@ -479,7 +479,7 @@ function Scenarios() {
                 <div
                   style={{
                     marginTop: 14,
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "10px",
                     lineHeight: 1.7,
                     color: "#6a665f",
@@ -543,7 +543,7 @@ function Economics() {
               <div>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "10px",
                     fontWeight: 700,
                     textTransform: "uppercase",
@@ -556,7 +556,7 @@ function Economics() {
                 <div
                   style={{
                     marginTop: 9,
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "12px",
                     lineHeight: 1.7,
                     color: "#4a4b4d",
@@ -567,7 +567,7 @@ function Economics() {
               </div>
               <div
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Martian Grotesk', sans-serif",
                   fontWeight: 500,
                   fontSize: isMobile ? "24px" : "32px",
                   lineHeight: 1,
@@ -605,7 +605,7 @@ function Economics() {
             >
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: isMobile ? "12px" : "13px",
                   lineHeight: 1.6,
                   color: "#4a4b4d",
@@ -616,7 +616,7 @@ function Economics() {
               <div
                 style={{
                   marginTop: 6,
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Martian Grotesk', sans-serif",
                   fontWeight: 500,
                   fontSize: isMobile ? "46px" : "72px",
                   lineHeight: 0.9,
@@ -716,7 +716,7 @@ function Assortment() {
           >
             <div
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "11px",
                 fontWeight: 700,
                 textTransform: "uppercase",
@@ -732,7 +732,7 @@ function Assortment() {
             <div>
               <div
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Martian Grotesk', sans-serif",
                   fontWeight: 500,
                   fontSize: isMobile ? "26px" : "clamp(28px, 3vw, 40px)",
                   lineHeight: 1.02,
@@ -746,7 +746,7 @@ function Assortment() {
               <p
                 style={{
                   margin: "12px 0 0",
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: isMobile ? "12px" : "13px",
                   lineHeight: 1.8,
                   color: "#4a4b4d",
@@ -778,7 +778,7 @@ function Assortment() {
             >
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -794,7 +794,7 @@ function Assortment() {
               <div>
                 <div
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
                     fontSize: isMobile ? "22px" : "26px",
                     lineHeight: 1.02,
@@ -807,7 +807,7 @@ function Assortment() {
                 <div
                   style={{
                     marginTop: 10,
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: isMobile ? "12px" : "13px",
                     color: "#4a4b4d",
                     lineHeight: 1.8,
@@ -820,7 +820,7 @@ function Assortment() {
 
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   color: C.black,
                   whiteSpace: "nowrap",
@@ -839,7 +839,7 @@ function Assortment() {
             borderTop: `1px solid ${C.black}`,
             paddingTop: isMobile ? 16 : 20,
             marginTop: 0,
-            fontFamily: "'IBM Plex Mono', monospace",
+            fontFamily: "'Martian Mono', monospace",
             fontSize: "11px",
             lineHeight: 1.75,
             color: "#5a5854",
@@ -909,7 +909,7 @@ function FAQ() {
                 >
                   <span
                     style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "'Martian Grotesk', sans-serif",
                       fontWeight: 500,
                       fontSize: isMobile ? "20px" : "clamp(20px, 2.1vw, 30px)",
                       color: C.black,
@@ -921,7 +921,7 @@ function FAQ() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "'Martian Mono', monospace",
                       fontSize: "22px",
                       color: C.black,
                       flexShrink: 0,
@@ -939,7 +939,7 @@ function FAQ() {
                     aria-labelledby={`faq-trigger-${i}`}
                     style={{
                       padding: isMobile ? "0 0 24px" : "0 36px 30px 0",
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "'Martian Mono', monospace",
                       fontSize: "12px",
                       color: "#4a4b4d",
                       lineHeight: 1.85,
@@ -1053,7 +1053,7 @@ function Order() {
             <div>
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "10px",
                   color: "#6a665f",
                   textTransform: "uppercase",
@@ -1066,7 +1066,7 @@ function Order() {
               </div>
               <div
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Martian Grotesk', sans-serif",
                   fontWeight: 500,
                   fontSize: isMobile
                     ? "clamp(28px, 8vw, 38px)"
@@ -1088,7 +1088,7 @@ function Order() {
             <div>
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   color: "#3f3f40",
                   lineHeight: 1.8,
@@ -1104,7 +1104,7 @@ function Order() {
                 style={{
                   borderTop: `1px solid ${C.gray}`,
                   paddingTop: 16,
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "11px",
                   lineHeight: 1.75,
                   color: "#3f3f40",
@@ -1156,7 +1156,7 @@ function Order() {
                 >
                   <div
                     style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "'Martian Grotesk', sans-serif",
                       fontWeight: 500,
                       fontSize: "24px",
                       textTransform: "none",
@@ -1168,7 +1168,7 @@ function Order() {
                   </div>
                   <div
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "'Martian Mono', monospace",
                       fontSize: "12px",
                       color: "#4a4b4d",
                       marginTop: 10,
@@ -1187,7 +1187,7 @@ function Order() {
               >
                 <h2
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "'Martian Grotesk', sans-serif",
                     fontWeight: 500,
                     fontSize: "24px",
                     textTransform: "none",
@@ -1223,7 +1223,7 @@ function Order() {
                     <label
                       htmlFor={`order-${field.key}`}
                       style={{
-                        fontFamily: "'IBM Plex Mono', monospace",
+                        fontFamily: "'Martian Mono', monospace",
                         fontSize: "10px",
                         fontWeight: 700,
                         textTransform: "uppercase",
@@ -1249,7 +1249,7 @@ function Order() {
                         background: C.bg,
                         border: `1px solid ${C.black}`,
                         padding: "12px 14px",
-                        fontFamily: "'IBM Plex Mono', monospace",
+                        fontFamily: "'Martian Mono', monospace",
                         fontSize: "13px",
                         color: C.black,
                         width: "100%",
@@ -1277,7 +1277,7 @@ function Order() {
                         id={`order-${field.key}-error`}
                         role="alert"
                         style={{
-                          fontFamily: "'IBM Plex Mono', monospace",
+                          fontFamily: "'Martian Mono', monospace",
                           fontSize: "11px",
                           color: C.gold,
                           lineHeight: 1.5,
@@ -1293,7 +1293,7 @@ function Order() {
                   <div
                     role="alert"
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "'Martian Mono', monospace",
                       fontSize: "11px",
                       color: C.gold,
                       lineHeight: 1.6,
@@ -1312,7 +1312,7 @@ function Order() {
                     color: C.white,
                     border: `1px solid ${C.black}`,
                     boxShadow: "none",
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontWeight: 700,
                     textTransform: "uppercase" as const,
                     letterSpacing: "0.12em",
@@ -1341,7 +1341,7 @@ function Order() {
                 </button>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "10px",
                     color: C.gray,
                     textAlign: "center",
@@ -1397,7 +1397,7 @@ function Footer() {
           <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
             <div
               style={{
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Martian Grotesk', sans-serif",
                 fontWeight: 500,
                 fontSize: "22px",
                 letterSpacing: "-0.04em",
@@ -1409,7 +1409,7 @@ function Footer() {
             </div>
             <div
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "11px",
                 color: "#333",
                 lineHeight: 1.75,
@@ -1426,7 +1426,7 @@ function Footer() {
           <div>
             <div
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "10px",
                 fontWeight: 700,
                 textTransform: "uppercase",
@@ -1447,7 +1447,7 @@ function Footer() {
               <div key={c.label} style={{ marginBottom: 9 }}>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "9px",
                     color: "#666",
                     textTransform: "uppercase",
@@ -1458,7 +1458,7 @@ function Footer() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "11px",
                     color: C.black,
                     fontWeight: 500,
@@ -1473,7 +1473,7 @@ function Footer() {
           <div>
             <div
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'Martian Mono', monospace",
                 fontSize: "10px",
                 fontWeight: 700,
                 textTransform: "uppercase",
@@ -1495,7 +1495,7 @@ function Footer() {
               <div key={c.label} style={{ marginBottom: 9 }}>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "9px",
                     color: "#666",
                     textTransform: "uppercase",
@@ -1506,7 +1506,7 @@ function Footer() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "11px",
                     color: C.black,
                     fontWeight: 500,
@@ -1522,7 +1522,7 @@ function Footer() {
             <div>
               <div
                 style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontFamily: "'Martian Mono', monospace",
                   fontSize: "10px",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -1546,7 +1546,7 @@ function Footer() {
                   href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(doc)}`}
                   style={{
                     display: "block",
-                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontFamily: "'Martian Mono', monospace",
                     fontSize: "11px",
                     color: C.black,
                     textDecoration: "none",
@@ -1579,7 +1579,7 @@ function Footer() {
         >
           <div
             style={{
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: "'Martian Mono', monospace",
               fontSize: "10px",
               color: "#666",
             }}
@@ -1591,7 +1591,7 @@ function Footer() {
             style={{
               border: `1px solid ${C.gray}`,
               padding: "4px 10px",
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: "'Martian Mono', monospace",
               fontSize: "10px",
               color: C.black,
             }}

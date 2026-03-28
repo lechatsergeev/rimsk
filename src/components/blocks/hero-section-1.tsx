@@ -76,10 +76,10 @@ export function HeroSection() {
                     </div>
                   </a>
 
-                  <h1 className="mx-auto mt-8 max-w-4xl text-balance font-['Space_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-10 md:text-6xl lg:text-[4.5rem]">
+                  <h1 className="mx-auto mt-8 max-w-4xl text-balance font-['Martian_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-10 md:text-6xl lg:text-[4.5rem]">
                     Римская пицца для бизнеса
                   </h1>
-                  <p className="mx-auto mt-8 max-w-2xl text-balance font-['IBM_Plex_Mono'] text-sm leading-7 text-black/72 md:text-[15px]">
+                  <p className="mx-auto mt-8 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-black/72 md:text-[15px]">
                     Горячая позиция для баров, кафе, мини-отелей и кейтеринга
                     без отдельной кухни, сложной заготовки и лишней операционки.
                   </p>
@@ -160,7 +160,7 @@ const HeroHeader = () => {
               <a
                 href="#top"
                 aria-label="home"
-                className="flex items-center space-x-2 font-['Space_Grotesk'] text-lg font-semibold tracking-[-0.05em] text-[var(--ink)]"
+                className="flex items-center space-x-2 font-['Martian_Grotesk'] text-lg font-semibold tracking-[-0.05em] text-[var(--ink)]"
               >
                 <Logo />
               </a>
@@ -181,7 +181,7 @@ const HeroHeader = () => {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className="block font-['IBM_Plex_Mono'] text-[11px] uppercase tracking-[0.12em] text-black/65 duration-150 hover:text-[var(--ink)]"
+                      className="block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-black/65 duration-150 hover:text-[var(--ink)]"
                     >
                       <span>{item.name}</span>
                     </a>
@@ -197,7 +197,7 @@ const HeroHeader = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="block font-['IBM_Plex_Mono'] text-xs uppercase tracking-[0.12em] text-black/72 duration-150 hover:text-[var(--ink)]"
+                        className="block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] text-black/72 duration-150 hover:text-[var(--ink)]"
                       >
                         <span>{item.name}</span>
                       </a>
@@ -232,7 +232,7 @@ const HeroHeader = () => {
 
 const Logo = ({ className }: { className?: string }) => {
   return (
-    <span className={cn("font-['Space_Grotesk'] text-[18px] font-semibold tracking-[-0.06em]", className)}>
+    <span className={cn("font-['Martian_Grotesk'] text-[18px] font-semibold tracking-[-0.06em]", className)}>
       РИМСК
     </span>
   );
