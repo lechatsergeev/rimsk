@@ -143,7 +143,6 @@ export function HeroPizzaModel() {
           disposeObject3D(gltf.scene);
           return;
         }
-
         highModelLoaded = true;
         setActiveModel(gltf.scene);
       },
@@ -153,7 +152,8 @@ export function HeroPizzaModel() {
       }
     );
 
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
+    timer.connect(document);
 
     const onResize = () => {
       if (!container) return;
@@ -164,9 +164,10 @@ export function HeroPizzaModel() {
       renderer.setSize(width, height);
     };
 
-    const animate = () => {
+    const animate = (timestamp?: number) => {
       animationId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      timer.update(timestamp);
+      const elapsed = timer.getElapsed();
 
       if (activeModel) {
         group.position.y = 0.25 + Math.sin(elapsed * 1.2) * 0.05;
@@ -185,6 +186,7 @@ export function HeroPizzaModel() {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', onResize);
       controls.dispose();
+      timer.dispose();
       ktx2Loader.dispose();
       renderer.dispose();
       scene.traverse((object) => {
