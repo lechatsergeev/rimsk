@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { cn } from "@/lib/utils";
-import { HeroPizzaModel } from "@/components/blocks/hero-pizza-model";
+
+const HeroPizzaModel = React.lazy(() =>
+  import("@/components/blocks/hero-pizza-model").then((module) => ({
+    default: module.HeroPizzaModel,
+  }))
+);
 
 const transitionVariants = {
   item: {
@@ -32,8 +37,6 @@ const menuItems = [
   { name: "Экономика", href: "#economics" },
   { name: "Возражения", href: "#objections" },
 ];
-
-const heroFacts = ["ОТ 15 ШТ НА ТЕСТ", "8 МИНУТ ДО ПОДАЧИ", "ОТ 270 ₽ ОПТ"];
 
 export function HeroSection() {
   return (
@@ -81,21 +84,10 @@ export function HeroSection() {
                   <h1 className="mx-auto mt-6 max-w-4xl text-balance font-['Martian_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-8 md:text-6xl lg:text-[4.25rem]">
                     Римская пицца для бизнеса
                   </h1>
-                  <p className="mx-auto mt-6 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-black/72 md:text-[15px]">
+                  <p className="mx-auto mt-6 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-[var(--ink)] md:text-[15px]">
                     Помогает добавить горячее в меню без новой кухни,
                     сложной заготовки и лишней операционки.
                   </p>
-
-                  <div className="mt-5 flex flex-wrap items-center justify-center gap-2 md:gap-3">
-                    {heroFacts.map((fact) => (
-                      <span
-                        key={fact}
-                        className="rounded-full border border-[var(--line)] bg-white/80 px-3 py-1.5 font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-[var(--ink)]"
-                      >
-                        {fact}
-                      </span>
-                    ))}
-                  </div>
 
                   <div className="mt-6 flex flex-col items-center justify-center gap-2 md:flex-row">
                     <div className="rounded-[14px] border border-[var(--line)] p-0.5">
@@ -134,7 +126,9 @@ export function HeroSection() {
                 >
                   <div className="relative mx-auto h-[220px] w-full max-w-[720px] md:h-[340px]">
                     <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
-                    <HeroPizzaModel />
+                    <React.Suspense fallback={<div className="h-full w-full" />}>
+                      <HeroPizzaModel />
+                    </React.Suspense>
                   </div>
                 </AnimatedGroup>
               </div>
@@ -201,7 +195,7 @@ const HeroHeader = () => {
               <a
                 href="#top"
                 aria-label="home"
-                className="flex items-center space-x-2 font-['Martian_Grotesk'] text-lg font-semibold tracking-[-0.05em] text-[var(--ink)]"
+                className="flex items-center space-x-2 text-lg text-[var(--ink)]"
               >
                 <Logo />
               </a>
@@ -225,8 +219,8 @@ const HeroHeader = () => {
                     <a
                       href={item.href}
                       className={cn(
-                        "block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] duration-150 hover:text-[var(--ink)]",
-                        activeSection === item.href ? "text-[var(--ink)]" : "text-black/65"
+                        "block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
+                        activeSection === item.href ? "opacity-100" : "opacity-100"
                       )}
                     >
                       <span>{item.name}</span>
@@ -251,8 +245,8 @@ const HeroHeader = () => {
                         href={item.href}
                         onClick={() => setMenuState(false)}
                         className={cn(
-                          "block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] duration-150 hover:text-[var(--ink)]",
-                          activeSection === item.href ? "text-[var(--ink)]" : "text-black/72"
+                          "block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
+                          activeSection === item.href ? "opacity-100" : "opacity-100"
                         )}
                       >
                         <span>{item.name}</span>
@@ -288,7 +282,12 @@ const HeroHeader = () => {
 
 const Logo = ({ className }: { className?: string }) => {
   return (
-    <span className={cn("font-['Martian_Grotesk'] text-[18px] font-semibold tracking-[-0.06em]", className)}>
+    <span
+      className={cn(
+        "font-['IBM_Plex_Serif'] text-[19px] font-semibold uppercase tracking-[-0.045em] text-[var(--ink)]",
+        className
+      )}
+    >
       РИМСК
     </span>
   );

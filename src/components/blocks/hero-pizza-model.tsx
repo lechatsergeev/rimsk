@@ -23,13 +23,13 @@ function disposeObject3D(root: THREE.Object3D) {
   });
 }
 
-function fitPizzaModel(model: THREE.Object3D) {
+function fitPizzaModel(model: THREE.Object3D, targetSizeOverride?: number) {
   const box = new THREE.Box3().setFromObject(model);
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
   const maxAxis = Math.max(size.x, size.y, size.z);
   const viewportWidth = window.innerWidth;
-  const targetSize = viewportWidth < 640 ? 4.05 : 4.8;
+  const targetSize = targetSizeOverride ?? (viewportWidth < 640 ? 4.05 : 4.8);
   const scale = targetSize / maxAxis;
 
   model.position.sub(center);
@@ -39,7 +39,15 @@ function fitPizzaModel(model: THREE.Object3D) {
   model.rotation.z = 0.14;
 }
 
-export function HeroPizzaModel() {
+export function HeroPizzaModel({
+  lowResOnly = false,
+  targetSize,
+  className,
+}: {
+  lowResOnly?: boolean;
+  targetSize?: number;
+  className?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
 
@@ -129,7 +137,7 @@ export function HeroPizzaModel() {
     loader.setKTX2Loader(ktx2Loader);
     loader.setMeshoptDecoder(MeshoptDecoder);
     const setActiveModel = (nextModel: THREE.Object3D) => {
-      fitPizzaModel(nextModel);
+      fitPizzaModel(nextModel, targetSize);
 
       if (activeModel) {
         group.remove(activeModel);
@@ -160,21 +168,23 @@ export function HeroPizzaModel() {
       }
     );
 
-    loader.load(
-      pizzaModel,
-      (gltf) => {
-        if (disposed) {
-          disposeObject3D(gltf.scene);
-          return;
+    if (!lowResOnly) {
+      loader.load(
+        pizzaModel,
+        (gltf) => {
+          if (disposed) {
+            disposeObject3D(gltf.scene);
+            return;
+          }
+          highModelLoaded = true;
+          setActiveModel(gltf.scene);
+        },
+        undefined,
+        (error) => {
+          console.error('Failed to load detailed pizza model', error);
         }
-        highModelLoaded = true;
-        setActiveModel(gltf.scene);
-      },
-      undefined,
-      (error) => {
-        console.error('Failed to load detailed pizza model', error);
-      }
-    );
+      );
+    }
 
     const timer = new THREE.Timer();
     timer.connect(document);
@@ -228,13 +238,13 @@ export function HeroPizzaModel() {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [shouldLoad]);
+  }, [lowResOnly, shouldLoad, targetSize]);
 
   return (
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="relative z-[2] h-full w-full cursor-grab touch-none active:cursor-grabbing"
+      className={className ?? "relative z-[2] h-full w-full cursor-grab touch-none active:cursor-grabbing"}
     />
   );
 }
