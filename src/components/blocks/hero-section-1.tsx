@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { cn } from "@/lib/utils";
+import { getRouteHref } from "@/app/routes";
 
 const HeroPizzaModel = React.lazy(() =>
   import("@/components/blocks/hero-pizza-model").then((module) => ({
@@ -32,19 +33,21 @@ const transitionVariants = {
 };
 
 const menuItems = [
-  { name: "Сценарии", href: "#scenarios" },
   { name: "Ассортимент", href: "#assortment" },
-  { name: "Экономика", href: "#economics" },
-  { name: "Возражения", href: "#objections" },
+  { name: "Доставка", href: getRouteHref("/delivery") },
+  { name: "Сертификаты", href: getRouteHref("/certificates") },
+  { name: "Контакты", href: getRouteHref("/contacts") },
 ];
 
 export function HeroSection() {
+  const canRender3d = typeof window !== "undefined";
+
   return (
     <>
       <HeroHeader />
       <main className="overflow-hidden bg-[var(--paper)]">
         <section>
-          <div className="relative overflow-hidden pt-18 md:pt-22">
+          <div className="relative overflow-hidden pt-15 md:pt-18">
             <div
               aria-hidden
               className="absolute inset-0 z-0 bg-white"
@@ -59,14 +62,14 @@ export function HeroSection() {
               className="absolute inset-0 z-0 [background:linear-gradient(180deg,rgba(255,255,255,0.24)_0%,rgba(255,255,255,0.86)_100%)]"
             />
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
-              <div className="pb-2 text-center md:pb-6">
-                <AnimatedGroup variants={transitionVariants}>
+              <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
+                <AnimatedGroup variants={transitionVariants} className="text-left">
                   <a
                     href="#order"
-                    className="group mx-auto flex w-fit items-center gap-4 rounded-full border border-black/10 bg-[rgba(255,255,255,0.72)] p-1 pl-4 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300"
+                    className="group inline-flex w-fit items-center gap-4 rounded-full border border-black/10 bg-[rgba(255,255,255,0.72)] p-1 pl-4 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300"
                   >
                     <span className="text-sm text-[var(--ink)]">
-                      Тестовая поставка для бизнеса
+                      Локальное производство в Петербурге
                     </span>
                     <span className="block h-4 w-px bg-[var(--line)]" />
                     <div className="size-6 overflow-hidden rounded-full bg-[var(--ink)] text-[var(--sheet)] duration-500">
@@ -81,33 +84,15 @@ export function HeroSection() {
                     </div>
                   </a>
 
-                  <h1 className="mx-auto mt-6 max-w-4xl text-balance font-['Martian_Grotesk'] text-5xl leading-[0.92] tracking-[-0.07em] text-[var(--ink)] md:mt-8 md:text-6xl lg:text-[4.25rem]">
-                    Римская пицца для бизнеса
+                  <h1 className="mt-5 max-w-[11ch] text-balance font-['Martian_Grotesk'] text-[2.85rem] leading-[0.88] tracking-[-0.085em] text-[var(--ink)] md:mt-6 md:text-[4rem] lg:text-[4.6rem]">
+                    Римская пицца,
+                    <br />
+                    которую хочется есть
                   </h1>
-                  <p className="mx-auto mt-6 max-w-2xl text-balance font-['Martian_Mono'] text-sm leading-7 text-[var(--ink)] md:text-[15px]">
-                    Помогает добавить горячее в меню без новой кухни,
-                    сложной заготовки и лишней операционки.
+                  <p className="mt-4 max-w-[34rem] text-balance font-['Martian_Mono'] text-[13px] leading-6 text-[var(--ink)] md:text-sm md:leading-7">
+                    Чистый состав, ручная работа и локальное производство в
+                    Санкт-Петербурге.
                   </p>
-
-                  <div className="mt-6 flex flex-col items-center justify-center gap-2 md:flex-row">
-                    <div className="rounded-[14px] border border-[var(--line)] p-0.5">
-                      <Button asChild size="lg" className="rounded-xl px-5 text-base">
-                        <a href="#order">
-                          <span className="text-nowrap">Запросить тестовую партию</span>
-                        </a>
-                      </Button>
-                    </div>
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="ghost"
-                      className="h-10.5 rounded-xl px-5"
-                    >
-                      <a href="#economics">
-                        <span className="text-nowrap">Посмотреть экономику</span>
-                      </a>
-                    </Button>
-                  </div>
                 </AnimatedGroup>
 
                 <AnimatedGroup
@@ -122,13 +107,19 @@ export function HeroSection() {
                     },
                     ...transitionVariants,
                   }}
-                  className="relative mt-1 md:mt-2"
+                  className="relative"
                 >
-                  <div className="relative mx-auto h-[220px] w-full max-w-[720px] md:h-[340px]">
-                    <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
-                    <React.Suspense fallback={<div className="h-full w-full" />}>
-                      <HeroPizzaModel />
-                    </React.Suspense>
+                  <div className="flex flex-col items-start gap-4 md:items-end md:gap-5">
+                    <div className="relative h-[185px] w-full max-w-[420px] self-center md:h-[320px] md:max-w-[540px] md:self-auto lg:h-[360px] lg:max-w-[600px]">
+                      <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
+                      {canRender3d ? (
+                        <React.Suspense fallback={<div className="h-full w-full" />}>
+                          <HeroPizzaModel targetSize={3.2} />
+                        </React.Suspense>
+                      ) : (
+                        <div className="h-full w-full" />
+                      )}
+                    </div>
                   </div>
                 </AnimatedGroup>
               </div>
@@ -155,7 +146,7 @@ const HeroHeader = () => {
   }, []);
 
   React.useEffect(() => {
-    const sections = ["top", "scenarios", "assortment", "economics", "objections", "order"];
+    const sections = ["top", "assortment", "order"];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -256,11 +247,6 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild variant="outline" size="sm" className={cn(isScrolled && "lg:hidden")}>
-                  <a href="#economics">
-                    <span>Экономика</span>
-                  </a>
-                </Button>
                 <Button asChild size="sm" className={cn(isScrolled && "lg:hidden")}>
                   <a href="#order">
                     <span>Оставить заявку</span>
@@ -268,7 +254,7 @@ const HeroHeader = () => {
                 </Button>
                 <Button asChild size="sm" className={cn(isScrolled ? "lg:inline-flex" : "hidden")}>
                   <a href="#order">
-                    <span>Тестовая поставка</span>
+                    <span>Связаться</span>
                   </a>
                 </Button>
               </div>
@@ -288,7 +274,7 @@ const Logo = ({ className }: { className?: string }) => {
         className
       )}
     >
-      РИМСК
+      ПИЦЦА ПИЦЦА
     </span>
   );
 };

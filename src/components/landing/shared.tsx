@@ -1,6 +1,7 @@
 import { type CSSProperties, type ReactNode, useEffect, useId, useState } from "react";
 import { motion } from "motion/react";
 import { HeroSection } from "@/components/blocks/hero-section-1";
+import { getRouteHref } from "@/app/routes";
 
 export const C = {
   navy: "#1A1D20",
@@ -14,7 +15,7 @@ export const C = {
   bg: "#FFFFFF",
 };
 
-export const CONTACT_EMAIL = "b2b@rimsk.ru";
+export const CONTACT_EMAIL = "hello@rimsk.ru";
 
 export type SideFact = {
   value: string;
@@ -142,7 +143,7 @@ function Navigation() {
             textTransform: "uppercase",
           }}
         >
-          РИМСК
+          ПИЦЦА ПИЦЦА
         </a>
 
         {!isMobile && (
@@ -386,7 +387,7 @@ export function SideFactoid({
 }
 
 function Footer({ description }: { description: ReactNode }) {
-  const { isMobile, isTablet } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const year = new Date().getFullYear();
 
   return (
@@ -413,9 +414,7 @@ function Footer({ description }: { description: ReactNode }) {
               display: "grid",
               gridTemplateColumns: isMobile
                 ? "1fr 1fr"
-                : isTablet
-                  ? "1fr 1fr 1fr"
-                  : "2fr 1fr 1fr 1fr",
+                : "1.7fr 1fr 1fr 1fr 1fr",
               gap: isMobile ? 24 : 32,
               paddingBottom: 28,
               borderBottom: `1px solid ${C.black}`,
@@ -433,7 +432,7 @@ function Footer({ description }: { description: ReactNode }) {
                   textTransform: "uppercase",
                 }}
               >
-                РИМСК
+                ПИЦЦА ПИЦЦА
               </div>
               <div
                 style={{
@@ -448,9 +447,9 @@ function Footer({ description }: { description: ReactNode }) {
               </div>
             </div>
 
-            <div>
+            <div id="contacts">
               <div style={footerTitleStyle}>Контакты</div>
-              <div style={footerHelperStyle}>Для тестовой поставки и B2B-вопросов</div>
+              <div style={footerHelperStyle}>Для заявок, вопросов и оптовых запросов</div>
               {[
                 { label: "Телефон", val: "+7 (812) 000-00-00", href: "tel:+78120000000" },
                 { label: "Email", val: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
@@ -465,10 +464,46 @@ function Footer({ description }: { description: ReactNode }) {
               ))}
             </div>
 
+            <div id="delivery">
+              <div style={footerTitleStyle}>Доставка</div>
+              <div style={footerHelperStyle}>Рабочие условия и география поставки</div>
+              {[
+                { label: "Регион", val: "Санкт-Петербург и область" },
+                { label: "Формат", val: "По согласованию с клиентом" },
+                { label: "Старт", val: "После подтверждения заявки" },
+              ].map((c) => (
+                <div key={c.label} style={{ marginBottom: 9 }}>
+                  <div style={footerLabelStyle}>{c.label}</div>
+                  <div style={footerTextStyle}>{c.val}</div>
+                </div>
+              ))}
+            </div>
+
+            <div id="certificates">
+              <div style={footerTitleStyle}>Сертификаты</div>
+              <div style={footerHelperStyle}>Документы и декларации по запросу</div>
+              {[
+                { label: "Декларации", val: "Отправим по email" },
+                { label: "Состав", val: "По каждой позиции отдельно" },
+                { label: "Запрос", val: CONTACT_EMAIL },
+              ].map((c) => (
+                <div key={c.label} style={{ marginBottom: 9 }}>
+                  <div style={footerLabelStyle}>{c.label}</div>
+                  {c.label === "Запрос" ? (
+                    <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Запрос документов")}`} style={footerLinkStyle}>
+                      {c.val}
+                    </a>
+                  ) : (
+                    <div style={footerTextStyle}>{c.val}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
             <div>
               <div style={footerTitleStyle}>Юр. лицо</div>
               {[
-                { label: "Компания", val: 'ООО "РИМСК"' },
+                { label: "Компания", val: 'ООО "ПИЦЦА ПИЦЦА"' },
                 { label: "ИНН", val: "7700000000" },
                 { label: "ОГРН", val: "1000000000000" },
                 { label: "Адрес", val: "г. Санкт-Петербург, ул. Пример, д. 1" },
@@ -479,33 +514,6 @@ function Footer({ description }: { description: ReactNode }) {
                 </div>
               ))}
             </div>
-
-            {!isMobile && (
-              <div>
-                <div style={footerTitleStyle}>Документы</div>
-                {[
-                  "Пользовательское соглашение",
-                  "Политика конфиденциальности",
-                  "Согласие на обработку данных",
-                  "Договор оферты",
-                ].map((doc) => (
-                  <a
-                    key={doc}
-                    href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(doc)}`}
-                    style={{
-                      display: "block",
-                      fontFamily: "'Martian Mono', monospace",
-                      fontSize: "10px",
-                      color: C.black,
-                      textDecoration: "none",
-                      marginBottom: 9,
-                    }}
-                  >
-                    {doc}
-                  </a>
-                ))}
-              </div>
-            )}
           </div>
 
           <div
@@ -525,7 +533,7 @@ function Footer({ description }: { description: ReactNode }) {
                 color: C.black,
               }}
             >
-              © 1998–{year} ООО «РИМСК». Все права защищены. Все цены указаны без НДС.
+              © {year} ООО «ПИЦЦА ПИЦЦА». Бренд римской пиццы из Санкт-Петербурга.
             </div>
             <div
               style={{
@@ -542,6 +550,161 @@ function Footer({ description }: { description: ReactNode }) {
         </div>
       </div>
     </footer>
+  );
+}
+
+type SubpageLink = {
+  label: string;
+  href: string;
+};
+
+export function EditorialPageShell({
+  children,
+  title,
+  eyebrow,
+  description,
+  footerDescription,
+}: {
+  children: ReactNode;
+  title: string;
+  eyebrow: string;
+  description: string;
+  footerDescription: ReactNode;
+}) {
+  return (
+    <div id="top" style={{ minHeight: "100vh", position: "relative", background: C.bg }}>
+      <SubpageHeader />
+      <main
+        style={{
+          padding: "108px 20px 0",
+        }}
+      >
+        <div style={{ maxWidth: 1180, margin: "0 auto" }}>
+          <section
+            style={{
+              paddingBottom: 40,
+              borderBottom: `1px solid ${C.black}`,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.14em",
+                color: C.black,
+              }}
+            >
+              {eyebrow}
+            </div>
+            <h1
+              style={{
+                margin: "18px 0 0",
+                maxWidth: "11ch",
+                fontFamily: "'Martian Grotesk', sans-serif",
+                fontSize: "clamp(42px, 7vw, 92px)",
+                lineHeight: 0.88,
+                letterSpacing: "-0.09em",
+                color: C.black,
+              }}
+            >
+              {title}
+            </h1>
+            <p
+              style={{
+                margin: "18px 0 0",
+                maxWidth: "58ch",
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: 13,
+                lineHeight: 1.8,
+                color: C.black,
+              }}
+            >
+              {description}
+            </p>
+          </section>
+          <div style={{ padding: "28px 0 56px" }}>{children}</div>
+        </div>
+      </main>
+      <Footer description={footerDescription} />
+    </div>
+  );
+}
+
+function SubpageHeader() {
+  const { isMobile } = useBreakpoint();
+  const links: SubpageLink[] = [
+    { label: "Главная", href: getRouteHref("/") },
+    { label: "Доставка", href: getRouteHref("/delivery") },
+    { label: "Сертификаты", href: getRouteHref("/certificates") },
+    { label: "Контакты", href: getRouteHref("/contacts") },
+  ];
+
+  return (
+    <header
+      style={{
+        position: "fixed",
+        inset: "0 0 auto 0",
+        zIndex: 110,
+        background: "rgba(255,255,255,0.8)",
+        backdropFilter: "blur(12px)",
+        borderBottom: `1px solid ${C.black}`,
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: isMobile ? "10px 20px" : "12px 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
+          flexWrap: "wrap",
+        }}
+      >
+        <a
+          href={getRouteHref("/")}
+          style={{
+            fontFamily: "'IBM Plex Serif', serif",
+            fontWeight: 600,
+            fontSize: 22,
+            letterSpacing: "-0.045em",
+            color: C.black,
+            textDecoration: "none",
+            textTransform: "uppercase",
+          }}
+        >
+          ПИЦЦА ПИЦЦА
+        </a>
+        <nav
+          style={{
+            display: "flex",
+            gap: isMobile ? 14 : 22,
+            flexWrap: "wrap",
+          }}
+        >
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontFamily: "'Martian Mono', monospace",
+                fontSize: 11,
+                fontWeight: 500,
+                color: C.black,
+                textDecoration: "none",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
   );
 }
 
