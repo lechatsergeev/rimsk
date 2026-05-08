@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
 const tempDir = path.join(root, ".tmp-prerender");
-const routes = ["/", "/horeca", "/retail"];
+const routes = ["/", "/delivery", "/certificates", "/contacts"];
 
 await rm(tempDir, { recursive: true, force: true });
 await mkdir(tempDir, { recursive: true });
