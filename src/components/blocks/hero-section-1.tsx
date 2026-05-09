@@ -84,12 +84,12 @@ export function HeroSection() {
                     </div>
                   </a>
 
-                  <h1 className="mt-5 max-w-[11ch] text-balance font-['Martian_Grotesk'] text-[2.85rem] leading-[0.88] tracking-[-0.085em] text-[var(--ink)] md:mt-6 md:text-[4rem] lg:text-[4.6rem]">
+                  <h1 className="type-heading mt-5 max-w-[11ch] text-balance text-[2.85rem] leading-[0.9] tracking-[-0.03em] text-[var(--ink)] md:mt-6 md:text-[4rem] lg:text-[4.6rem]">
                     Римская пицца,
                     <br />
                     которую хочется есть
                   </h1>
-                  <p className="mt-4 max-w-[34rem] text-balance font-['Martian_Mono'] text-[13px] leading-6 text-[var(--ink)] md:text-sm md:leading-7">
+                  <p className="mt-4 max-w-[34rem] text-balance text-[13px] leading-6 text-[var(--ink)] md:text-sm md:leading-7">
                     Чистый состав, ручная работа и локальное производство в
                     Санкт-Петербурге.
                   </p>
@@ -210,7 +210,7 @@ const HeroHeader = () => {
                     <a
                       href={item.href}
                       className={cn(
-                        "block font-['Martian_Mono'] text-[11px] uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
+                        "block text-[11px] uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
                         activeSection === item.href ? "opacity-100" : "opacity-100"
                       )}
                     >
@@ -236,7 +236,7 @@ const HeroHeader = () => {
                         href={item.href}
                         onClick={() => setMenuState(false)}
                         className={cn(
-                          "block font-['Martian_Mono'] text-xs uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
+                          "block text-xs uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
                           activeSection === item.href ? "opacity-100" : "opacity-100"
                         )}
                       >
@@ -270,11 +270,11 @@ const Logo = ({ className }: { className?: string }) => {
   return (
     <span
       className={cn(
-        "font-['IBM_Plex_Serif'] text-[19px] font-semibold uppercase tracking-[-0.045em] text-[var(--ink)]",
+        "type-logo text-[19px] uppercase tracking-[0.025em] text-[var(--ink)]",
         className
       )}
     >
-      ПИЦЦА ПИЦЦА
+      МАЦЦА
     </span>
   );
 };

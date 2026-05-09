@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мацца — Отчет по финмодели</title>
+    <style>
+      @font-face {
+        font-family: "LT Amber";
+        src: url("../fonts/LT Amber Regular.otf") format("opentype");
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #f5f2eb;
+        --sheet: #fffdf8;
+        --ink: #17191c;
+        --muted: #5c5954;
+        --line: #cfc8bc;
+        --accent: #d95c3c;
+        --accent-soft: #f5e4dc;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(217, 92, 60, 0.09), transparent 30%),
+          linear-gradient(180deg, #f6f3ec 0%, #efeadf 100%);
+        color: var(--ink);
+        font-family: "LT Amber", sans-serif;
+      }
+
+      .page {
+        width: min(1120px, calc(100vw - 48px));
+        margin: 24px auto 40px;
+        background: var(--sheet);
+        border: 1px solid var(--line);
+        box-shadow: 0 20px 60px rgba(23, 25, 28, 0.08);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 240px;
+        gap: 24px;
+        align-items: end;
+        padding: 48px 48px 28px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow,
+      .label,
+      .small {
+        font-size: 11px;
+        line-height: 1.6;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 12px 0 0;
+        font-size: 56px;
+        line-height: 0.92;
+        letter-spacing: -0.07em;
+        font-weight: 500;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 28px;
+        line-height: 1;
+        letter-spacing: -0.05em;
+        font-weight: 500;
+      }
+
+      p,
+      li {
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      p {
+        margin: 0 0 14px;
+        max-width: 74ch;
+      }
+
+      ul,
+      ol {
+        margin: 0;
+        padding-left: 20px;
+        max-width: 74ch;
+      }
+
+      .lead {
+        margin-top: 18px;
+        max-width: 58ch;
+        color: var(--muted);
+      }
+
+      .fact {
+        border-top: 1px solid var(--ink);
+        padding-top: 12px;
+        text-align: right;
+      }
+
+      .fact-value {
+        font-size: 56px;
+        line-height: 0.88;
+        letter-spacing: -0.08em;
+        font-weight: 500;
+      }
+
+      .content {
+        padding: 28px 48px 40px;
+      }
+
+      .section {
+        padding: 24px 0 28px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .grid-4,
+      .grid-2 {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        padding: 18px 18px 16px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .kpi {
+        margin: 10px 0 8px;
+        font-size: 34px;
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+        font-weight: 500;
+      }
+
+      .callout {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-left: 3px solid var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      .table th,
+      .table td {
+        border-top: 1px solid var(--line);
+        padding: 12px 0;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .table th {
+        font-size: 11px;
+        line-height: 1.5;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .number {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .footer {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      @media (max-width: 920px) {
+        .page {
+          width: min(100vw, calc(100vw - 24px));
+        }
+        .hero,
+        .content {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .hero,
+        .grid-4,
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .fact {
+          text-align: left;
+        }
+        h1 {
+          font-size: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <div>
+          <div class="eyebrow">МАЦЦА / Экономический и инвестиционный анализ / 28 марта 2026</div>
+          <h1>Отчет по обновленной финмодели B2B-пиццы</h1>
+          <p class="lead">
+            Отчет подготовлен по обновленному файлу
+            <span class="number">pizza_unit_economics_v2-1.xlsx</span> после
+            пересчета цены продажи до <span class="number">350 ₽</span>, логистики
+            <span class="number">450 ₽</span> за поставку и реальных граммовок сырья.
+          </p>
+        </div>
+        <aside class="fact">
+          <div class="small">Итоговый вывод</div>
+          <div class="fact-value number">2</div>
+          <div class="small">клиента достаточно для безубыточности при текущих вводных</div>
+        </aside>
+      </header>
+
+      <div class="content">
+        <section class="section">
+          <h2>Краткий вывод</h2>
+          <p>
+            Если смотреть только на финмодель, проект выглядит заметно сильнее, чем в
+            прошлой версии. Цена <span class="number">350 ₽</span> и корректные нормы
+            сырья дают не просто положительную экономику, а рабочий операционный запас.
+          </p>
+          <p>
+            При текущих вводных проект проходит безубыточность уже на
+            <span class="number">2 клиентах</span>, а старт с
+            <span class="number">5 клиентов</span> дает чистую прибыль
+            <span class="number">44.3 тыс. ₽</span> в месяц.
+          </p>
+          <div class="callout">
+            <p>
+              Но по современному investor lens одной сильной математики мало. Чтобы
+              кейс выглядел действительно сильным как стартап, нужно отдельно доказать
+              repeatable GTM, pricing-market fit и повторяемый спрос, а не только
+              прибыльность на первых клиентах.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Современный Investor Lens</h2>
+          <p>
+            Современная оценка раннего стартапа строится не только на unit economics.
+            Текущие материалы Bessemer и a16z смещают акцент в сторону product-market
+            fit, repeatability продаж, pricing-market fit, cash resilience и
+            сценарного мышления.
+          </p>
+          <div class="grid-2">
+            <article class="card">
+              <div class="label">Что проверяет инвестор</div>
+              <ul>
+                <li>повторяется ли спрос за пределами первых клиентов;</li>
+                <li>есть ли узкий и воспроизводимый ICP;</li>
+                <li>держится ли цена без ручных уступок;</li>
+                <li>можно ли масштабировать продажи без project-like режима.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="label">Что пока не доказано</div>
+              <ul>
+                <li>retention и повторный заказ по когорте;</li>
+                <li>концентрационный риск топ-клиентов;</li>
+                <li>repeatable founder-led sales motion;</li>
+                <li>устойчивость цены <span class="number">350 ₽</span> на реальном рынке.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="callout">
+            <p>
+              Вывод по современной логике такой: как бизнес-модель проект уже выглядит
+              хорошо; как стартап в сильном инвестиционном смысле он станет убедительным
+              после подтверждения повторяемого спроса и масштабируемого GTM.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Ключевые показатели</h2>
+          <div class="grid-4">
+            <article class="card">
+              <div class="label">Средний COGS</div>
+              <div class="kpi number">122.88 ₽</div>
+              <p>Полная себестоимость пиццы с упаковкой, браком, расходниками и амортизацией.</p>
+            </article>
+            <article class="card">
+              <div class="label">Валовая маржа</div>
+              <div class="kpi number">227.12 ₽</div>
+              <p>Маржа с одной пиццы до доставки и постоянных расходов.</p>
+            </article>
+            <article class="card">
+              <div class="label">После доставки</div>
+              <div class="kpi number">182.12 ₽</div>
+              <p>Реальный вклад одной пиццы после распределения доставки на клиента.</p>
+            </article>
+            <article class="card">
+              <div class="label">Годовая чистая прибыль</div>
+              <div class="kpi number">2.40 млн ₽</div>
+              <p>По текущему сценарию роста клиентов, включая налоги и ФОТ.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Что заложено в модель</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+                <th>Комментарий</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Цена продажи B2B</td>
+                <td class="number">350 ₽</td>
+                <td>Новая базовая цена модели</td>
+              </tr>
+              <tr>
+                <td>Логистика</td>
+                <td class="number">450 ₽ / поставка</td>
+                <td>В модели это <span class="number">1 935 ₽</span> на клиента в месяц</td>
+              </tr>
+              <tr>
+                <td>Мука</td>
+                <td class="number">1 092 ₽ / 10 кг</td>
+                <td><span class="number">120 г</span> на пиццу</td>
+              </tr>
+              <tr>
+                <td>Томатный соус</td>
+                <td class="number">1 721 ₽ / 4.1 кг</td>
+                <td><span class="number">40 г</span> на пиццу</td>
+              </tr>
+              <tr>
+                <td>Моцарелла</td>
+                <td class="number">699 ₽ / кг</td>
+                <td><span class="number">60 г</span> на пиццу</td>
+              </tr>
+              <tr>
+                <td>Аренда</td>
+                <td class="number">0 ₽</td>
+                <td>Ключевое допущение, которое держит всю экономику</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <h2>Юнит-экономика</h2>
+          <div class="grid-2">
+            <article class="card">
+              <div class="label">На одну пиццу</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Оптовая цена B2B</td>
+                    <td class="number">350 ₽</td>
+                    <td>За единицу</td>
+                  </tr>
+                  <tr>
+                    <td>Средний COGS</td>
+                    <td class="number">122.88 ₽</td>
+                    <td>Полная переменная себестоимость</td>
+                  </tr>
+                  <tr>
+                    <td>Валовая маржа</td>
+                    <td class="number">227.12 ₽</td>
+                    <td><span class="number">64.89%</span> от выручки</td>
+                  </tr>
+                  <tr>
+                    <td>Цена в меню партнера</td>
+                    <td class="number">805–875 ₽</td>
+                    <td>При наценке <span class="number">x2.3–x2.5</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+            <article class="card">
+              <div class="label">На одного клиента в месяц</div>
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Средний объем</td>
+                    <td class="number">43 шт.</td>
+                    <td><span class="number">10</span> пицц в неделю</td>
+                  </tr>
+                  <tr>
+                    <td>Выручка</td>
+                    <td class="number">15 050 ₽</td>
+                    <td><span class="number">43 × 350 ₽</span></td>
+                  </tr>
+                  <tr>
+                    <td>COGS + доставка</td>
+                    <td class="number">7 219.02 ₽</td>
+                    <td>Включая <span class="number">1 935 ₽</span> логистики</td>
+                  </tr>
+                  <tr>
+                    <td>Маржа после доставки</td>
+                    <td class="number">7 830.98 ₽</td>
+                    <td>До учета постоянных расходов компании</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+          </div>
+          <div class="callout">
+            <p>
+              Главный вывод по юниту: цена <span class="number">350 ₽</span> переводит
+              модель в качественно другую зону. Доставка остается заметной статьей, но
+              больше не ломает экономику клиента.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Безубыточность и старт</h2>
+          <div class="grid-2">
+            <article class="card">
+              <div class="label">Порог безубыточности</div>
+              <div class="kpi number">55 шт./мес.</div>
+              <p>
+                Это соответствует примерно
+                <span class="number">2 активным клиентам</span> при среднем объеме
+                <span class="number">43 шт./мес.</span>
+              </p>
+            </article>
+            <article class="card">
+              <div class="label">Старт с 5 клиентов</div>
+              <div class="kpi number">44.3 тыс. ₽</div>
+              <p>Чистая прибыль в месяц при запуске сразу с пяти клиентов.</p>
+            </article>
+          </div>
+          <p>
+            Это сильно меняет стратегический вывод по проекту. Если раньше модель
+            требовала осторожного старта и быстро упиралась в риск по марже, то теперь
+            старт с пяти клиентов уже выглядит как нормальная рабочая конфигурация.
+          </p>
+          <p>
+            По обновленной модели старт с <span class="number">5 клиентами</span> дает:
+          </p>
+          <ul>
+            <li>выручку <span class="number">113 750 ₽ / мес.</span></li>
+            <li>валовую маржу <span class="number">73 812.60 ₽ / мес.</span></li>
+            <li>EBITDA <span class="number">52 137.60 ₽ / мес.</span></li>
+            <li>чистую прибыль <span class="number">44 316.60 ₽ / мес.</span></li>
+          </ul>
+          <p>
+            Но для современного инвестора этого все еще недостаточно. Следующий вопрос
+            не «может ли модель заработать на пяти клиентах», а «можно ли стабильно
+            превращать один тип клиента в пять, десять и двадцать таких же клиентов».
+          </p>
+        </section>
+
+        <section class="section">
+          <h2>Чувствительность модели</h2>
+          <p>
+            Базовый сценарий полезен, но решения принимает не он, а диапазон вокруг
+            него. Поэтому я проверил три рычага: цену, логистику и количество клиентов.
+          </p>
+          <div class="grid-2">
+            <article class="card">
+              <div class="label">Вклад одной пиццы после доставки</div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Доставка</th>
+                    <th>330 ₽</th>
+                    <th>350 ₽</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="number">350 ₽</td>
+                    <td class="number">172.12 ₽</td>
+                    <td class="number">192.12 ₽</td>
+                  </tr>
+                  <tr>
+                    <td class="number">450 ₽</td>
+                    <td class="number">162.12 ₽</td>
+                    <td class="number">182.12 ₽</td>
+                  </tr>
+                  <tr>
+                    <td class="number">550 ₽</td>
+                    <td class="number">152.12 ₽</td>
+                    <td class="number">172.12 ₽</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Каждые <span class="number">+10 ₽</span> к цене дают почти
+                <span class="number">+10 ₽</span> вклада на пиццу. Это очень сильный рычаг.
+              </p>
+            </article>
+            <article class="card">
+              <div class="label">Безубыточность в штуках</div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Доставка</th>
+                    <th>330 ₽</th>
+                    <th>350 ₽</th>
+                    <th>370 ₽</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="number">350 ₽</td>
+                    <td class="number">59</td>
+                    <td class="number">53</td>
+                    <td class="number">48</td>
+                  </tr>
+                  <tr>
+                    <td class="number">450 ₽</td>
+                    <td class="number">62</td>
+                    <td class="number">55</td>
+                    <td class="number">50</td>
+                  </tr>
+                  <tr>
+                    <td class="number">550 ₽</td>
+                    <td class="number">66</td>
+                    <td class="number">59</td>
+                    <td class="number">53</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Даже при дорогой логистике модель не ломается, но запас прочности
+                быстро сжимается.
+              </p>
+            </article>
+          </div>
+          <div class="callout">
+            <p>
+              Главный вывод по чувствительности: шаг цены
+              <span class="number">+10 ₽</span> и шаг логистики
+              <span class="number">−100 ₽</span> дают почти симметричный эффект на
+              прибыль. Цена остается самым мощным рычагом модели.
+            </p>
+          </div>
+          <div class="grid-2" style="margin-top: 16px;">
+            <article class="card">
+              <div class="label">Чистая прибыль, 5 клиентов</div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Доставка</th>
+                    <th>330 ₽</th>
+                    <th>350 ₽</th>
+                    <th>370 ₽</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="number">350 ₽</td>
+                    <td class="number">21 254.80 ₽</td>
+                    <td class="number">24 909.80 ₽</td>
+                    <td class="number">28 564.80 ₽</td>
+                  </tr>
+                  <tr>
+                    <td class="number">450 ₽</td>
+                    <td class="number">19 427.80 ₽</td>
+                    <td class="number">23 082.80 ₽</td>
+                    <td class="number">26 737.80 ₽</td>
+                  </tr>
+                  <tr>
+                    <td class="number">550 ₽</td>
+                    <td class="number">17 599.80 ₽</td>
+                    <td class="number">21 254.80 ₽</td>
+                    <td class="number">24 909.80 ₽</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+            <article class="card">
+              <div class="label">Практический вывод</div>
+              <p>
+                Старт с <span class="number">5 клиентами</span> остается устойчивым
+                почти во всех разумных сценариях, если цена не уходит ниже
+                <span class="number">330 ₽</span>.
+              </p>
+              <p>
+                Это означает, что главный управленческий вопрос сейчас не “сломается ли
+                модель”, а “сможет ли рынок принять цену и объем без ручных уступок”.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Денежный поток</h2>
+          <p>
+            Cash Flow по году выглядит сильным. На конец двенадцатого месяца остаток
+            денежных средств составляет
+            <span class="number">2 127 840.32 ₽</span>.
+          </p>
+          <p>
+            При этом модель сохраняет нормальную предпринимательскую реальность: в
+            первом месяце денежный поток еще слегка отрицательный,
+            <span class="number">−4 737.40 ₽</span>, но дальше проект быстро уходит в
+            устойчивый плюс.
+          </p>
+          <div class="callout">
+            <p>
+              Для инвестора это означает, что стартовый буфер по-прежнему нужен, но
+              теперь он выглядит не как защита от провала, а как рабочий оборотный
+              запас для ускорения роста.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Инвестиционная оценка</h2>
+          <p>
+            Как инвестиционный кейс проект теперь выглядит существенно сильнее на
+            уровне финансовой модели. Критический фактор — возможность держать цену
+            <span class="number">350 ₽</span> без потери спроса со стороны B2B-клиентов.
+          </p>
+          <p>Сильные стороны модели:</p>
+          <ul>
+            <li>отсутствие аренды убирает главный fixed-cost риск;</li>
+            <li>безубыточность достигается уже на <span class="number">2 клиентах</span>;</li>
+            <li>старт с <span class="number">5 клиентов</span> сразу прибыльный;</li>
+            <li>годовая чистая прибыль превышает <span class="number">2.4 млн ₽</span>.</li>
+          </ul>
+          <p>Ключевые риски:</p>
+          <ul>
+            <li>цена <span class="number">350 ₽</span> должна быть подтверждена рынком;</li>
+            <li>логистика остается заметной частью unit economics;</li>
+            <li>если частота поставок вырастет, маржа начнет быстро снижаться.</li>
+          </ul>
+          <div class="callout">
+            <p>
+              Строгий вывод: как small profitable B2B business кейс выглядит сильным
+              уже сейчас; как venture-style startup он пока находится между «интересно»
+              и «убедительно», но еще не в зоне полной доказанности.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Что делать дальше</h2>
+          <ol>
+            <li><p>Проверить коммерчески, насколько рынок готов к цене <span class="number">350 ₽</span> без давления на объем.</p></li>
+            <li><p>Собрать из книги полноценную живую финмодель: Inputs, Scenarios, P&amp;L, Cash Flow.</p></li>
+            <li><p>Добавить сценарии <span class="number">330 ₽</span>, <span class="number">340 ₽</span> и <span class="number">350 ₽</span> как sensitivity analysis.</p></li>
+            <li><p>Отдельно проверить устойчивость модели при логистике <span class="number">500–550 ₽</span> за поставку.</p></li>
+            <li><p>Начать трекать метрики, которые реально важны инвестору: повторный заказ, частоту заказа, долю выручки от топ-3 клиентов и скорость возврата клиента к следующей закупке.</p></li>
+          </ol>
+        </section>
+
+        <footer class="footer">
+          <div class="small">
+            Подготовлено на основе файла
+            <span class="number">Расчеты/pizza_unit_economics_v2-1.xlsx</span> после
+            обновления цены продажи, логистики и норм сырья.
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

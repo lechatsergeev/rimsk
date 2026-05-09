@@ -48,10 +48,10 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
 
 ## Typography
 
-- **Headings:** Space Grotesk, 700, 64-120px, uppercase, tight tracking.
-- **Body:** IBM Plex Mono, 500, 18px.
-- **Small text:** IBM Plex Mono, 400, 14px.
-- **Buttons:** Space Grotesk, 700, 24px, uppercase.
+- **Headings:** LT Amber Regular, 64-120px, uppercase, tight tracking.
+- **Body:** LT Amber Regular, 18px.
+- **Small text:** LT Amber Regular, 14px.
+- **Buttons:** LT Amber Regular, 24px, uppercase.
 
 **Style notes:** Every container requires a `4px solid #000000` border. Shadows are absolute: `box-shadow: 8px 8px 0px #000000`. Zero border-radius anywhere (`0px`). Transitions are abrupt, no easing.
 
@@ -64,8 +64,8 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
   --color-surface: #FFD700;
   --color-text: #000000;
   --color-accent: #00E5FF;
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-heading: 'LT Amber', sans-serif;
+  --font-body: 'LT Amber', sans-serif;
   --border-thick: 4px solid #000000;
   --border-thin: 2px solid #000000;
   --shadow-brutal: 8px 8px 0px #000000;
@@ -91,8 +91,8 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
 **Layout:** 50/50 vertical split. Left: Massive typography. Right: Lead capture form block.
 
 **Key Elements:**
-- **Headline:** 120px `Space Grotesk`, `#000000`, text "BAKE. SERVE. PROFIT."
-- **Subheadline:** 24px `IBM Plex Mono`, `#000000`, text "Frozen Roman Pizza for B2B. 3 minutes to plate."
+- **Headline:** 120px LT Amber Regular, `#000000`, text "BAKE. SERVE. PROFIT."
+- **Subheadline:** 24px LT Amber Regular, `#000000`, text "Frozen Roman Pizza for B2B. 3 minutes to plate."
 - **Form Box:** `#FFD700` background, `--border-thick`, `--shadow-brutal`, 40px padding.
 - **Email Input:** `#FFFFFF` background, `--border-thick`, 64px height, 24px padding.
 - **Submit CTA:** `#FF2A2A` background, `--border-thick`, `GET 15% OFF PRICELIST`, full width.
@@ -116,7 +116,7 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
 
 **Key Elements:**
 - **Container:** `#FFFFFF` background, `--border-thick`, zigzag cut top/bottom via CSS clip-path, `--shadow-brutal`.
-- **Header:** "UNIT ECONOMY ESTIMATE", 32px `IBM Plex Mono`, centered, dashed bottom border.
+- **Header:** "UNIT ECONOMY ESTIMATE", 32px LT Amber Regular, centered, dashed bottom border.
 - **Line Items:** Cost of Goods ($2.50), Suggested Retail ($12.00), Labor ($0.00). 
 - **Total Margin:** Giant `#FF2A2A` text, 80px size, "380% MARGIN / $9.50 PROFIT".
 
@@ -152,9 +152,9 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
 **Layout:** Left 1/3: 3-step instructions. Right 2/3: FAQ accordions.
 
 **Key Elements:**
-- **Step 1/2/3:** Massive numbers (`1`, `2`, `3`) in 120px `Space Grotesk`, stark black. Text: "PULL FROM FREEZER", "BAKE AT 250°C FOR 3 MIN", "SLICE & SERVE".
+- **Step 1/2/3:** Massive numbers (`1`, `2`, `3`) in 120px LT Amber Regular, stark black. Text: "PULL FROM FREEZER", "BAKE AT 250°C FOR 3 MIN", "SLICE & SERVE".
 - **FAQ Accordion:** Full width boxes, `#FFFFFF` background, `--border-thick`, `--shadow-brutal`, 24px padding.
-- **FAQ Question:** 24px `Space Grotesk`, `+` icon aligned right.
+- **FAQ Question:** 24px LT Amber Regular, `+` icon aligned right.
 
 **States:**
 - **Accordion Open:** Background changes to `#FFD700`, content reveals instantly, `+` rotates to `x`.
@@ -175,7 +175,7 @@ web application/stitch/projects/5950253829540974784/screens/63ebde585c284d10aaa7
 **Stack:** HTML + Tailwind CSS v3
 
 **Build Order:**
-1. **Design Tokens & Typography** - Load Space Grotesk and IBM Plex Mono. Set up `theme.extend` in Tailwind for brutalist box-shadows and borders.
+1. **Design Tokens & Typography** - Load LT Amber Regular. Set up `theme.extend` in Tailwind for brutalist box-shadows and borders.
 2. **Hero & Capture** - Establish the massive grid, form elements, and brutalist CTA hovers.
 3. **The Receipt** - Build the complex CSS clip-path for the receipt edges and the monospaced flex rows.
 4. **The Arsenal** - Implement the overlapping image grid and instant-hover rotation effects.

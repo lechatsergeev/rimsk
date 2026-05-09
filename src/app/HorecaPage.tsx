@@ -3,7 +3,7 @@ import { SegmentRedesignPage } from "@/components/landing/redesign";
 export default function HorecaPage() {
   return (
     <SegmentRedesignPage
-      marqueeText="ПИЦЦА ПИЦЦА • РИМСКАЯ ПИЦЦА • ЧИСТЫЙ СОСТАВ • СДЕЛАНО ВРУЧНУЮ • САНКТ-ПЕТЕРБУРГ • "
+      marqueeText="МАЦЦА • ПИЦЦА • ЧИСТЫЙ СОСТАВ • СДЕЛАНО ВРУЧНУЮ • САНКТ-ПЕТЕРБУРГ • "
       footerDescription={
         <>
           Римская пицца из Санкт-Петербурга,

@@ -117,10 +117,11 @@ function SwissSection({
                 style={{
                   margin: 0,
                   maxWidth: "12ch",
-                  fontFamily: "'Martian Grotesk', sans-serif",
+                  fontFamily: "'LT Amber', sans-serif",
+                  fontWeight: 400,
                   fontSize: isMobile ? 34 : 60,
                   lineHeight: 0.86,
-                  letterSpacing: "-0.085em",
+                  letterSpacing: "-0.03em",
                   color: "#111315",
                 }}
               >
@@ -195,10 +196,11 @@ function LineupCards({ items }: { items: LineupItem[] }) {
             <h3
               style={{
                 margin: 0,
-                fontFamily: "'Martian Grotesk', sans-serif",
+                fontFamily: "'LT Amber', sans-serif",
+                fontWeight: 400,
                 fontSize: isMobile ? 26 : 32,
                 lineHeight: 0.95,
-                letterSpacing: "-0.065em",
+                letterSpacing: "-0.025em",
                 color: "#111315",
               }}
             >
@@ -326,7 +328,7 @@ const ruleStyle: CSSProperties = {
 };
 
 const indexStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 11,
   lineHeight: 1.4,
   letterSpacing: "0.16em",
@@ -336,7 +338,7 @@ const indexStyle: CSSProperties = {
 
 const descriptionStyle: CSSProperties = {
   margin: "12px 0 0",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 12,
   lineHeight: 1.58,
   color: "#111315",
@@ -356,7 +358,7 @@ const metaPillStyle: CSSProperties = {
   borderRadius: 999,
   border: "1px solid rgba(17,19,21,0.14)",
   background: "rgba(255,255,255,0.7)",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.2,
   letterSpacing: "0.12em",
@@ -371,7 +373,7 @@ const chipStyle: CSSProperties = {
   borderRadius: 999,
   border: "1px solid rgba(17,19,21,0.12)",
   background: "#f7f0e8",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.2,
   letterSpacing: "0.08em",
@@ -385,7 +387,7 @@ const submitStyle: CSSProperties = {
   color: "#ffffff",
   padding: "12px 16px",
   borderRadius: 999,
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 11,
   lineHeight: 1.4,
   letterSpacing: "0.14em",
@@ -394,7 +396,7 @@ const submitStyle: CSSProperties = {
 };
 
 const accentLabelStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.5,
   letterSpacing: "0.14em",
@@ -408,7 +410,7 @@ const accentInputStyle: CSSProperties = {
   border: "none",
   borderBottom: "1px solid rgba(17,19,21,0.18)",
   background: "transparent",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 12,
   lineHeight: 1.7,
   color: "#111315",
@@ -418,7 +420,7 @@ const accentInputStyle: CSSProperties = {
 };
 
 const offerMetaStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.5,
   letterSpacing: "0.14em",
@@ -428,17 +430,18 @@ const offerMetaStyle: CSSProperties = {
 
 const offerTitleStyle: CSSProperties = {
   marginTop: 8,
-  fontFamily: "'Martian Grotesk', sans-serif",
+  fontFamily: "'LT Amber', sans-serif",
+  fontWeight: 400,
   fontSize: 40,
   lineHeight: 0.9,
-  letterSpacing: "-0.07em",
+  letterSpacing: "-0.03em",
   color: "#111315",
   maxWidth: "11ch",
 };
 
 const offerTextStyle: CSSProperties = {
   marginTop: 12,
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 12,
   lineHeight: 1.58,
   color: "#111315",

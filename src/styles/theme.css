@@ -138,26 +138,30 @@
   }
 
   h1 {
+    font-family: 'LT Amber', sans-serif;
     font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
+    font-weight: 400;
     line-height: 1.5;
   }
 
   h2 {
+    font-family: 'LT Amber', sans-serif;
     font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
+    font-weight: 400;
     line-height: 1.5;
   }
 
   h3 {
+    font-family: 'LT Amber', sans-serif;
     font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
+    font-weight: 400;
     line-height: 1.5;
   }
 
   h4 {
+    font-family: 'LT Amber', sans-serif;
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: 400;
     line-height: 1.5;
   }
 

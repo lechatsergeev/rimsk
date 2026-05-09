@@ -1,25 +1,112 @@
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&display=swap');
-
 @font-face {
-  font-family: 'Martian Grotesk';
-  src: url('../../webfonts/MartianGrotesk-StdRg.woff2') format('woff2');
+  font-family: 'Libertinus Sans';
+  src: url('../../fonts/libertinussans-regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Martian Grotesk';
-  src: url('../../webfonts/MartianGrotesk-StdMd.woff2') format('woff2');
+  font-family: 'Libertinus Sans';
+  src: url('../../fonts/libertinussans-regular.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Martian Grotesk';
-  src: url('../../webfonts/MartianGrotesk-StdBd.woff2') format('woff2');
+  font-family: 'Libertinus Sans';
+  src: url('../../fonts/libertinussans-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Libertinus Sans';
+  src: url('../../fonts/libertinussans-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Основной гарнитурный набор сайта (не condensed) */
+@font-face {
+  font-family: 'LT Amber';
+  src: url('../../fonts/LT Amber Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber';
+  src: url('../../fonts/LT Amber Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber';
+  src: url('../../fonts/LT Amber Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber';
+  src: url('../../fonts/LT Amber Demibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber';
+  src: url('../../fonts/LT Amber Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Опционально: condensed для узких колонок */
+@font-face {
+  font-family: 'LT Amber Condensed';
+  src: url('../../fonts/LT Amber Cond Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber Condensed';
+  src: url('../../fonts/LT Amber Cond.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber Condensed';
+  src: url('../../fonts/LT Amber Cond Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber Condensed';
+  src: url('../../fonts/LT Amber Cond Demibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LT Amber Condensed';
+  src: url('../../fonts/LT Amber Cond Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

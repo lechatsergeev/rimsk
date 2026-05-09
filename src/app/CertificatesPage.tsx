@@ -9,7 +9,7 @@ const cardStyle: CSSProperties = {
 };
 
 const labelStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.5,
   letterSpacing: "0.14em",
@@ -19,16 +19,17 @@ const labelStyle: CSSProperties = {
 
 const titleStyle: CSSProperties = {
   margin: "10px 0 0",
-  fontFamily: "'Martian Grotesk', sans-serif",
+  fontFamily: "'LT Amber', sans-serif",
+  fontWeight: 400,
   fontSize: 34,
   lineHeight: 0.95,
-  letterSpacing: "-0.06em",
+  letterSpacing: "-0.022em",
   color: "#111315",
 };
 
 const textStyle: CSSProperties = {
   margin: "12px 0 0",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: 12,
   lineHeight: 1.7,
   color: "#111315",

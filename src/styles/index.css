@@ -7,6 +7,8 @@
    ============================================ */
 
 :root {
+  --font-heading: 'LT Amber', sans-serif;
+  --font-logo: 'Libertinus Sans', serif;
   --ink: #1a1d20;
   --accent: #d95c3c;
   --paper: #ffffff;
@@ -15,14 +17,25 @@
   --sheet: #ffffff;
   --border-print: 1px solid #1a1d20;
   --border-soft: 1px solid #a8a39a;
-  font-family: 'Martian Mono', monospace;
+  font-family: 'LT Amber', sans-serif;
 }
 
 body {
   background: #ffffff;
   overflow-x: hidden;
-  font-family: 'Martian Mono', monospace;
+  font-family: 'LT Amber', sans-serif;
   color: var(--ink);
+}
+
+/* Заголовки и текст: LT Amber Regular; логотип — .type-logo (Libertinus) */
+.type-heading {
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+.type-logo {
+  font-family: var(--font-logo);
+  font-weight: 700;
 }
 
 main section[id] {
@@ -89,8 +102,8 @@ input:focus-visible {
   color: var(--sheet);
   border: var(--border-print);
   box-shadow: none;
-  font-family: 'Martian Mono', monospace;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   cursor: pointer;
@@ -110,8 +123,8 @@ input:focus-visible {
   color: var(--ink);
   border: var(--border-print);
   box-shadow: none;
-  font-family: 'Martian Mono', monospace;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   cursor: pointer;
@@ -140,10 +153,11 @@ input:focus-visible {
 
 .section-title-block {
   margin: 16px 0 0;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 400;
   font-size: clamp(28px, 3.5vw, 40px);
   line-height: 0.95;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
   text-transform: none;
   max-width: 11ch;
   color: var(--ink);
@@ -332,10 +346,11 @@ input:focus-visible {
 .requirement-card h3,
 .flow-title {
   margin: 0;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 24px;
   line-height: 0.98;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.015em;
   text-transform: none;
   color: var(--ink);
 }
@@ -433,7 +448,8 @@ input:focus-visible {
 }
 
 .flow-step {
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 30px;
   line-height: 1;
   color: var(--accent);
@@ -441,7 +457,8 @@ input:focus-visible {
 }
 
 .flow-arrow {
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 26px;
   line-height: 1;
   color: #8a847b;
@@ -474,11 +491,12 @@ input:focus-visible {
   position: absolute;
   top: 48px;
   right: 18px;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 92px;
   line-height: 1;
   color: rgba(26, 29, 32, 0.08);
-  letter-spacing: -0.08em;
+  letter-spacing: -0.03em;
 }
 
 .proof-list {
@@ -506,10 +524,11 @@ input:focus-visible {
 
 .economics-highlight-value {
   margin-top: 8px;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 88px;
   line-height: 0.9;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.03em;
   color: var(--accent);
 }
 
@@ -562,10 +581,11 @@ input:focus-visible {
 }
 
 .economics-breakdown-value {
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 34px;
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
   text-align: right;
   color: var(--ink);
 }
@@ -580,10 +600,11 @@ input:focus-visible {
 
 .economics-card-value {
   margin-top: 10px;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 34px;
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
 }
 
 .economics-card-sub {
@@ -660,10 +681,11 @@ input:focus-visible {
 .economics-bottom-item strong {
   display: block;
   margin-top: 10px;
-  font-family: 'Martian Grotesk', sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 30px;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.018em;
 }
 
 .economics-bottom-item em {

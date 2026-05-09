@@ -15,7 +15,7 @@ export const C = {
   bg: "#FFFFFF",
 };
 
-export const CONTACT_EMAIL = "hello@rimsk.ru";
+export const CONTACT_EMAIL = "hello@mazza.ru";
 
 export type SideFact = {
   value: string;
@@ -54,8 +54,8 @@ function Marquee({ text }: { text: string }) {
         <span
           style={{
             color: C.black,
-            fontFamily: "'Martian Mono', monospace",
-            fontWeight: 700,
+            fontFamily: "'LT Amber', sans-serif",
+            fontWeight: 400,
             fontSize: "12px",
             letterSpacing: "0.08em",
             paddingRight: "40px",
@@ -134,16 +134,16 @@ function Navigation() {
         <a
           href="#top"
           style={{
-            fontFamily: "'IBM Plex Serif', serif",
-            fontWeight: 600,
+            fontFamily: "'Libertinus Sans', serif",
+            fontWeight: 700,
             fontSize: "19px",
-            letterSpacing: "-0.045em",
+            letterSpacing: "0.025em",
             color: C.black,
             textDecoration: "none",
             textTransform: "uppercase",
           }}
         >
-          ПИЦЦА ПИЦЦА
+          МАЦЦА
         </a>
 
         {!isMobile && (
@@ -163,7 +163,7 @@ function Navigation() {
                 key={href}
                 href={href}
                 style={{
-                  fontFamily: "'Martian Mono', monospace",
+                  fontFamily: "'LT Amber', sans-serif",
                   fontSize: "11px",
                   fontWeight: 500,
                   color: C.black,
@@ -193,7 +193,7 @@ function Navigation() {
           <div
             style={{
               padding: "3px 10px",
-              fontFamily: "'Martian Mono', monospace",
+              fontFamily: "'LT Amber', sans-serif",
               fontSize: "11px",
               color: C.black,
               background: C.white,
@@ -214,7 +214,7 @@ function Navigation() {
                 border: `1px solid ${C.black}`,
                 padding: "4px 8px",
                 cursor: "pointer",
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: "14px",
                 color: menuOpen ? C.white : C.black,
                 lineHeight: 1,
@@ -242,7 +242,7 @@ function Navigation() {
               onClick={() => setMenuOpen(false)}
               style={{
                 display: "block",
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: "13px",
                 fontWeight: 500,
                 color: C.black,
@@ -295,9 +295,9 @@ export function SectionHeader({
       <div style={{ borderBottom: `1px solid ${C.black}`, paddingBottom: isMobile ? 18 : 22 }}>
         <div
           style={{
-            fontFamily: "'Martian Mono', monospace",
+            fontFamily: "'LT Amber', sans-serif",
             fontSize: "11px",
-            fontWeight: 700,
+            fontWeight: 400,
             textTransform: "uppercase",
             letterSpacing: "0.14em",
             color: C.black,
@@ -308,11 +308,11 @@ export function SectionHeader({
         <h2
           style={{
             margin: isMobile ? "12px 0 0" : "14px 0 0",
-            fontFamily: "'Martian Grotesk', sans-serif",
+            fontFamily: "'LT Amber', sans-serif",
             fontSize: isMobile ? "30px" : "42px",
-            fontWeight: 500,
+            fontWeight: 400,
             lineHeight: 0.96,
-            letterSpacing: "-0.05em",
+            letterSpacing: "-0.02em",
             color: C.black,
             maxWidth: titleMaxWidth,
           }}
@@ -323,7 +323,7 @@ export function SectionHeader({
           style={{
             margin: isMobile ? "12px 0 0" : "14px 0 0",
             maxWidth: "58ch",
-            fontFamily: "'Martian Mono', monospace",
+            fontFamily: "'LT Amber', sans-serif",
             fontSize: isMobile ? "12px" : "13px",
             lineHeight: 1.7,
             color: C.black,
@@ -356,11 +356,11 @@ export function SideFactoid({
       <div style={{ borderTop: `1px solid ${C.gray}`, paddingTop: 12 }}>
         <div
           style={{
-            fontFamily: "'Martian Grotesk', sans-serif",
+            fontFamily: "'LT Amber', sans-serif",
             fontSize: isMobile ? "34px" : "56px",
-            fontWeight: 500,
+            fontWeight: 400,
             lineHeight: 0.88,
-            letterSpacing: "-0.07em",
+            letterSpacing: "-0.03em",
             color: C.black,
           }}
         >
@@ -371,7 +371,7 @@ export function SideFactoid({
             marginTop: 10,
             marginLeft: "auto",
             maxWidth: "15ch",
-            fontFamily: "'Martian Mono', monospace",
+            fontFamily: "'LT Amber', sans-serif",
             fontSize: "10px",
             lineHeight: 1.55,
             textTransform: "uppercase",
@@ -423,20 +423,20 @@ function Footer({ description }: { description: ReactNode }) {
             <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
               <div
                 style={{
-                  fontFamily: "'IBM Plex Serif', serif",
-                  fontWeight: 600,
+                  fontFamily: "'Libertinus Sans', serif",
+                  fontWeight: 700,
                   fontSize: "25px",
-                  letterSpacing: "-0.045em",
+                  letterSpacing: "0.025em",
                   color: C.black,
                   marginBottom: 14,
                   textTransform: "uppercase",
                 }}
               >
-                ПИЦЦА ПИЦЦА
+                МАЦЦА
               </div>
               <div
                 style={{
-                  fontFamily: "'Martian Mono', monospace",
+                  fontFamily: "'LT Amber', sans-serif",
                   fontSize: "12px",
                   color: C.black,
                   lineHeight: 1.75,
@@ -503,7 +503,7 @@ function Footer({ description }: { description: ReactNode }) {
             <div>
               <div style={footerTitleStyle}>Юр. лицо</div>
               {[
-                { label: "Компания", val: 'ООО "ПИЦЦА ПИЦЦА"' },
+                { label: "Компания", val: 'ООО "Мацца"' },
                 { label: "ИНН", val: "7700000000" },
                 { label: "ОГРН", val: "1000000000000" },
                 { label: "Адрес", val: "г. Санкт-Петербург, ул. Пример, д. 1" },
@@ -528,18 +528,18 @@ function Footer({ description }: { description: ReactNode }) {
           >
             <div
               style={{
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: "10px",
                 color: C.black,
               }}
             >
-              © {year} ООО «ПИЦЦА ПИЦЦА». Бренд римской пиццы из Санкт-Петербурга.
+              © {year} ООО «Мацца». Бренд римской пиццы из Санкт-Петербурга.
             </div>
             <div
               style={{
                 border: `1px solid ${C.gray}`,
                 padding: "4px 10px",
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: "10px",
                 color: C.black,
               }}
@@ -588,9 +588,9 @@ export function EditorialPageShell({
           >
             <div
               style={{
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: 11,
-                fontWeight: 700,
+                fontWeight: 400,
                 textTransform: "uppercase",
                 letterSpacing: "0.14em",
                 color: C.black,
@@ -602,10 +602,11 @@ export function EditorialPageShell({
               style={{
                 margin: "18px 0 0",
                 maxWidth: "11ch",
-                fontFamily: "'Martian Grotesk', sans-serif",
+                fontFamily: "'LT Amber', sans-serif",
+                fontWeight: 400,
                 fontSize: "clamp(42px, 7vw, 92px)",
                 lineHeight: 0.88,
-                letterSpacing: "-0.09em",
+                letterSpacing: "-0.035em",
                 color: C.black,
               }}
             >
@@ -615,7 +616,7 @@ export function EditorialPageShell({
               style={{
                 margin: "18px 0 0",
                 maxWidth: "58ch",
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: 13,
                 lineHeight: 1.8,
                 color: C.black,
@@ -667,16 +668,16 @@ function SubpageHeader() {
         <a
           href={getRouteHref("/")}
           style={{
-            fontFamily: "'IBM Plex Serif', serif",
-            fontWeight: 600,
+            fontFamily: "'Libertinus Sans', serif",
+            fontWeight: 700,
             fontSize: 22,
-            letterSpacing: "-0.045em",
+            letterSpacing: "0.025em",
             color: C.black,
             textDecoration: "none",
             textTransform: "uppercase",
           }}
         >
-          ПИЦЦА ПИЦЦА
+          МАЦЦА
         </a>
         <nav
           style={{
@@ -690,7 +691,7 @@ function SubpageHeader() {
               key={link.href}
               href={link.href}
               style={{
-                fontFamily: "'Martian Mono', monospace",
+                fontFamily: "'LT Amber', sans-serif",
                 fontSize: 11,
                 fontWeight: 500,
                 color: C.black,
@@ -709,9 +710,9 @@ function SubpageHeader() {
 }
 
 const footerTitleStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: "10px",
-  fontWeight: 700,
+  fontWeight: 400,
   textTransform: "uppercase",
   letterSpacing: "0.14em",
   color: C.black,
@@ -721,7 +722,7 @@ const footerTitleStyle: CSSProperties = {
 };
 
 const footerHelperStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: "10px",
   lineHeight: 1.6,
   color: C.black,
@@ -729,7 +730,7 @@ const footerHelperStyle: CSSProperties = {
 };
 
 const footerLabelStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: "9px",
   color: C.black,
   textTransform: "uppercase",
@@ -738,15 +739,15 @@ const footerLabelStyle: CSSProperties = {
 
 const footerLinkStyle: CSSProperties = {
   display: "inline-block",
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: "12px",
   color: C.black,
-  fontWeight: 700,
+  fontWeight: 400,
   textDecoration: "none",
 };
 
 const footerTextStyle: CSSProperties = {
-  fontFamily: "'Martian Mono', monospace",
+  fontFamily: "'LT Amber', sans-serif",
   fontSize: "11px",
   color: C.black,
   fontWeight: 500,
