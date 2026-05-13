@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu, X } from "lucide-react";
-import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
@@ -64,7 +64,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <LayoutGroup>
+    <>
       <HeroHeader isScrolled={isScrolled} />
       <main className="overflow-hidden bg-[var(--paper)]">
         <section ref={heroSectionRef}>
@@ -96,18 +96,7 @@ export function HeroSection() {
                     </span>
                   </motion.div>
                   <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-[var(--ink)] md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
-                    <AnimatePresence initial={false}>
-                      {!isScrolled ? (
-                        <motion.span
-                          key="hero-brand"
-                          layoutId="brand-word"
-                          className="type-logo inline-block"
-                          transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
-                        >
-                          Мацца
-                        </motion.span>
-                      ) : null}
-                    </AnimatePresence>
+                    <span className="type-logo inline-block">Мацца</span>
                   </h1>
                   <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[var(--ink)] md:text-sm md:leading-[1.4]">
                     Производим замороженную пиццу для кафе, ритейла, доставки и
@@ -115,24 +104,11 @@ export function HeroSection() {
                     и локальное производство в Санкт-Петербурге.
                   </p>
                   <div className="mt-4 flex justify-start">
-                    <AnimatePresence initial={false}>
-                      {!isScrolled ? (
-                        <motion.div
-                          key="hero-cta"
-                          layoutId="cta-button"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
-                        >
-                          <Button asChild size="sm">
-                            <a href="#order">
-                              <span>Оставить заявку</span>
-                            </a>
-                          </Button>
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
+                    <Button asChild size="sm">
+                      <a href="#order">
+                        <span>Оставить заявку</span>
+                      </a>
+                    </Button>
                   </div>
                 </AnimatedGroup>
 
@@ -168,7 +144,7 @@ export function HeroSection() {
           </div>
         </section>
       </main>
-    </LayoutGroup>
+    </>
   );
 }
 
@@ -282,11 +258,10 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                 {isScrolled ? (
                   <motion.div
                     key="header-cta"
-                    layoutId="cta-button"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
                     className="hidden lg:block"
                   >
                     <Button asChild size="sm">
@@ -312,12 +287,11 @@ const Logo = ({ isVisible }: { isVisible: boolean }) => {
         {isVisible ? (
           <motion.span
             key="header-brand"
-            layoutId="brand-word"
             className="type-logo inline-block text-[23px] leading-none tracking-[0.01em] text-[var(--ink)]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.24, ease: "easeOut" }}
           >
             Мацца
           </motion.span>
