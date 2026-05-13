@@ -1,5 +1,6 @@
 import React from "react";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
@@ -41,12 +42,32 @@ const menuItems = [
 
 export function HeroSection() {
   const canRender3d = typeof window !== "undefined";
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const heroSectionRef = React.useRef<HTMLElement | null>(null);
+
+  React.useEffect(() => {
+    const heroSection = heroSectionRef.current;
+    if (!heroSection) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsScrolled(!entry.isIntersecting);
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -64px 0px",
+      }
+    );
+
+    observer.observe(heroSection);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <>
-      <HeroHeader />
+    <LayoutGroup>
+      <HeroHeader isScrolled={isScrolled} />
       <main className="overflow-hidden bg-[var(--paper)]">
-        <section>
+        <section ref={heroSectionRef}>
           <div className="relative overflow-hidden pt-15 md:pt-18">
             <div
               aria-hidden
@@ -64,35 +85,55 @@ export function HeroSection() {
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
                 <AnimatedGroup variants={transitionVariants} className="text-left">
-                  <a
-                    href="#order"
-                    className="group inline-flex w-fit items-center gap-4 rounded-full border border-black/10 bg-[rgba(255,255,255,0.72)] p-1 pl-4 shadow-sm shadow-black/5 backdrop-blur-sm transition-all duration-300"
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.06 }}
+                    className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.76)] px-4 py-1.5"
                   >
-                    <span className="text-sm text-[var(--ink)]">
-                      Локальное производство в Петербурге
+                    <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-[var(--ink)] md:text-[0.9rem]">
+                      Пицца для бизнеса
                     </span>
-                    <span className="block h-4 w-px bg-[var(--line)]" />
-                    <div className="size-6 overflow-hidden rounded-full bg-[var(--ink)] text-[var(--sheet)] duration-500">
-                      <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
-                        <span className="flex size-6">
-                          <ArrowRight className="m-auto size-3" />
-                        </span>
-                        <span className="flex size-6">
-                          <ArrowRight className="m-auto size-3" />
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <h1 className="type-heading mt-5 max-w-[11ch] text-balance text-[2.85rem] leading-[0.9] tracking-[-0.03em] text-[var(--ink)] md:mt-6 md:text-[4rem] lg:text-[4.6rem]">
-                    Римская пицца,
-                    <br />
-                    которую хочется есть
+                  </motion.div>
+                  <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-[var(--ink)] md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
+                    <AnimatePresence initial={false}>
+                      {!isScrolled ? (
+                        <motion.span
+                          key="hero-brand"
+                          layoutId="brand-word"
+                          className="type-logo inline-block"
+                          transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+                        >
+                          Мацца
+                        </motion.span>
+                      ) : null}
+                    </AnimatePresence>
                   </h1>
-                  <p className="mt-4 max-w-[34rem] text-balance text-[13px] leading-6 text-[var(--ink)] md:text-sm md:leading-7">
-                    Чистый состав, ручная работа и локальное производство в
-                    Санкт-Петербурге.
+                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[var(--ink)] md:text-sm md:leading-[1.4]">
+                    Производим замороженную пиццу для кафе, ритейла, доставки и
+                    других B2B-сценариев. Стабильный продукт, понятная поставка
+                    и локальное производство в Санкт-Петербурге.
                   </p>
+                  <div className="mt-4 flex justify-start">
+                    <AnimatePresence initial={false}>
+                      {!isScrolled ? (
+                        <motion.div
+                          key="hero-cta"
+                          layoutId="cta-button"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+                        >
+                          <Button asChild size="sm">
+                            <a href="#order">
+                              <span>Оставить заявку</span>
+                            </a>
+                          </Button>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
                 </AnimatedGroup>
 
                 <AnimatedGroup
@@ -127,23 +168,14 @@ export function HeroSection() {
           </div>
         </section>
       </main>
-    </>
+    </LayoutGroup>
   );
 }
 
-const HeroHeader = () => {
+const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
   const [menuState, setMenuState] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
   const mobileMenuId = React.useId();
   const [activeSection, setActiveSection] = React.useState<string>("#top");
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   React.useEffect(() => {
     const sections = ["top", "assortment", "order"];
@@ -188,7 +220,7 @@ const HeroHeader = () => {
                 aria-label="home"
                 className="flex items-center space-x-2 text-lg text-[var(--ink)]"
               >
-                <Logo />
+                <Logo isVisible={isScrolled} />
               </a>
 
               <button
@@ -221,7 +253,7 @@ const HeroHeader = () => {
               </ul>
             </div>
 
-            <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-[var(--line)] bg-[var(--sheet)] p-6 shadow-2xl shadow-zinc-300/20 group-data-[state=active]:block md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
+            <div className="mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-[var(--line)] bg-[var(--sheet)] p-6 shadow-2xl shadow-zinc-300/20 group-data-[state=active]:block md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-4 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
               <div
                 id={mobileMenuId}
                 role="dialog"
@@ -246,18 +278,25 @@ const HeroHeader = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild size="sm" className={cn(isScrolled && "lg:hidden")}>
-                  <a href="#order">
-                    <span>Оставить заявку</span>
-                  </a>
-                </Button>
-                <Button asChild size="sm" className={cn(isScrolled ? "lg:inline-flex" : "hidden")}>
-                  <a href="#order">
-                    <span>Связаться</span>
-                  </a>
-                </Button>
-              </div>
+              <AnimatePresence initial={false}>
+                {isScrolled ? (
+                  <motion.div
+                    key="header-cta"
+                    layoutId="cta-button"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+                    className="hidden lg:block"
+                  >
+                    <Button asChild size="sm">
+                      <a href="#order">
+                        <span>Оставить заявку</span>
+                      </a>
+                    </Button>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -266,15 +305,24 @@ const HeroHeader = () => {
   );
 };
 
-const Logo = ({ className }: { className?: string }) => {
+const Logo = ({ isVisible }: { isVisible: boolean }) => {
   return (
-    <span
-      className={cn(
-        "type-logo text-[19px] uppercase tracking-[0.025em] text-[var(--ink)]",
-        className
-      )}
-    >
-      МАЦЦА
-    </span>
+    <div className="flex min-h-[1.5rem] items-center">
+      <AnimatePresence initial={false}>
+        {isVisible ? (
+          <motion.span
+            key="header-brand"
+            layoutId="brand-word"
+            className="type-logo inline-block text-[23px] leading-none tracking-[0.01em] text-[var(--ink)]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: "spring", stiffness: 170, damping: 24, mass: 1.05 }}
+          >
+            Мацца
+          </motion.span>
+        ) : null}
+      </AnimatePresence>
+    </div>
   );
 };

@@ -1,4 +1,6 @@
 import { SegmentRedesignPage } from "@/components/landing/redesign";
+import gorgonzolaModel from "../../images/gorgonzola.glb";
+import margaritaModel from "../../images/margarita.glb";
 
 export default function HorecaPage() {
   return (
@@ -22,6 +24,7 @@ export default function HorecaPage() {
           note: "Базовая римская пицца с чистым вкусом. Хорошо показывает тесто, соус и общий подход без лишних отвлечений.",
           badge: "classic",
           chips: ["томат", "моцарелла", "база"],
+          modelSrc: margaritaModel,
         },
         {
           sku: "PIZZA 02",
@@ -36,6 +39,7 @@ export default function HorecaPage() {
           note: "Контрастная пицца для тех, кому нужен не только очевидный вкус, но и чуть более собранный акцент.",
           badge: "accent",
           chips: ["груша", "горгонзола", "контраст"],
+          modelSrc: gorgonzolaModel,
         },
       ]}
       orderTitle="Заявка"

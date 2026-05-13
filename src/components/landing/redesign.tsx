@@ -1,6 +1,9 @@
-import React, { type CSSProperties, type ReactNode } from "react";
+import React, { type CSSProperties, type FormEvent, type ReactNode, useState } from "react";
 import { motion } from "motion/react";
 import { LandingPageShell, useBreakpoint } from "@/components/landing/shared";
+
+declare const __ORDER_API_URL__: string;
+declare const __DEV_MODE__: boolean;
 
 const MiniPizzaModel = React.lazy(() =>
   import("@/components/blocks/hero-pizza-model").then((module) => ({
@@ -14,6 +17,7 @@ type LineupItem = {
   note: string;
   badge: string;
   chips: string[];
+  modelSrc?: string;
 };
 
 type SegmentRedesignProps = {
@@ -186,6 +190,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
                 <MiniPizzaModel
                   lowResOnly={true}
                   targetSize={2.6}
+                  lowResModelSrc={item.modelSrc}
                   className="relative z-[2] h-full w-full touch-none"
                 />
               </React.Suspense>
@@ -230,6 +235,19 @@ function LineupCards({ items }: { items: LineupItem[] }) {
 
 function OrderBlock({ submitLabel }: { submitLabel: string }) {
   const { isMobile } = useBreakpoint();
+  const orderApiUrl = (
+    typeof __ORDER_API_URL__ !== "undefined" ? __ORDER_API_URL__ : ""
+  ).trim() || (
+    typeof __DEV_MODE__ !== "undefined" && __DEV_MODE__ ? "http://localhost:3000/order" : ""
+  );
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    city: "",
+    comment: "",
+  });
+  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
   const fields = [
     { key: "name", label: "Имя / компания", placeholder: "Алексей / кофейня / магазин" },
     { key: "contact", label: "Телефон или email", placeholder: "+7 / hello@company.ru" },
@@ -237,9 +255,63 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
     { key: "comment", label: "Комментарий", placeholder: "Какая пицца интересна и как с вами связаться" },
   ];
 
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!formData.name.trim() || !formData.contact.trim()) {
+      setSubmitState("error");
+      setSubmitMessage("Укажите имя или компанию и контакт для связи.");
+      return;
+    }
+
+    if (!orderApiUrl) {
+      setSubmitState("error");
+      setSubmitMessage("Форма еще не подключена: не задан адрес сервера заявок.");
+      return;
+    }
+
+    setSubmitState("submitting");
+    setSubmitMessage("");
+
+    try {
+      const response = await fetch(orderApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          contact: formData.contact.trim(),
+          city: formData.city.trim(),
+          comment: formData.comment.trim(),
+          source: "mazza-site",
+          page: typeof window !== "undefined" ? window.location.href : "",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      setFormData({
+        name: "",
+        contact: "",
+        city: "",
+        comment: "",
+      });
+      setSubmitState("success");
+      setSubmitMessage("Заявка отправлена. Мы свяжемся с вами в ближайшее время.");
+    } catch (error) {
+      console.error("Order request failed", error);
+      setSubmitState("error");
+      setSubmitMessage("Не удалось отправить заявку. Попробуйте еще раз или напишите нам напрямую.");
+    }
+  };
+
   return (
     <div style={{ borderTop: "1px solid rgba(20,20,20,0.16)", paddingTop: isMobile ? 12 : 18 }}>
       <form
+        onSubmit={handleSubmit}
         style={{
           maxWidth: 920,
           margin: "0 auto",
@@ -265,8 +337,8 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
             <div style={offerMetaStyle}>contact / pizza pizza</div>
             <div style={offerTitleStyle}>Оставьте заявку, и мы свяжемся</div>
             <div style={offerTextStyle}>
-              Без длинных сценариев и лишних обещаний. Если хотите заказать или
-              узнать подробнее, оставьте контакт.
+              Если хотите обсудить поставку, ассортимент или запуск, оставьте
+              контакт. Заявка уйдет напрямую в рабочий канал команды.
             </div>
           </div>
 
@@ -290,9 +362,30 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
               >
                 <span style={accentLabelStyle}>{field.label}</span>
                 {field.key === "comment" ? (
-                  <textarea rows={5} placeholder={field.placeholder} style={accentInputStyle} />
+                  <textarea
+                    rows={5}
+                    placeholder={field.placeholder}
+                    style={accentInputStyle}
+                    value={formData.comment}
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        comment: event.target.value,
+                      }))
+                    }
+                  />
                 ) : (
-                  <input placeholder={field.placeholder} style={accentInputStyle} />
+                  <input
+                    placeholder={field.placeholder}
+                    style={accentInputStyle}
+                    value={formData[field.key as keyof typeof formData]}
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        [field.key]: event.target.value,
+                      }))
+                    }
+                  />
                 )}
               </label>
             ))}
@@ -308,10 +401,16 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
               }}
             >
               <button type="submit" style={submitStyle}>
-                {submitLabel}
+                {submitState === "submitting" ? "Отправка..." : submitLabel}
               </button>
-              <div style={offerTextStyle}>
-                Форма пока демонстрационная. Рабочую отправку подключим отдельно.
+              <div
+                style={{
+                  ...offerTextStyle,
+                  marginTop: 0,
+                  color: submitState === "error" ? "#b42318" : "#111315",
+                }}
+              >
+                {submitMessage || "Ответим по заявке без длинной переписки и лишних шагов."}
               </div>
             </div>
           </div>

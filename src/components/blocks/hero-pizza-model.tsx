@@ -43,10 +43,14 @@ export function HeroPizzaModel({
   lowResOnly = false,
   targetSize,
   className,
+  lowResModelSrc = pizzaLowModel,
+  highResModelSrc = pizzaModel,
 }: {
   lowResOnly?: boolean;
   targetSize?: number;
   className?: string;
+  lowResModelSrc?: string;
+  highResModelSrc?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -149,7 +153,7 @@ export function HeroPizzaModel({
     };
 
     loader.load(
-      pizzaLowModel,
+      lowResModelSrc,
       (gltf) => {
         if (disposed) {
           disposeObject3D(gltf.scene);
@@ -170,7 +174,7 @@ export function HeroPizzaModel({
 
     if (!lowResOnly) {
       loader.load(
-        pizzaModel,
+        highResModelSrc,
         (gltf) => {
           if (disposed) {
             disposeObject3D(gltf.scene);
@@ -238,7 +242,7 @@ export function HeroPizzaModel({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [lowResOnly, shouldLoad, targetSize]);
+  }, [highResModelSrc, lowResModelSrc, lowResOnly, shouldLoad, targetSize]);
 
   return (
     <div
