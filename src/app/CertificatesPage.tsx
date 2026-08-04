@@ -1,5 +1,6 @@
 import { type CSSProperties } from "react";
-import { CONTACT_EMAIL, EditorialPageShell } from "@/components/landing/shared";
+import { EditorialPageShell } from "@/components/landing/shared";
+import { CONTACT_EMAIL } from "@/content/brand";
 
 const cardStyle: CSSProperties = {
   border: "1px solid rgba(17,19,21,0.14)",
@@ -50,11 +51,10 @@ export default function CertificatesPage() {
       description="На этой странице собрана базовая информация о документах. Полный комплект по позициям отправляем по запросу."
       footerDescription={
         <>
-          Римская пицца из Санкт-Петербурга,
+          Замороженная римская пицца
           <br />
-          с документами по продукту
-          <br />
-          и прозрачным запросом по позициям.
+          ручной работы. Производство
+          <br />в Санкт-Петербурге.
         </>
       }
     >
@@ -105,7 +105,7 @@ export default function CertificatesPage() {
         <h2 style={titleStyle}>Что написать в письме</h2>
         <div style={{ ...textStyle, marginTop: 16, display: "grid", gap: 10 }}>
           <div>Какие позиции вас интересуют</div>
-          <div>Для какой компании или точки нужен комплект</div>
+          <div>Для какой сети или компании нужен комплект</div>
           <div>Куда отправить документы</div>
           <div>Если нужен срочный ответ, укажите это в теме письма</div>
         </div>

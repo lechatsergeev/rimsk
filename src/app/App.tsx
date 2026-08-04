@@ -1,12 +1,15 @@
-import HomePage from "./HorecaPage";
+import HomePage from "./HomePage";
 import CertificatesPage from "./CertificatesPage";
 import ContactsPage from "./ContactsPage";
 import DeliveryPage from "./DeliveryPage";
 import { normalizeRoutePath } from "./routes";
 
-export default function App() {
-  const route =
-    typeof window === "undefined" ? "/" : normalizeRoutePath(window.location.pathname);
+export default function App({ pathname }: { pathname?: string }) {
+  // pathname приходит только из пререндера; в браузере берём текущий адрес,
+  // иначе статика подстраниц собиралась бы как главная.
+  const rawPath =
+    pathname ?? (typeof window === "undefined" ? "/" : window.location.pathname);
+  const route = normalizeRoutePath(rawPath);
 
   if (route === "/delivery") {
     return <DeliveryPage />;

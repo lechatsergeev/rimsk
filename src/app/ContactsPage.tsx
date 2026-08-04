@@ -1,5 +1,14 @@
 import { type CSSProperties } from "react";
-import { CONTACT_EMAIL, EditorialPageShell } from "@/components/landing/shared";
+import {
+  EditorialPageShell,
+  LEGAL_FIELDS,
+  PendingDocs,
+} from "@/components/landing/shared";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+} from "@/content/brand";
 
 const cardStyle: CSSProperties = {
   border: "1px solid rgba(17,19,21,0.14)",
@@ -47,14 +56,13 @@ export default function ContactsPage() {
     <EditorialPageShell
       eyebrow="Contacts"
       title="Контакты"
-      description="Если хотите обсудить заказ, поставку, ассортимент или документы, здесь вся базовая контактная информация."
+      description="Состав, характеристики, фото продукта и документы отправляем по запросу. Пишите или звоните напрямую."
       footerDescription={
         <>
-          Римская пицца из Санкт-Петербурга,
+          Замороженная римская пицца
           <br />
-          с понятным контактом для связи
-          <br />
-          и быстрым ответом по запросу.
+          ручной работы. Производство
+          <br />в Санкт-Петербурге.
         </>
       }
     >
@@ -68,27 +76,35 @@ export default function ContactsPage() {
         <article style={cardStyle}>
           <div style={innerRuleStyle} />
           <div style={labelStyle}>Телефон</div>
-          <h2 style={titleStyle}>+7 (812) 000-00-00</h2>
+          <h2 style={titleStyle}>
+            <a href={CONTACT_PHONE_HREF} style={{ color: "#111315", textDecoration: "none" }}>
+              {CONTACT_PHONE}
+            </a>
+          </h2>
           <p style={textStyle}>
-            Для короткой связи по заказу, условиям и первичным вопросам.
+            Короткие вопросы по продукту, объёмам и срокам.
           </p>
         </article>
 
         <article style={cardStyle}>
           <div style={innerRuleStyle} />
           <div style={labelStyle}>Email</div>
-          <h2 style={titleStyle}>{CONTACT_EMAIL}</h2>
+          <h2 style={titleStyle}>
+            <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "#111315", textDecoration: "none" }}>
+              {CONTACT_EMAIL}
+            </a>
+          </h2>
           <p style={textStyle}>
-            Для заявок, документов и переписки по ассортименту.
+            Состав, характеристики, документы и фото продукта.
           </p>
         </article>
 
         <article style={cardStyle}>
           <div style={innerRuleStyle} />
-          <div style={labelStyle}>Город</div>
+          <div style={labelStyle}>Производство</div>
           <h2 style={titleStyle}>Санкт-Петербург</h2>
           <p style={textStyle}>
-            Локальное производство и базовая география запуска сейчас здесь.
+            Печём и замораживаем здесь же, без промежуточных производств.
           </p>
         </article>
       </div>
@@ -97,11 +113,14 @@ export default function ContactsPage() {
         <div style={innerRuleStyle} />
         <div style={labelStyle}>Реквизиты</div>
         <h2 style={titleStyle}>Юридическая информация</h2>
-        <div style={{ ...textStyle, marginTop: 16, display: "grid", gap: 10 }}>
-          <div>ООО «Мацца»</div>
-          <div>ИНН 7700000000</div>
-          <div>ОГРН 1000000000000</div>
-          <div>г. Санкт-Петербург, ул. Пример, д. 1</div>
+        <div style={{ marginTop: 16 }}>
+          <PendingDocs>
+            <div style={{ ...textStyle, marginTop: 0, display: "grid", gap: 10 }}>
+              {LEGAL_FIELDS.map((label) => (
+                <div key={label}>{label} —</div>
+              ))}
+            </div>
+          </PendingDocs>
         </div>
       </section>
     </EditorialPageShell>

@@ -47,14 +47,13 @@ export default function DeliveryPage() {
     <EditorialPageShell
       eyebrow="Delivery"
       title="Условия доставки"
-      description="Здесь собраны базовые условия старта: куда везём, как согласуем формат и что нужно уточнить перед первой поставкой."
+      description="Продукт хранится и перевозится при −18 °C. Здесь базовые условия старта и то, что уточняем перед первой отгрузкой."
       footerDescription={
         <>
-          Римская пицца из Санкт-Петербурга,
+          Замороженная римская пицца
           <br />
-          которую мы делаем вручную
-          <br />
-          и доставляем по согласованию.
+          ручной работы. Производство
+          <br />в Санкт-Петербурге.
         </>
       }
     >
@@ -70,18 +69,18 @@ export default function DeliveryPage() {
           <div style={labelStyle}>География</div>
           <h2 style={titleStyle}>Санкт-Петербург и область</h2>
           <p style={textStyle}>
-            На старте работаем локально, чтобы держать нормальный ритм поставки и
-            предсказуемое качество сервиса.
+            На старте работаем локально: короткое плечо и предсказуемый ритм
+            отгрузок.
           </p>
         </article>
 
         <article style={cardStyle}>
           <div style={innerRuleStyle} />
-          <div style={labelStyle}>Формат</div>
-          <h2 style={titleStyle}>По согласованию</h2>
+          <div style={labelStyle}>Температура</div>
+          <h2 style={titleStyle}>−18 °C</h2>
           <p style={textStyle}>
-            Подстраиваем формат отгрузки под тип точки, объём и частоту. Детали
-            обсуждаем после заявки.
+            Непрерывная холодовая цепь от производства до вашего склада. Срок
+            годности — 6 месяцев.
           </p>
         </article>
 
@@ -99,10 +98,11 @@ export default function DeliveryPage() {
       <section style={{ marginTop: 28, ...cardStyle }}>
         <div style={innerRuleStyle} />
         <div style={labelStyle}>Что уточняем</div>
-        <h2 style={titleStyle}>Перед первой поставкой</h2>
+        <h2 style={titleStyle}>Перед первой отгрузкой</h2>
         <div style={{ ...textStyle, marginTop: 16, display: "grid", gap: 10 }}>
-          <div>Город и адрес точки</div>
-          <div>Нужный ассортимент и объём</div>
+          <div>Адрес склада или распределительного центра</div>
+          <div>Позиции и объём партии</div>
+          <div>Требования к маркировке и упаковке</div>
           <div>Желаемая дата старта</div>
           <div>Контакт для согласования и приёмки</div>
         </div>

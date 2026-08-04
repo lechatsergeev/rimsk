@@ -1,7 +1,14 @@
-import { type CSSProperties, type ReactNode, useEffect, useId, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { HeroSection } from "@/components/blocks/hero-section-1";
 import { getRouteHref } from "@/app/routes";
+import {
+  BRAND_NAME_UPPER,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+  CONTACT_WHATSAPP_HREF,
+} from "@/content/brand";
 
 export const C = {
   navy: "#1A1D20",
@@ -14,8 +21,6 @@ export const C = {
   teal: "#6C645A",
   bg: "#FFFFFF",
 };
-
-export const CONTACT_EMAIL = "hello@mazza.ru";
 
 export type SideFact = {
   value: string;
@@ -68,195 +73,6 @@ function Marquee({ text }: { text: string }) {
         </span>
       </div>
     </div>
-  );
-}
-
-function Navigation() {
-  const { isMobile } = useBreakpoint();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showDesktopLinks, setShowDesktopLinks] = useState(false);
-  const mobileMenuId = useId();
-  const [time, setTime] = useState(
-    () =>
-      new Date().toLocaleTimeString("ru-RU", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-  );
-
-  useEffect(() => {
-    const t = setInterval(
-      () =>
-        setTime(
-          new Date().toLocaleTimeString("ru-RU", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        ),
-      30000
-    );
-    return () => clearInterval(t);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setShowDesktopLinks(window.scrollY > 280);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const links = [
-    { label: "Сценарии", href: "#scenarios" },
-    { label: "Ассортимент", href: "#assortment" },
-    { label: "Экономика", href: "#economics" },
-    { label: "Возражения", href: "#objections" },
-    { label: "Оффер", href: "#order" },
-  ];
-
-  return (
-    <header
-      style={{
-        background: C.bg,
-        borderBottom: `1px solid ${C.black}`,
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: isMobile ? "7px 20px" : "7px 40px",
-        }}
-      >
-        <a
-          href="#top"
-          style={{
-            fontFamily: "'Libertinus Sans', serif",
-            fontWeight: 700,
-            fontSize: "19px",
-            letterSpacing: "0.025em",
-            color: C.black,
-            textDecoration: "none",
-            textTransform: "uppercase",
-          }}
-        >
-          МАЦЦА
-        </a>
-
-        {!isMobile && (
-          <nav
-            style={{
-              display: "flex",
-              gap: 2,
-              opacity: showDesktopLinks ? 1 : 0,
-              pointerEvents: showDesktopLinks ? "auto" : "none",
-              transform: showDesktopLinks ? "translateY(0)" : "translateY(-4px)",
-              transition: "opacity 180ms ease, transform 180ms ease",
-            }}
-            aria-hidden={!showDesktopLinks}
-          >
-            {links.map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                style={{
-                  fontFamily: "'LT Amber', sans-serif",
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  color: C.black,
-                  textDecoration: "none",
-                  padding: "4px 11px",
-                  display: "block",
-                  background: "transparent",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = C.silver;
-                  el.style.borderBottom = `1px solid ${C.black}`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = "transparent";
-                  el.style.borderBottom = "1px solid transparent";
-                }}
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-        )}
-
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div
-            style={{
-              padding: "3px 10px",
-              fontFamily: "'LT Amber', sans-serif",
-              fontSize: "11px",
-              color: C.black,
-              background: C.white,
-              border: `1px solid ${C.black}`,
-            }}
-          >
-            {time}
-          </div>
-
-          {isMobile && (
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-expanded={menuOpen}
-              aria-controls={mobileMenuId}
-              aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
-              style={{
-                background: menuOpen ? C.black : "transparent",
-                border: `1px solid ${C.black}`,
-                padding: "4px 8px",
-                cursor: "pointer",
-                fontFamily: "'LT Amber', sans-serif",
-                fontSize: "14px",
-                color: menuOpen ? C.white : C.black,
-                lineHeight: 1,
-              }}
-            >
-              {menuOpen ? "✕" : "☰"}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {isMobile && menuOpen && (
-        <div
-          id={mobileMenuId}
-          style={{
-            background: C.bg,
-            borderTop: `1px solid ${C.gray}`,
-            borderBottom: `1px solid ${C.black}`,
-          }}
-        >
-          {links.map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              style={{
-                display: "block",
-                fontFamily: "'LT Amber', sans-serif",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: C.black,
-                textDecoration: "none",
-                padding: "12px 20px",
-                borderBottom: `1px solid ${C.gray}`,
-              }}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
-    </header>
   );
 }
 
@@ -386,6 +202,51 @@ export function SideFactoid({
   );
 }
 
+export const LEGAL_FIELDS = ["Компания", "ИНН", "ОГРН", "Адрес"];
+
+/**
+ * Реквизитов пока нет — ИП не зарегистрирован. Блок остаётся на месте,
+ * значения прочерками, сверху полупрозрачная плашка с объяснением.
+ */
+export function PendingDocs({ children }: { children: ReactNode }) {
+  return (
+    <div style={{ position: "relative" }}>
+      <div aria-hidden style={{ opacity: 0.45 }}>
+        {children}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 10,
+          background: "rgba(255,255,255,0.62)",
+          backdropFilter: "blur(2px)",
+          WebkitBackdropFilter: "blur(2px)",
+          border: `1px solid ${C.gray}`,
+          borderRadius: 12,
+          textAlign: "center",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "'LT Amber', sans-serif",
+            fontSize: "10px",
+            lineHeight: 1.5,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: C.black,
+          }}
+        >
+          Оформляем документы
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function Footer({ description }: { description: ReactNode }) {
   const { isMobile } = useBreakpoint();
   const year = new Date().getFullYear();
@@ -432,7 +293,7 @@ function Footer({ description }: { description: ReactNode }) {
                   textTransform: "uppercase",
                 }}
               >
-                МАЦЦА
+                {BRAND_NAME_UPPER}
               </div>
               <div
                 style={{
@@ -449,11 +310,11 @@ function Footer({ description }: { description: ReactNode }) {
 
             <div id="contacts">
               <div style={footerTitleStyle}>Контакты</div>
-              <div style={footerHelperStyle}>Для заявок, вопросов и оптовых запросов</div>
+              <div style={footerHelperStyle}>Вопросы по продукту, составу и документам</div>
               {[
-                { label: "Телефон", val: "+7 (812) 000-00-00", href: "tel:+78120000000" },
+                { label: "Телефон", val: CONTACT_PHONE, href: CONTACT_PHONE_HREF },
                 { label: "Email", val: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
-                { label: "WhatsApp", val: "+7 (812) 000-00-00", href: "https://wa.me/78120000000" },
+                { label: "WhatsApp", val: CONTACT_PHONE, href: CONTACT_WHATSAPP_HREF },
               ].map((c) => (
                 <div key={c.label} style={{ marginBottom: 9 }}>
                   <div style={footerLabelStyle}>{c.label}</div>
@@ -502,17 +363,14 @@ function Footer({ description }: { description: ReactNode }) {
 
             <div>
               <div style={footerTitleStyle}>Юр. лицо</div>
-              {[
-                { label: "Компания", val: 'ООО "Мацца"' },
-                { label: "ИНН", val: "7700000000" },
-                { label: "ОГРН", val: "1000000000000" },
-                { label: "Адрес", val: "г. Санкт-Петербург, ул. Пример, д. 1" },
-              ].map((c) => (
-                <div key={c.label} style={{ marginBottom: 9 }}>
-                  <div style={footerLabelStyle}>{c.label}</div>
-                  <div style={footerTextStyle}>{c.val}</div>
-                </div>
-              ))}
+              <PendingDocs>
+                {LEGAL_FIELDS.map((label) => (
+                  <div key={label} style={{ marginBottom: 9 }}>
+                    <div style={footerLabelStyle}>{label}</div>
+                    <div style={footerTextStyle}>—</div>
+                  </div>
+                ))}
+              </PendingDocs>
             </div>
           </div>
 
@@ -533,7 +391,7 @@ function Footer({ description }: { description: ReactNode }) {
                 color: C.black,
               }}
             >
-              © {year} ООО «Мацца». Бренд римской пиццы из Санкт-Петербурга.
+              © {year} {BRAND_NAME_UPPER}. Замороженная римская пицца, Санкт-Петербург.
             </div>
             <div
               style={{
@@ -677,7 +535,7 @@ function SubpageHeader() {
             textTransform: "uppercase",
           }}
         >
-          МАЦЦА
+          {BRAND_NAME_UPPER}
         </a>
         <nav
           style={{

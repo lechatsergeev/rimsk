@@ -1,9 +1,13 @@
 import React, { type CSSProperties, type FormEvent, type ReactNode, useState } from "react";
 import { motion } from "motion/react";
 import { LandingPageShell, useBreakpoint } from "@/components/landing/shared";
-
-declare const __ORDER_API_URL__: string;
-declare const __DEV_MODE__: boolean;
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+  NET_WEIGHT,
+  PRODUCT_SPECS,
+} from "@/content/brand";
 
 const MiniPizzaModel = React.lazy(() =>
   import("@/components/blocks/hero-pizza-model").then((module) => ({
@@ -15,7 +19,6 @@ type LineupItem = {
   sku: string;
   title: string;
   note: string;
-  badge: string;
   chips: string[];
   modelSrc?: string;
 };
@@ -63,8 +66,17 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
       </SwissSection>
 
       <SwissSection
-        id="order"
+        id="specs"
         index="02"
+        title="Состав и хранение"
+        description="Одинаково для всех позиций ассортимента. Полный комплект документов отправляем по запросу."
+      >
+        <SpecsBlock />
+      </SwissSection>
+
+      <SwissSection
+        id="order"
+        index="03"
         title={props.orderTitle}
         description={props.orderDescription}
       >
@@ -178,7 +190,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
           >
             <div style={cardMetaRowStyle}>
               <span style={metaPillStyle}>{item.sku}</span>
-              <span style={metaPillStyle}>{item.badge}</span>
+              <span style={metaPillStyle}>{NET_WEIGHT}</span>
             </div>
             <div
               style={{
@@ -233,79 +245,81 @@ function LineupCards({ items }: { items: LineupItem[] }) {
   );
 }
 
+function SpecsBlock() {
+  const { isMobile } = useBreakpoint();
+
+  return (
+    <div
+      style={{
+        border: "1px solid rgba(17,19,21,0.14)",
+        borderRadius: 28,
+        overflow: "hidden",
+        background: "#fffdf9",
+        boxShadow: "0 18px 44px rgba(17,19,21,0.08)",
+        marginBottom: isMobile ? 24 : 32,
+      }}
+    >
+      {PRODUCT_SPECS.map((spec, index) => (
+        <div
+          key={spec.label}
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "180px minmax(0, 1fr)",
+            columnGap: 24,
+            rowGap: 6,
+            padding: isMobile ? "14px 18px" : "16px 24px",
+            borderTop: index === 0 ? "none" : "1px solid rgba(17,19,21,0.1)",
+          }}
+        >
+          <div style={specLabelStyle}>{spec.label}</div>
+          <div style={specValueStyle}>{spec.value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function OrderBlock({ submitLabel }: { submitLabel: string }) {
   const { isMobile } = useBreakpoint();
-  const orderApiUrl = (
-    typeof __ORDER_API_URL__ !== "undefined" ? __ORDER_API_URL__ : ""
-  ).trim() || (
-    typeof __DEV_MODE__ !== "undefined" && __DEV_MODE__ ? "http://localhost:3000/order" : ""
-  );
   const [formData, setFormData] = useState({
-    name: "",
+    company: "",
     contact: "",
     city: "",
     comment: "",
   });
-  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [submitMessage, setSubmitMessage] = useState("");
+  const [error, setError] = useState("");
   const fields = [
-    { key: "name", label: "Имя / компания", placeholder: "Алексей / кофейня / магазин" },
-    { key: "contact", label: "Телефон или email", placeholder: "+7 / hello@company.ru" },
+    { key: "company", label: "Компания или сеть", placeholder: "Сеть, магазин, дарк-стор" },
+    { key: "contact", label: "Телефон или email", placeholder: "+7 / name@company.ru" },
     { key: "city", label: "Город", placeholder: "Санкт-Петербург" },
-    { key: "comment", label: "Комментарий", placeholder: "Какая пицца интересна и как с вами связаться" },
+    { key: "comment", label: "Что интересует", placeholder: "Позиции, объём, нужные документы" },
   ];
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  // Приёмника заявок пока нет: форма собирает письмо и открывает почтовый клиент.
+  // Прямые телефон и почта продублированы рядом — на случай, если mailto не настроен.
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formData.name.trim() || !formData.contact.trim()) {
-      setSubmitState("error");
-      setSubmitMessage("Укажите имя или компанию и контакт для связи.");
+    if (!formData.company.trim() || !formData.contact.trim()) {
+      setError("Укажите компанию и контакт для связи.");
       return;
     }
 
-    if (!orderApiUrl) {
-      setSubmitState("error");
-      setSubmitMessage("Форма еще не подключена: не задан адрес сервера заявок.");
-      return;
-    }
+    setError("");
 
-    setSubmitState("submitting");
-    setSubmitMessage("");
+    const subject = `Запрос по продукту — ${formData.company.trim()}`;
+    const body = [
+      `Компания или сеть: ${formData.company.trim()}`,
+      `Контакт: ${formData.contact.trim()}`,
+      formData.city.trim() ? `Город: ${formData.city.trim()}` : "",
+      formData.comment.trim() ? `Запрос: ${formData.comment.trim()}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-    try {
-      const response = await fetch(orderApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          contact: formData.contact.trim(),
-          city: formData.city.trim(),
-          comment: formData.comment.trim(),
-          source: "mazza-site",
-          page: typeof window !== "undefined" ? window.location.href : "",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      setFormData({
-        name: "",
-        contact: "",
-        city: "",
-        comment: "",
-      });
-      setSubmitState("success");
-      setSubmitMessage("Заявка отправлена. Мы свяжемся с вами в ближайшее время.");
-    } catch (error) {
-      console.error("Order request failed", error);
-      setSubmitState("error");
-      setSubmitMessage("Не удалось отправить заявку. Попробуйте еще раз или напишите нам напрямую.");
-    }
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -334,11 +348,26 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
               borderBottom: "1px solid rgba(17,19,21,0.12)",
             }}
           >
-            <div style={offerMetaStyle}>contact / pizza pizza</div>
-            <div style={offerTitleStyle}>Оставьте заявку, и мы свяжемся</div>
+            <div style={offerMetaStyle}>contact</div>
+            <div style={offerTitleStyle}>Напишите нам</div>
             <div style={offerTextStyle}>
-              Если хотите обсудить поставку, ассортимент или запуск, оставьте
-              контакт. Заявка уйдет напрямую в рабочий канал команды.
+              Отправим состав, характеристики и документы по позициям. Форма
+              соберёт письмо и откроет вашу почту — или пишите напрямую.
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: isMobile ? 10 : 18,
+                marginTop: 16,
+              }}
+            >
+              <a href={CONTACT_PHONE_HREF} style={directContactStyle}>
+                {CONTACT_PHONE}
+              </a>
+              <a href={`mailto:${CONTACT_EMAIL}`} style={directContactStyle}>
+                {CONTACT_EMAIL}
+              </a>
             </div>
           </div>
 
@@ -401,16 +430,16 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
               }}
             >
               <button type="submit" style={submitStyle}>
-                {submitState === "submitting" ? "Отправка..." : submitLabel}
+                {submitLabel}
               </button>
               <div
                 style={{
                   ...offerTextStyle,
                   marginTop: 0,
-                  color: submitState === "error" ? "#b42318" : "#111315",
+                  color: error ? "#b42318" : "#111315",
                 }}
               >
-                {submitMessage || "Ответим по заявке без длинной переписки и лишних шагов."}
+                {error || "Отвечаем в течение рабочего дня."}
               </div>
             </div>
           </div>
@@ -516,6 +545,32 @@ const accentInputStyle: CSSProperties = {
   outline: "none",
   resize: "vertical",
   borderRadius: 0,
+};
+
+const specLabelStyle: CSSProperties = {
+  fontFamily: "'LT Amber', sans-serif",
+  fontSize: 10,
+  lineHeight: 1.5,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: "rgba(17,19,21,0.72)",
+};
+
+const specValueStyle: CSSProperties = {
+  fontFamily: "'LT Amber', sans-serif",
+  fontSize: 13,
+  lineHeight: 1.6,
+  color: "#111315",
+};
+
+const directContactStyle: CSSProperties = {
+  fontFamily: "'LT Amber', sans-serif",
+  fontSize: 14,
+  lineHeight: 1.4,
+  color: "#111315",
+  textDecoration: "none",
+  borderBottom: "1px solid rgba(17,19,21,0.28)",
+  paddingBottom: 2,
 };
 
 const offerMetaStyle: CSSProperties = {

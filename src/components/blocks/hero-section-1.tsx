@@ -6,6 +6,13 @@ import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { cn } from "@/lib/utils";
 import { getRouteHref } from "@/app/routes";
+import {
+  BAKE_INSTRUCTION,
+  BRAND_NAME,
+  NET_WEIGHT,
+  PRODUCTION_CITY,
+  SHELF_LIFE,
+} from "@/content/brand";
 
 const HeroPizzaModel = React.lazy(() =>
   import("@/components/blocks/hero-pizza-model").then((module) => ({
@@ -35,6 +42,7 @@ const transitionVariants = {
 
 const menuItems = [
   { name: "Ассортимент", href: "#assortment" },
+  { name: "Состав", href: "#specs" },
   { name: "Доставка", href: getRouteHref("/delivery") },
   { name: "Сертификаты", href: getRouteHref("/certificates") },
   { name: "Контакты", href: getRouteHref("/contacts") },
@@ -84,33 +92,41 @@ export function HeroSection() {
             />
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
-                <AnimatedGroup variants={transitionVariants} className="text-left">
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: 0.06 }}
-                    className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.76)] px-4 py-1.5"
-                  >
+                {/* Без entrance-анимации: первый экран должен быть читаемым
+                    сразу в отрендеренном HTML, до загрузки и гидрации JS. */}
+                <div className="text-left">
+                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.76)] px-4 py-1.5">
                     <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-[var(--ink)] md:text-[0.9rem]">
-                      Пицца для бизнеса
+                      Замороженная римская пицца
                     </span>
-                  </motion.div>
+                  </div>
                   <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-[var(--ink)] md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
-                    <span className="type-logo inline-block">Мацца</span>
+                    <span className="type-logo inline-block">{BRAND_NAME}</span>
                   </h1>
                   <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[var(--ink)] md:text-sm md:leading-[1.4]">
-                    Производим замороженную пиццу для кафе, ритейла, доставки и
-                    других B2B-сценариев. Стабильный продукт, понятная поставка
-                    и локальное производство в Санкт-Петербурге.
+                    Римская пицца ручной работы: тесто длительного холодного
+                    брожения, ручная формовка, заморозка сразу после выпечки.
+                    Производство — {PRODUCTION_CITY}.
                   </p>
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--ink)] md:text-[12px]">
+                    <li>{NET_WEIGHT}</li>
+                    <li aria-hidden className="opacity-40">
+                      /
+                    </li>
+                    <li>{SHELF_LIFE}</li>
+                    <li aria-hidden className="opacity-40">
+                      /
+                    </li>
+                    <li>допекается {BAKE_INSTRUCTION}</li>
+                  </ul>
                   <div className="mt-4 flex justify-start">
                     <Button asChild size="sm">
                       <a href="#order">
-                        <span>Оставить заявку</span>
+                        <span>Написать нам</span>
                       </a>
                     </Button>
                   </div>
-                </AnimatedGroup>
+                </div>
 
                 <AnimatedGroup
                   variants={{
@@ -131,7 +147,9 @@ export function HeroSection() {
                       <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
                       {canRender3d ? (
                         <React.Suspense fallback={<div className="h-full w-full" />}>
-                          <HeroPizzaModel targetSize={3.2} />
+                          {/* Только лёгкая модель: детальная весит 5,2 МБ и
+                              задерживает первый экран на мобильном. */}
+                          <HeroPizzaModel lowResOnly targetSize={3.2} />
                         </React.Suspense>
                       ) : (
                         <div className="h-full w-full" />
@@ -154,7 +172,7 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
   const [activeSection, setActiveSection] = React.useState<string>("#top");
 
   React.useEffect(() => {
-    const sections = ["top", "assortment", "order"];
+    const sections = ["top", "assortment", "specs", "order"];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -266,7 +284,7 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                   >
                     <Button asChild size="sm">
                       <a href="#order">
-                        <span>Оставить заявку</span>
+                        <span>Написать нам</span>
                       </a>
                     </Button>
                   </motion.div>
@@ -293,7 +311,7 @@ const Logo = ({ isVisible }: { isVisible: boolean }) => {
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.24, ease: "easeOut" }}
           >
-            Мацца
+            {BRAND_NAME}
           </motion.span>
         ) : null}
       </AnimatePresence>
