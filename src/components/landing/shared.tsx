@@ -45,11 +45,11 @@ function Marquee({ text }: { text: string }) {
   return (
     <div
       style={{
-        background: C.bg,
+        background: "var(--acid)",
         overflow: "hidden",
         borderTop: `1px solid ${C.black}`,
         borderBottom: `1px solid ${C.black}`,
-        padding: "8px 0",
+        padding: "10px 0",
       }}
     >
       <div

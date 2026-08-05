@@ -5,9 +5,12 @@ import { useTheme } from 'next-themes';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'>;
+type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'> & {
+  /** Цвет точек в формате [r, g, b] 0..1. По умолчанию — по теме. */
+  dotColor?: [number, number, number];
+};
 
-export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
+export function DottedSurface({ className, dotColor, ...props }: DottedSurfaceProps) {
   const { theme = 'light' } = useTheme();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,7 +62,9 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
         const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
         positions.push(x, y, z);
-        if (theme === 'dark') {
+        if (dotColor) {
+          colors.push(dotColor[0], dotColor[1], dotColor[2]);
+        } else if (theme === 'dark') {
           colors.push(200 / 255, 200 / 255, 200 / 255);
         } else {
           colors.push(0, 0, 0);

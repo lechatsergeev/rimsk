@@ -1,6 +1,7 @@
 import React, { type CSSProperties, type FormEvent, type ReactNode, useState } from "react";
 import { motion } from "motion/react";
 import { LandingPageShell, useBreakpoint } from "@/components/landing/shared";
+import { useMounted } from "@/lib/use-mounted";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -44,10 +45,12 @@ const sectionMotion = {
 const paperTexture =
   "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.48), transparent 28%), radial-gradient(circle at 80% 0%, rgba(0,0,0,0.03), transparent 32%), repeating-linear-gradient(0deg, rgba(0,0,0,0.018) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 34px), linear-gradient(180deg, #f2ebdf 0%, #eee4d6 100%)";
 
+// Холодные подложки: тёплая корка на них читается заметно сильнее,
+// чем на прежних бежевых градиентах.
 const cardAccents = [
-  "radial-gradient(circle at 24% 22%, rgba(217,92,60,0.2), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(247,240,232,0.96) 100%)",
-  "radial-gradient(circle at 78% 12%, rgba(108,100,90,0.18), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(241,236,228,0.96) 100%)",
-  "radial-gradient(circle at 50% 0%, rgba(17,19,21,0.08), transparent 32%), linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(244,239,232,0.96) 100%)",
+  "radial-gradient(circle at 26% 18%, rgba(27,35,230,0.22), transparent 46%), linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%)",
+  "radial-gradient(circle at 74% 14%, rgba(216,255,60,0.32), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
+  "radial-gradient(circle at 50% 6%, rgba(13,18,121,0.24), transparent 46%), linear-gradient(180deg, #d5e9fb 0%, #aed3f2 100%)",
 ];
 
 export function SegmentRedesignPage(props: SegmentRedesignProps) {
@@ -155,6 +158,7 @@ function SwissSection({
 
 function LineupCards({ items }: { items: LineupItem[] }) {
   const { isMobile } = useBreakpoint();
+  const mounted = useMounted();
 
   return (
     <div
@@ -190,7 +194,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
           >
             <div style={cardMetaRowStyle}>
               <span style={metaPillStyle}>{item.sku}</span>
-              <span style={metaPillStyle}>{NET_WEIGHT}</span>
+              <span style={weightPillStyle}>{NET_WEIGHT}</span>
             </div>
             <div
               style={{
@@ -198,14 +202,19 @@ function LineupCards({ items }: { items: LineupItem[] }) {
                 height: isMobile ? 160 : 190,
               }}
             >
-              <React.Suspense fallback={<div style={{ width: "100%", height: "100%" }} />}>
-                <MiniPizzaModel
-                  lowResOnly={true}
-                  targetSize={2.6}
-                  lowResModelSrc={item.modelSrc}
-                  className="relative z-[2] h-full w-full touch-none"
-                />
-              </React.Suspense>
+              {/* Как и в шапке: модель монтируется после гидрации. */}
+              {mounted ? (
+                <React.Suspense fallback={<div style={{ width: "100%", height: "100%" }} />}>
+                  <MiniPizzaModel
+                    lowResOnly={true}
+                    targetSize={2.6}
+                    lowResModelSrc={item.modelSrc}
+                    className="relative z-[2] h-full w-full touch-none"
+                  />
+                </React.Suspense>
+              ) : (
+                <div style={{ width: "100%", height: "100%" }} />
+              )}
             </div>
           </div>
 
@@ -335,7 +344,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
         <div
           style={{
             background:
-              "radial-gradient(circle at 18% 18%, rgba(255,255,255,0.22), transparent 28%), radial-gradient(circle at 82% 0%, rgba(217,92,60,0.16), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(248,244,238,0.9) 100%)",
+              "radial-gradient(circle at 18% 18%, rgba(255,255,255,0.4), transparent 28%), radial-gradient(circle at 82% 0%, rgba(27,35,230,0.14), transparent 36%), linear-gradient(180deg, #ffffff 0%, #e8f3ff 100%)",
             border: "1px solid rgba(17,19,21,0.14)",
             borderRadius: 28,
             boxShadow: "0 24px 60px rgba(17,19,21,0.08)",
@@ -494,6 +503,21 @@ const metaPillStyle: CSSProperties = {
   color: "#111315",
 };
 
+const weightPillStyle: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "7px 10px",
+  borderRadius: 999,
+  border: "1px solid #111315",
+  background: "var(--acid)",
+  fontFamily: "'LT Amber', sans-serif",
+  fontSize: 10,
+  lineHeight: 1.2,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  color: "#111315",
+};
+
 const chipStyle: CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
@@ -511,8 +535,8 @@ const chipStyle: CSSProperties = {
 
 const submitStyle: CSSProperties = {
   border: "1px solid #111315",
-  background: "#111315",
-  color: "#ffffff",
+  background: "var(--acid)",
+  color: "#111315",
   padding: "12px 16px",
   borderRadius: 999,
   fontFamily: "'LT Amber', sans-serif",
@@ -553,7 +577,7 @@ const specLabelStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "rgba(17,19,21,0.72)",
+  color: "var(--ultra)",
 };
 
 const specValueStyle: CSSProperties = {
@@ -579,7 +603,7 @@ const offerMetaStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "#d95c3c",
+  color: "var(--ultra)",
 };
 
 const offerTitleStyle: CSSProperties = {

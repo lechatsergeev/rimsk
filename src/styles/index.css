@@ -15,6 +15,14 @@
   --board: #ffffff;
   --line: #a8a39a;
   --sheet: #ffffff;
+
+  /* Холодная палитра: ультрамарин — дополнительный к тёплой корке,
+     и единственный цвет, которым заморозка себя никогда не называет.
+     Кислотный лайм — короткие акценты, ничего крупного. */
+  --ultra: #1b23e6;
+  --ultra-deep: #0d1279;
+  --frost: #c9e9ff;
+  --acid: #d8ff3c;
   --border-print: 1px solid #1a1d20;
   --border-soft: 1px solid #a8a39a;
   font-family: 'LT Amber', sans-serif;

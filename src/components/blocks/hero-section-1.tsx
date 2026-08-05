@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { cn } from "@/lib/utils";
+import { useMounted } from "@/lib/use-mounted";
 import { getRouteHref } from "@/app/routes";
 import {
   BAKE_INSTRUCTION,
@@ -49,8 +50,8 @@ const menuItems = [
 ];
 
 export function HeroSection() {
-  const canRender3d = typeof window !== "undefined";
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const mounted = useMounted();
   const heroSectionRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
@@ -79,36 +80,40 @@ export function HeroSection() {
           <div className="relative overflow-hidden pt-15 md:pt-18">
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-white"
+              className="absolute inset-0 z-0 bg-[var(--ultra)]"
+            />
+            {/* Холодное свечение за продуктом: отделяет тёплую корку от поля. */}
+            <div
+              aria-hidden
+              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(201,233,255,0.28),transparent_46%)]"
+            />
+            <DottedSurface
+              className="z-[1] opacity-[0.4]"
+              dotColor={[1, 1, 1]}
             />
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_42%,rgba(0,0,0,0.04),transparent_38%)]"
-            />
-            <DottedSurface className="z-[1] opacity-[0.24]" />
-            <div
-              aria-hidden
-              className="absolute inset-0 z-0 [background:linear-gradient(180deg,rgba(255,255,255,0.24)_0%,rgba(255,255,255,0.86)_100%)]"
+              className="absolute inset-0 z-0 [background:linear-gradient(180deg,transparent_0%,rgba(13,18,121,0.6)_100%)]"
             />
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
                 {/* Без entrance-анимации: первый экран должен быть читаемым
                     сразу в отрендеренном HTML, до загрузки и гидрации JS. */}
                 <div className="text-left">
-                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--line)] bg-[rgba(255,255,255,0.76)] px-4 py-1.5">
-                    <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-[var(--ink)] md:text-[0.9rem]">
+                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.1)] px-4 py-1.5">
+                    <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-white md:text-[0.9rem]">
                       Замороженная римская пицца
                     </span>
                   </div>
-                  <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-[var(--ink)] md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
+                  <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-white md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
                     <span className="type-logo inline-block">{BRAND_NAME}</span>
                   </h1>
-                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[var(--ink)] md:text-sm md:leading-[1.4]">
+                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[rgba(255,255,255,0.86)] md:text-sm md:leading-[1.4]">
                     Римская пицца ручной работы: тесто длительного холодного
                     брожения, ручная формовка, заморозка сразу после выпечки.
                     Производство — {PRODUCTION_CITY}.
                   </p>
-                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--ink)] md:text-[12px]">
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--acid)] md:text-[12px]">
                     <li>{NET_WEIGHT}</li>
                     <li aria-hidden className="opacity-40">
                       /
@@ -120,7 +125,11 @@ export function HeroSection() {
                     <li>допекается {BAKE_INSTRUCTION}</li>
                   </ul>
                   <div className="mt-4 flex justify-start">
-                    <Button asChild size="sm">
+                    <Button
+                      asChild
+                      size="sm"
+                      className="bg-[var(--acid)] text-[var(--ink)] hover:bg-[var(--acid)]/85"
+                    >
                       <a href="#order">
                         <span>Написать нам</span>
                       </a>
@@ -144,12 +153,17 @@ export function HeroSection() {
                 >
                   <div className="flex flex-col items-start gap-4 md:items-end md:gap-5">
                     <div className="relative h-[185px] w-full max-w-[420px] self-center md:h-[320px] md:max-w-[540px] md:self-auto lg:h-[360px] lg:max-w-[600px]">
-                      <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_52%,rgba(0,0,0,0.03),transparent_56%)]" />
-                      {canRender3d ? (
+                      {/* Контактная тень: без неё продукт читается как
+                          экспонат в невесомости, а не как предмет. */}
+                      <div className="pointer-events-none absolute bottom-[10%] left-1/2 h-[9%] w-[54%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(5,8,60,0.6),transparent_70%)] blur-[7px]" />
+                      {/* Модель подключается только после гидрации: иначе
+                          структура расходится с пререндером и React
+                          перерисовывает страницу заново.
+                          Прогрессивная загрузка: лёгкая модель показывается
+                          сразу, детальная подменяет её фоном, когда дойдёт. */}
+                      {mounted ? (
                         <React.Suspense fallback={<div className="h-full w-full" />}>
-                          {/* Только лёгкая модель: детальная весит 5,2 МБ и
-                              задерживает первый экран на мобильном. */}
-                          <HeroPizzaModel lowResOnly targetSize={3.2} />
+                          <HeroPizzaModel targetSize={3.1} />
                         </React.Suspense>
                       ) : (
                         <div className="h-full w-full" />
@@ -222,7 +236,10 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                 aria-expanded={menuState}
                 aria-controls={mobileMenuId}
                 aria-label={menuState ? "Закрыть меню" : "Открыть меню"}
-                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                className={cn(
+                  "relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden",
+                  isScrolled ? "text-[var(--ink)]" : "text-white"
+                )}
               >
                 <Menu className="m-auto size-6 duration-200 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0" />
                 <X className="absolute inset-0 m-auto size-6 scale-0 opacity-0 duration-200 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100" />
@@ -236,8 +253,8 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                     <a
                       href={item.href}
                       className={cn(
-                        "block text-[11px] uppercase tracking-[0.12em] text-[var(--ink)] duration-150 hover:text-[var(--ink)]",
-                        activeSection === item.href ? "opacity-100" : "opacity-100"
+                        "block text-[11px] uppercase tracking-[0.12em] duration-150",
+                        isScrolled ? "text-[var(--ink)]" : "text-white"
                       )}
                     >
                       <span>{item.name}</span>
