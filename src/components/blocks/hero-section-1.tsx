@@ -3,7 +3,6 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
-import { DottedSurface } from "@/components/ui/dotted-surface";
 import { cn } from "@/lib/utils";
 import { useMounted } from "@/lib/use-mounted";
 import { getRouteHref } from "@/app/routes";
@@ -86,10 +85,6 @@ export function HeroSection() {
             <div
               aria-hidden
               className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(201,233,255,0.28),transparent_46%)]"
-            />
-            <DottedSurface
-              className="z-[1] opacity-[0.4]"
-              dotColor={[1, 1, 1]}
             />
             <div
               aria-hidden
