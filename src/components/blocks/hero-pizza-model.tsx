@@ -96,10 +96,6 @@ export function HeroPizzaModel({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    // Плёночная тональная компрессия: блики на сыре перестают выбиваться
-    // в чистый белый, фактура в светах сохраняется.
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.12;
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
@@ -118,22 +114,19 @@ export function HeroPizzaModel({
     controls.minPolarAngle = Math.PI / 2.5;
     controls.maxPolarAngle = Math.PI / 1.65;
 
-    // Тёпло-холодный раскол. Низкий рассеянный возвращает объём: при
-    // высоком корка становится плоской. Контровой — холодный, цвета поля,
-    // чтобы продукт был освещён своей сценой, а не наклеен на неё.
-    const ambientLight = new THREE.AmbientLight(0xdfefff, 0.85);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff0d8, 3.2);
-    keyLight.position.set(4, 5.5, 5);
+    const keyLight = new THREE.DirectionalLight(0xfff1dc, 2.8);
+    keyLight.position.set(4, 5, 6);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x4fe6ff, 2.4);
-    rimLight.position.set(-5, 2.5, -4.5);
+    const rimLight = new THREE.DirectionalLight(0xff8a47, 1.6);
+    rimLight.position.set(-5, 2, -4);
     scene.add(rimLight);
 
-    const fillLight = new THREE.PointLight(0x9fd8ff, 0.9, 30);
-    fillLight.position.set(0, -1.4, 4);
+    const fillLight = new THREE.PointLight(0xf3d7b4, 1.2, 30);
+    fillLight.position.set(0, -1, 4);
     scene.add(fillLight);
 
     const group = new THREE.Group();
