@@ -49,7 +49,7 @@ const paperTexture = "var(--paper)";
 // чем на прежних бежевых градиентах.
 const cardAccents = [
   "radial-gradient(circle at 26% 18%, rgba(127,150,255,0.42), transparent 46%), linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%)",
-  "radial-gradient(circle at 74% 14%, rgba(229,99,153,0.28), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
+  "radial-gradient(circle at 74% 14%, rgba(247,133,203,0.34), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
   "radial-gradient(circle at 50% 6%, rgba(13,18,121,0.24), transparent 46%), linear-gradient(180deg, #d5e9fb 0%, #aed3f2 100%)",
 ];
 
