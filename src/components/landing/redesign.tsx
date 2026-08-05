@@ -49,7 +49,7 @@ const paperTexture =
 // чем на прежних бежевых градиентах.
 const cardAccents = [
   "radial-gradient(circle at 26% 18%, rgba(27,35,230,0.22), transparent 46%), linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%)",
-  "radial-gradient(circle at 74% 14%, rgba(216,255,60,0.32), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
+  "radial-gradient(circle at 74% 14%, rgba(255,61,143,0.26), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
   "radial-gradient(circle at 50% 6%, rgba(13,18,121,0.24), transparent 46%), linear-gradient(180deg, #d5e9fb 0%, #aed3f2 100%)",
 ];
 
@@ -515,7 +515,7 @@ const weightPillStyle: CSSProperties = {
   lineHeight: 1.2,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
-  color: "#ffffff",
+  color: "#111315",
 };
 
 const chipStyle: CSSProperties = {
@@ -536,7 +536,7 @@ const chipStyle: CSSProperties = {
 const submitStyle: CSSProperties = {
   border: "1px solid var(--signal)",
   background: "var(--signal)",
-  color: "#ffffff",
+  color: "#111315",
   padding: "12px 16px",
   borderRadius: 999,
   fontFamily: "'LT Amber', sans-serif",

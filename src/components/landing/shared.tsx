@@ -58,7 +58,7 @@ function Marquee({ text }: { text: string }) {
       >
         <span
           style={{
-            color: C.white,
+            color: C.black,
             fontFamily: "'LT Amber', sans-serif",
             fontWeight: 400,
             fontSize: "12px",

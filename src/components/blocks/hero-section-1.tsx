@@ -130,7 +130,7 @@ export function HeroSection() {
                     <Button
                       asChild
                       size="sm"
-                      className="bg-[var(--signal)] text-white hover:bg-[var(--signal)]/85"
+                      className="bg-[var(--signal)] text-[var(--ink)] hover:bg-[var(--signal)]/85"
                     >
                       <a href="#order">
                         <span>Написать нам</span>
