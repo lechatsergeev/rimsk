@@ -113,7 +113,9 @@ export function HeroSection() {
                     брожения, ручная формовка, заморозка сразу после выпечки.
                     Производство — {PRODUCTION_CITY}.
                   </p>
-                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--signal)] md:text-[12px]">
+                  {/* Берри по ультрамарину вибрирует в мелком кегле —
+                      строка фактов идёт ледяным, акцент живёт в плашках. */}
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--frost)] md:text-[12px]">
                     <li>{NET_WEIGHT}</li>
                     <li aria-hidden className="opacity-40">
                       /
@@ -128,7 +130,7 @@ export function HeroSection() {
                     <Button
                       asChild
                       size="sm"
-                      className="bg-[var(--signal)] text-[var(--ink)] hover:bg-[var(--signal)]/85"
+                      className="bg-[var(--signal)] text-white hover:bg-[var(--signal)]/85"
                     >
                       <a href="#order">
                         <span>Написать нам</span>

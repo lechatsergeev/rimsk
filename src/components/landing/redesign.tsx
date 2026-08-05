@@ -508,14 +508,14 @@ const weightPillStyle: CSSProperties = {
   alignItems: "center",
   padding: "7px 10px",
   borderRadius: 999,
-  border: "1px solid #111315",
+  border: "1px solid var(--signal)",
   background: "var(--signal)",
   fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.2,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
-  color: "#111315",
+  color: "#ffffff",
 };
 
 const chipStyle: CSSProperties = {
@@ -534,9 +534,9 @@ const chipStyle: CSSProperties = {
 };
 
 const submitStyle: CSSProperties = {
-  border: "1px solid #111315",
+  border: "1px solid var(--signal)",
   background: "var(--signal)",
-  color: "#111315",
+  color: "#ffffff",
   padding: "12px 16px",
   borderRadius: 999,
   fontFamily: "'LT Amber', sans-serif",
@@ -603,7 +603,7 @@ const offerMetaStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "var(--ultra)",
+  color: "var(--signal)",
 };
 
 const offerTitleStyle: CSSProperties = {
