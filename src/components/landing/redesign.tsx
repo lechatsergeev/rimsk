@@ -510,7 +510,7 @@ const accentLabelStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "rgba(17,19,21,0.72)",
+  color: "#111315",
 };
 
 const accentInputStyle: CSSProperties = {
@@ -534,7 +534,7 @@ const specLabelStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "var(--ultra)",
+  color: "#111315",
 };
 
 const specValueStyle: CSSProperties = {
@@ -560,7 +560,7 @@ const offerMetaStyle: CSSProperties = {
   lineHeight: 1.5,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "var(--signal)",
+  color: "#111315",
 };
 
 const offerTitleStyle: CSSProperties = {

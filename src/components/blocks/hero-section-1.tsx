@@ -104,22 +104,16 @@ export function HeroSection() {
                   <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-white md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
                     <span className="type-logo inline-block">{BRAND_NAME}</span>
                   </h1>
-                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[rgba(255,255,255,0.86)] md:text-sm md:leading-[1.4]">
+                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-white md:text-sm md:leading-[1.4]">
                     Римская пицца ручной работы: тесто длительного холодного
                     брожения, ручная формовка, заморозка сразу после выпечки.
                     Производство — {PRODUCTION_CITY}.
                   </p>
-                  {/* Берри по ультрамарину вибрирует в мелком кегле —
-                      строка фактов идёт ледяным, акцент живёт в плашках. */}
-                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--frost)] md:text-[12px]">
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-white md:text-[12px]">
                     <li>{NET_WEIGHT}</li>
-                    <li aria-hidden className="opacity-40">
-                      /
-                    </li>
+                    <li aria-hidden>/</li>
                     <li>{SHELF_LIFE}</li>
-                    <li aria-hidden className="opacity-40">
-                      /
-                    </li>
+                    <li aria-hidden>/</li>
                     <li>допекается {BAKE_INSTRUCTION}</li>
                   </ul>
                   <div className="mt-4 flex justify-start">

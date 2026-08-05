@@ -56,7 +56,7 @@ function Marquee({ text }: { text: string }) {
   return (
     <div
       style={{
-        background: "var(--signal)",
+        background: "var(--sky)",
         overflow: "hidden",
         borderTop: `1px solid ${C.black}`,
         borderBottom: `1px solid ${C.black}`,
