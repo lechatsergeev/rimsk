@@ -509,7 +509,7 @@ const weightPillStyle: CSSProperties = {
   padding: "7px 10px",
   borderRadius: 999,
   border: "1px solid #111315",
-  background: "var(--acid)",
+  background: "var(--signal)",
   fontFamily: "'LT Amber', sans-serif",
   fontSize: 10,
   lineHeight: 1.2,
@@ -535,7 +535,7 @@ const chipStyle: CSSProperties = {
 
 const submitStyle: CSSProperties = {
   border: "1px solid #111315",
-  background: "var(--acid)",
+  background: "var(--signal)",
   color: "#111315",
   padding: "12px 16px",
   borderRadius: 999,

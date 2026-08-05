@@ -113,7 +113,7 @@ export function HeroSection() {
                     брожения, ручная формовка, заморозка сразу после выпечки.
                     Производство — {PRODUCTION_CITY}.
                   </p>
-                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--acid)] md:text-[12px]">
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--signal)] md:text-[12px]">
                     <li>{NET_WEIGHT}</li>
                     <li aria-hidden className="opacity-40">
                       /
@@ -128,7 +128,7 @@ export function HeroSection() {
                     <Button
                       asChild
                       size="sm"
-                      className="bg-[var(--acid)] text-[var(--ink)] hover:bg-[var(--acid)]/85"
+                      className="bg-[var(--signal)] text-[var(--ink)] hover:bg-[var(--signal)]/85"
                     >
                       <a href="#order">
                         <span>Написать нам</span>
@@ -153,9 +153,12 @@ export function HeroSection() {
                 >
                   <div className="flex flex-col items-start gap-4 md:items-end md:gap-5">
                     <div className="relative h-[185px] w-full max-w-[420px] self-center md:h-[320px] md:max-w-[540px] md:self-auto lg:h-[360px] lg:max-w-[600px]">
-                      {/* Контактная тень: без неё продукт читается как
-                          экспонат в невесомости, а не как предмет. */}
-                      <div className="pointer-events-none absolute bottom-[10%] left-1/2 h-[9%] w-[54%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(5,8,60,0.6),transparent_70%)] blur-[7px]" />
+                      {/* Контактная тень в два слоя: широкий мягкий ореол
+                          сажает объект в сцену, плотное ядро под центром даёт
+                          точку касания. Без них продукт читается как экспонат
+                          в невесомости, а не как предмет. */}
+                      <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-[16%] w-[74%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(4,7,52,0.42),transparent_72%)] blur-[16px]" />
+                      <div className="pointer-events-none absolute bottom-[11%] left-1/2 h-[7%] w-[42%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(3,5,40,0.62),transparent_66%)] blur-[6px]" />
                       {/* Модель подключается только после гидрации: иначе
                           структура расходится с пререндером и React
                           перерисовывает страницу заново.
