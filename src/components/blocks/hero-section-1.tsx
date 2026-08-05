@@ -81,10 +81,11 @@ export function HeroSection() {
               aria-hidden
               className="absolute inset-0 z-0 bg-[var(--ultra)]"
             />
-            {/* Холодное свечение за продуктом: отделяет тёплую корку от поля. */}
+            {/* Холодное свечение за продуктом: отделяет тёплую корку от поля.
+                На средней ступени синего читается как атмосфера, а не дымка. */}
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(201,233,255,0.28),transparent_46%)]"
+              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(127,150,255,0.42),transparent_48%)]"
             />
             <div
               aria-hidden
@@ -95,7 +96,7 @@ export function HeroSection() {
                 {/* Без entrance-анимации: первый экран должен быть читаемым
                     сразу в отрендеренном HTML, до загрузки и гидрации JS. */}
                 <div className="text-left">
-                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[rgba(255,255,255,0.5)] bg-[rgba(255,255,255,0.1)] px-4 py-1.5">
+                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--sky)] bg-[rgba(127,150,255,0.16)] px-4 py-1.5">
                     <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-white md:text-[0.9rem]">
                       Замороженная римская пицца
                     </span>
