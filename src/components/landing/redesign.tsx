@@ -1,6 +1,6 @@
 import React, { type CSSProperties, type FormEvent, type ReactNode, useState } from "react";
 import { motion } from "motion/react";
-import { LandingPageShell, useBreakpoint } from "@/components/landing/shared";
+import { LandingPageShell } from "@/components/landing/shared";
 import { useMounted } from "@/lib/use-mounted";
 import {
   CONTACT_EMAIL,
@@ -102,15 +102,13 @@ function SwissSection({
   description: string;
   children: ReactNode;
 }) {
-  const { isMobile } = useBreakpoint();
-
   return (
     <section
       id={id}
+      className="swiss-section"
       style={{
         background: paperTexture,
         borderTop: "1px solid rgba(20,20,20,0.14)",
-        padding: isMobile ? "28px 20px 0" : "34px 48px 0",
       }}
     >
       <div
@@ -121,35 +119,14 @@ function SwissSection({
       >
         <motion.div {...sectionMotion} style={{ minWidth: 0 }}>
           <div style={ruleStyle} />
-          <div
-            style={{
-              marginTop: 14,
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "88px minmax(0, 1fr)",
-              columnGap: isMobile ? 0 : 24,
-              rowGap: 14,
-            }}
-          >
+          <div className="swiss-head">
             <div style={indexStyle}>{index}</div>
             <div>
-              <h2
-                style={{
-                  margin: 0,
-                  maxWidth: "12ch",
-                  fontFamily: "'LT Amber', sans-serif",
-                  fontWeight: 400,
-                  fontSize: isMobile ? 34 : 60,
-                  lineHeight: 0.86,
-                  letterSpacing: "-0.03em",
-                  color: "#111315",
-                }}
-              >
-                {title}
-              </h2>
+              <h2 className="swiss-title">{title}</h2>
               {description ? <p style={descriptionStyle}>{description}</p> : null}
             </div>
           </div>
-          <div style={{ marginTop: isMobile ? 20 : 28 }}>{children}</div>
+          <div className="swiss-body">{children}</div>
         </motion.div>
       </div>
     </section>
@@ -157,17 +134,10 @@ function SwissSection({
 }
 
 function LineupCards({ items }: { items: LineupItem[] }) {
-  const { isMobile } = useBreakpoint();
   const mounted = useMounted();
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
-        gap: isMobile ? 16 : 18,
-      }}
-    >
+    <div className="lineup-grid">
       {items.map((item, index) => (
         <motion.article
           key={item.sku}
@@ -186,7 +156,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
           <div
             style={{
               position: "relative",
-              minHeight: isMobile ? 220 : 260,
+              minHeight: "clamp(220px, 24vw, 260px)",
               padding: 18,
               background: cardAccents[index % cardAccents.length],
               borderBottom: "1px solid rgba(17,19,21,0.12)",
@@ -199,7 +169,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
             <div
               style={{
                 marginTop: 10,
-                height: isMobile ? 160 : 190,
+                height: "clamp(160px, 18vw, 190px)",
               }}
             >
               {/* Как и в шапке: модель монтируется после гидрации. */}
@@ -218,13 +188,13 @@ function LineupCards({ items }: { items: LineupItem[] }) {
             </div>
           </div>
 
-          <div style={{ padding: isMobile ? 18 : 22 }}>
+          <div style={{ padding: "clamp(18px, 2vw, 22px)" }}>
             <h3
               style={{
                 margin: 0,
                 fontFamily: "'LT Amber', sans-serif",
                 fontWeight: 400,
-                fontSize: isMobile ? 26 : 32,
+                fontSize: "clamp(26px, 3vw, 32px)",
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
                 color: "#111315",
@@ -255,8 +225,6 @@ function LineupCards({ items }: { items: LineupItem[] }) {
 }
 
 function SpecsBlock() {
-  const { isMobile } = useBreakpoint();
-
   return (
     <div
       style={{
@@ -265,18 +233,14 @@ function SpecsBlock() {
         overflow: "hidden",
         background: "#fffdf9",
         boxShadow: "0 18px 44px rgba(17,19,21,0.08)",
-        marginBottom: isMobile ? 24 : 32,
+        marginBottom: "clamp(24px, 3vw, 32px)",
       }}
     >
       {PRODUCT_SPECS.map((spec, index) => (
         <div
           key={spec.label}
+          className="spec-row"
           style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "180px minmax(0, 1fr)",
-            columnGap: 24,
-            rowGap: 6,
-            padding: isMobile ? "14px 18px" : "16px 24px",
             borderTop: index === 0 ? "none" : "1px solid rgba(17,19,21,0.1)",
           }}
         >
@@ -289,7 +253,6 @@ function SpecsBlock() {
 }
 
 function OrderBlock({ submitLabel }: { submitLabel: string }) {
-  const { isMobile } = useBreakpoint();
   const [formData, setFormData] = useState({
     company: "",
     contact: "",
@@ -332,13 +295,13 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
   };
 
   return (
-    <div style={{ borderTop: "1px solid rgba(20,20,20,0.16)", paddingTop: isMobile ? 12 : 18 }}>
+    <div style={{ borderTop: "1px solid rgba(20,20,20,0.16)", paddingTop: "clamp(12px, 1.6vw, 18px)" }}>
       <form
         onSubmit={handleSubmit}
         style={{
           maxWidth: 920,
           margin: "0 auto",
-          padding: isMobile ? "0 0 24px" : "0 0 32px",
+          padding: "0 0 clamp(24px, 3vw, 32px)",
         }}
       >
         <div
@@ -353,7 +316,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
         >
           <div
             style={{
-              padding: isMobile ? "18px 18px 16px" : "26px 28px 22px",
+              padding: "clamp(18px, 2.4vw, 26px) clamp(18px, 2.6vw, 28px) clamp(16px, 2vw, 22px)",
               borderBottom: "1px solid rgba(17,19,21,0.12)",
             }}
           >
@@ -367,7 +330,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: isMobile ? 10 : 18,
+                gap: "clamp(10px, 1.4vw, 18px)",
                 marginTop: 16,
               }}
             >
@@ -381,13 +344,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
           </div>
 
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "repeat(2, minmax(0, 1fr))",
-              columnGap: 28,
-              rowGap: 20,
-              padding: isMobile ? "16px 18px 18px" : "20px 28px 24px",
-            }}
+            className="order-fields"
           >
             {fields.map((field) => (
               <label

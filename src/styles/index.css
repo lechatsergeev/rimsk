@@ -58,6 +58,113 @@ main section[id] {
   scroll-margin-top: 120px;
 }
 
+/* ============================================
+   РАСКЛАДКА — ТОЛЬКО CSS
+
+   Раньше сетки и кегли считались в JS через window.innerWidth. На
+   сервере ширина неизвестна, подставлялась заглушка 1200, и после
+   успешной гидрации React оставлял серверные inline-стили — на
+   телефоне залипала десктопная раскладка. Всё, что отвечает за
+   раскладку, живёт здесь.
+   ============================================ */
+
+.swiss-section {
+  padding: clamp(28px, 3.4vw, 34px) clamp(20px, 4vw, 48px) 0;
+}
+
+.swiss-head {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 24px;
+  row-gap: 14px;
+}
+
+.swiss-title {
+  margin: 0;
+  max-width: 12ch;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(34px, 5.6vw, 60px);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  color: #111315;
+}
+
+.swiss-body {
+  margin-top: clamp(20px, 2.4vw, 28px);
+}
+
+/* Карточки ассортимента: перенос по ширине, без JS-брейкпоинта */
+.lineup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(16px, 1.6vw, 18px);
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 24px;
+  row-gap: 6px;
+  padding: clamp(14px, 1.6vw, 16px) clamp(18px, 2.2vw, 24px);
+}
+
+.order-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 28px;
+  row-gap: 20px;
+  padding: clamp(16px, 1.8vw, 20px) clamp(18px, 2.6vw, 28px) clamp(18px, 2.2vw, 24px);
+}
+
+.site-footer {
+  padding: clamp(36px, 4vw, 56px) clamp(20px, 3vw, 40px) clamp(18px, 2vw, 24px);
+}
+
+.footer-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 2.5vw, 32px);
+  padding-bottom: 28px;
+}
+
+.footer-brand {
+  grid-column: 1 / -1;
+}
+
+.subpage-bar {
+  padding: clamp(10px, 1.2vw, 12px) clamp(20px, 2vw, 24px);
+}
+
+.subpage-nav {
+  display: flex;
+  gap: clamp(14px, 1.8vw, 22px);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .swiss-head {
+    grid-template-columns: 88px minmax(0, 1fr);
+  }
+
+  .footer-cols {
+    grid-template-columns: 1.7fr 1fr 1fr 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+
+  .spec-row {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+
+  .order-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {

@@ -27,18 +27,29 @@ export type SideFact = {
   label: string;
 };
 
+/**
+ * Ширина окна для нераскладочных решений.
+ *
+ * Первый рендер обязан совпасть с серверным, иначе React оставит серверные
+ * inline-стили как есть (в проде он расхождения в атрибутах не чинит) и
+ * десктопная раскладка залипнет на телефоне. Поэтому стартуем с той же
+ * заглушки, что и на сервере, а настоящую ширину берём после монтирования.
+ *
+ * Раскладку на этом хуке строить нельзя — только CSS: иначе на мобильном
+ * будет виден скачок с десктопного макета на мобильный.
+ */
 export function useBreakpoint() {
-  const [width, setWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
-  );
+  const [width, setWidth] = useState<number | null>(null);
 
   useEffect(() => {
     const handler = () => setWidth(window.innerWidth);
+    handler();
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
 
-  return { isMobile: width < 768, isTablet: width < 1024 };
+  const resolved = width ?? 1200;
+  return { isMobile: resolved < 768, isTablet: resolved < 1024 };
 }
 
 function Marquee({ text }: { text: string }) {
@@ -248,15 +259,14 @@ export function PendingDocs({ children }: { children: ReactNode }) {
 }
 
 function Footer({ description }: { description: ReactNode }) {
-  const { isMobile } = useBreakpoint();
   const year = new Date().getFullYear();
 
   return (
     <footer
+      className="site-footer"
       style={{
         background: C.silver,
         borderTop: `1px solid ${C.black}`,
-        padding: isMobile ? "36px 20px 18px" : "56px 40px 24px",
       }}
     >
       <div
@@ -265,23 +275,16 @@ function Footer({ description }: { description: ReactNode }) {
           margin: "0",
           display: "grid",
           gridTemplateColumns: "minmax(0, 1200px)",
-          gap: isMobile ? 20 : 24,
+          gap: 24,
           alignItems: "start",
         }}
       >
         <div>
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr 1fr"
-                : "1.7fr 1fr 1fr 1fr 1fr",
-              gap: isMobile ? 24 : 32,
-              paddingBottom: 28,
-              borderBottom: `1px solid ${C.black}`,
-            }}
+            className="footer-cols"
+            style={{ borderBottom: `1px solid ${C.black}` }}
           >
-            <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
+            <div className="footer-brand">
               <div
                 style={{
                   fontFamily: "'Libertinus Sans', serif",
@@ -492,7 +495,6 @@ export function EditorialPageShell({
 }
 
 function SubpageHeader() {
-  const { isMobile } = useBreakpoint();
   const links: SubpageLink[] = [
     { label: "Главная", href: getRouteHref("/") },
     { label: "Доставка", href: getRouteHref("/delivery") },
@@ -515,7 +517,6 @@ function SubpageHeader() {
         style={{
           maxWidth: 1280,
           margin: "0 auto",
-          padding: isMobile ? "10px 20px" : "12px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -537,13 +538,7 @@ function SubpageHeader() {
         >
           {BRAND_NAME_UPPER}
         </a>
-        <nav
-          style={{
-            display: "flex",
-            gap: isMobile ? 14 : 22,
-            flexWrap: "wrap",
-          }}
-        >
+        <nav className="subpage-nav">
           {links.map((link) => (
             <a
               key={link.href}
