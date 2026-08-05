@@ -106,8 +106,8 @@ main section[id] {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 24px;
-  row-gap: 6px;
-  padding: clamp(14px, 1.6vw, 16px) clamp(18px, 2.2vw, 24px);
+  row-gap: 4px;
+  padding: clamp(12px, 1.4vw, 14px) 0;
 }
 
 .order-fields {

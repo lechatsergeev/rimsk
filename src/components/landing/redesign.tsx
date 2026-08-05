@@ -20,7 +20,6 @@ type LineupItem = {
   sku: string;
   title: string;
   note: string;
-  chips: string[];
   modelSrc?: string;
 };
 
@@ -42,8 +41,9 @@ const sectionMotion = {
   transition: { duration: 0.35 },
 };
 
-const paperTexture =
-  "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.48), transparent 28%), radial-gradient(circle at 80% 0%, rgba(0,0,0,0.03), transparent 32%), repeating-linear-gradient(0deg, rgba(0,0,0,0.018) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 34px), linear-gradient(180deg, #f2ebdf 0%, #eee4d6 100%)";
+// Тёплый белый вместо прежней бумажной текстуры: в ней были
+// repeating-linear-gradient, дававшие сетку тонких линеек по всему фону.
+const paperTexture = "#faf9f6";
 
 // Холодные подложки: тёплая корка на них читается заметно сильнее,
 // чем на прежних бежевых градиентах.
@@ -61,7 +61,6 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
     >
       <SwissSection
         id="assortment"
-        index="01"
         title={props.lineupTitle}
         description={props.lineupDescription}
       >
@@ -70,7 +69,6 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
 
       <SwissSection
         id="specs"
-        index="02"
         title="Состав и хранение"
         description="Одинаково для всех позиций ассортимента. Полный комплект документов отправляем по запросу."
       >
@@ -79,7 +77,6 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
 
       <SwissSection
         id="order"
-        index="03"
         title={props.orderTitle}
         description={props.orderDescription}
       >
@@ -91,13 +88,11 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
 
 function SwissSection({
   id,
-  index,
   title,
   description,
   children,
 }: {
   id: string;
-  index: string;
   title: string;
   description: string;
   children: ReactNode;
@@ -106,10 +101,7 @@ function SwissSection({
     <section
       id={id}
       className="swiss-section"
-      style={{
-        background: paperTexture,
-        borderTop: "1px solid rgba(20,20,20,0.14)",
-      }}
+      style={{ background: paperTexture }}
     >
       <div
         style={{
@@ -118,13 +110,9 @@ function SwissSection({
         }}
       >
         <motion.div {...sectionMotion} style={{ minWidth: 0 }}>
-          <div style={ruleStyle} />
-          <div className="swiss-head">
-            <div style={indexStyle}>{index}</div>
-            <div>
-              <h2 className="swiss-title">{title}</h2>
-              {description ? <p style={descriptionStyle}>{description}</p> : null}
-            </div>
+          <div>
+            <h2 className="swiss-title">{title}</h2>
+            {description ? <p style={descriptionStyle}>{description}</p> : null}
           </div>
           <div className="swiss-body">{children}</div>
         </motion.div>
@@ -150,7 +138,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
             borderRadius: 28,
             overflow: "hidden",
             background: "#fffdf9",
-            boxShadow: "0 18px 44px rgba(17,19,21,0.08)",
+            boxShadow: "0 10px 30px rgba(17,19,21,0.06)",
           }}
         >
           <div
@@ -159,11 +147,9 @@ function LineupCards({ items }: { items: LineupItem[] }) {
               minHeight: "clamp(220px, 24vw, 260px)",
               padding: 18,
               background: cardAccents[index % cardAccents.length],
-              borderBottom: "1px solid rgba(17,19,21,0.12)",
             }}
           >
             <div style={cardMetaRowStyle}>
-              <span style={metaPillStyle}>{item.sku}</span>
               <span style={weightPillStyle}>{NET_WEIGHT}</span>
             </div>
             <div
@@ -203,20 +189,6 @@ function LineupCards({ items }: { items: LineupItem[] }) {
               {item.title}
             </h3>
             <p style={{ ...descriptionStyle, marginTop: 12 }}>{item.note}</p>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-                marginTop: 18,
-              }}
-            >
-              {item.chips.map((chip) => (
-                <span key={chip} style={chipStyle}>
-                  {chip}
-                </span>
-              ))}
-            </div>
           </div>
         </motion.article>
       ))}
@@ -225,25 +197,12 @@ function LineupCards({ items }: { items: LineupItem[] }) {
 }
 
 function SpecsBlock() {
+  // Без рамки, тени и разделительных линеек: характеристики читаются
+  // списком, порядок держится отступами.
   return (
-    <div
-      style={{
-        border: "1px solid rgba(17,19,21,0.14)",
-        borderRadius: 28,
-        overflow: "hidden",
-        background: "#fffdf9",
-        boxShadow: "0 18px 44px rgba(17,19,21,0.08)",
-        marginBottom: "clamp(24px, 3vw, 32px)",
-      }}
-    >
-      {PRODUCT_SPECS.map((spec, index) => (
-        <div
-          key={spec.label}
-          className="spec-row"
-          style={{
-            borderTop: index === 0 ? "none" : "1px solid rgba(17,19,21,0.1)",
-          }}
-        >
+    <div style={{ marginBottom: "clamp(24px, 3vw, 32px)" }}>
+      {PRODUCT_SPECS.map((spec) => (
+        <div key={spec.label} className="spec-row">
           <div style={specLabelStyle}>{spec.label}</div>
           <div style={specValueStyle}>{spec.value}</div>
         </div>
@@ -295,7 +254,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
   };
 
   return (
-    <div style={{ borderTop: "1px solid rgba(20,20,20,0.16)", paddingTop: "clamp(12px, 1.6vw, 18px)" }}>
+    <div style={{ paddingTop: "clamp(12px, 1.6vw, 18px)" }}>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -317,7 +276,6 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
           <div
             style={{
               padding: "clamp(18px, 2.4vw, 26px) clamp(18px, 2.6vw, 28px) clamp(16px, 2vw, 22px)",
-              borderBottom: "1px solid rgba(17,19,21,0.12)",
             }}
           >
             <div style={offerMetaStyle}>contact</div>
@@ -415,20 +373,7 @@ function OrderBlock({ submitLabel }: { submitLabel: string }) {
   );
 }
 
-const ruleStyle: CSSProperties = {
-  width: "100%",
-  height: 1,
-  background: "rgba(20,20,20,0.16)",
-};
 
-const indexStyle: CSSProperties = {
-  fontFamily: "'LT Amber', sans-serif",
-  fontSize: 11,
-  lineHeight: 1.4,
-  letterSpacing: "0.16em",
-  textTransform: "uppercase",
-  color: "#111315",
-};
 
 const descriptionStyle: CSSProperties = {
   margin: "12px 0 0",
@@ -445,20 +390,6 @@ const cardMetaRowStyle: CSSProperties = {
   flexWrap: "wrap",
 };
 
-const metaPillStyle: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  padding: "7px 10px",
-  borderRadius: 999,
-  border: "1px solid rgba(17,19,21,0.14)",
-  background: "rgba(255,255,255,0.7)",
-  fontFamily: "'LT Amber', sans-serif",
-  fontSize: 10,
-  lineHeight: 1.2,
-  letterSpacing: "0.12em",
-  textTransform: "uppercase",
-  color: "#111315",
-};
 
 const weightPillStyle: CSSProperties = {
   display: "inline-flex",
@@ -475,20 +406,6 @@ const weightPillStyle: CSSProperties = {
   color: "#111315",
 };
 
-const chipStyle: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  padding: "8px 10px",
-  borderRadius: 999,
-  border: "1px solid rgba(17,19,21,0.12)",
-  background: "#f7f0e8",
-  fontFamily: "'LT Amber', sans-serif",
-  fontSize: 10,
-  lineHeight: 1.2,
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  color: "#111315",
-};
 
 const submitStyle: CSSProperties = {
   border: "1px solid var(--signal)",
