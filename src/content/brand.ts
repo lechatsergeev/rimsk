@@ -8,7 +8,7 @@ export const CONTACT_PHONE = "+7 (958) 178-10-78";
 export const CONTACT_PHONE_HREF = "tel:+79581781078";
 export const CONTACT_WHATSAPP_HREF = "https://wa.me/79581781078";
 
-export const CONTACT_EMAIL = "hello@mazza.ru";
+export const CONTACT_EMAIL = "eep.sergeev.alexey@gmail.com";
 export const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`;
 
 export const PRODUCTION_CITY = "Санкт-Петербург";

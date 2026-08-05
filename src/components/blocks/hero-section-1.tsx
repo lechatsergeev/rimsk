@@ -77,39 +77,35 @@ export function HeroSection() {
       <main className="overflow-hidden bg-[var(--paper)]">
         <section ref={heroSectionRef}>
           <div className="relative overflow-hidden pt-15 md:pt-18">
+            {/* То же поле, что под карточками товара. */}
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-[var(--ultra)]"
+              className="absolute inset-0 z-0 [background:linear-gradient(180deg,#dcefff_0%,#b9dbf7_100%)]"
             />
-            {/* Холодное свечение за продуктом: отделяет тёплую корку от поля.
-                На средней ступени синего читается как атмосфера, а не дымка. */}
+            {/* Свечение за продуктом: отделяет тёплую корку от поля. */}
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(127,150,255,0.42),transparent_48%)]"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 z-0 [background:linear-gradient(180deg,transparent_0%,rgba(13,18,121,0.6)_100%)]"
+              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(127,150,255,0.5),transparent_48%)]"
             />
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
                 {/* Без entrance-анимации: первый экран должен быть читаемым
                     сразу в отрендеренном HTML, до загрузки и гидрации JS. */}
                 <div className="text-left">
-                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--sky)] bg-[rgba(127,150,255,0.16)] px-4 py-1.5">
-                    <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-white md:text-[0.9rem]">
+                  <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--ink)] bg-[rgba(255,255,255,0.34)] px-4 py-1.5">
+                    <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-[var(--ink)] md:text-[0.9rem]">
                       Замороженная римская пицца
                     </span>
                   </div>
-                  <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-white md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
+                  <h1 className="mt-3 min-h-[3.9rem] text-balance text-[4.6rem] leading-[0.8] tracking-[-0.042em] text-[var(--ink)] md:mt-4 md:min-h-[5.9rem] md:text-[6.8rem] lg:min-h-[7.1rem] lg:text-[8.2rem]">
                     <span className="type-logo inline-block">{BRAND_NAME}</span>
                   </h1>
-                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-white md:text-sm md:leading-[1.4]">
+                  <p className="mt-2.5 max-w-[34rem] text-balance text-[13px] leading-[1.34] text-[var(--ink)] md:text-sm md:leading-[1.4]">
                     Римская пицца ручной работы: тесто длительного холодного
                     брожения, ручная формовка, заморозка сразу после выпечки.
                     Производство — {PRODUCTION_CITY}.
                   </p>
-                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-white md:text-[12px]">
+                  <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] uppercase tracking-[0.1em] text-[var(--ink)] md:text-[12px]">
                     <li>{NET_WEIGHT}</li>
                     <li aria-hidden>/</li>
                     <li>{SHELF_LIFE}</li>
@@ -149,8 +145,8 @@ export function HeroSection() {
                           сажает объект в сцену, плотное ядро под центром даёт
                           точку касания. Без них продукт читается как экспонат
                           в невесомости, а не как предмет. */}
-                      <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-[16%] w-[74%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(4,7,52,0.42),transparent_72%)] blur-[16px]" />
-                      <div className="pointer-events-none absolute bottom-[11%] left-1/2 h-[7%] w-[42%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(3,5,40,0.62),transparent_66%)] blur-[6px]" />
+                      <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-[16%] w-[74%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(40,60,120,0.30),transparent_72%)] blur-[16px]" />
+                      <div className="pointer-events-none absolute bottom-[11%] left-1/2 h-[7%] w-[42%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(30,45,100,0.42),transparent_66%)] blur-[6px]" />
                       {/* Модель подключается только после гидрации: иначе
                           структура расходится с пререндером и React
                           перерисовывает страницу заново.
@@ -233,7 +229,7 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                 aria-label={menuState ? "Закрыть меню" : "Открыть меню"}
                 className={cn(
                   "relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden",
-                  isScrolled ? "text-[var(--ink)]" : "text-white"
+                  "text-[var(--ink)]"
                 )}
               >
                 <Menu className="m-auto size-6 duration-200 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0" />
@@ -249,7 +245,7 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                       href={item.href}
                       className={cn(
                         "block text-[11px] uppercase tracking-[0.12em] duration-150",
-                        isScrolled ? "text-[var(--ink)]" : "text-white"
+                        "text-[var(--ink)]"
                       )}
                     >
                       <span>{item.name}</span>

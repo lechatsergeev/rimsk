@@ -265,7 +265,7 @@ function Footer({ description }: { description: ReactNode }) {
     <footer
       className="site-footer"
       style={{
-        background: C.silver,
+        background: "var(--paper)",
         borderTop: `1px solid ${C.black}`,
       }}
     >
@@ -433,7 +433,7 @@ export function EditorialPageShell({
   footerDescription: ReactNode;
 }) {
   return (
-    <div id="top" style={{ minHeight: "100vh", position: "relative", background: C.bg }}>
+    <div id="top" style={{ minHeight: "100vh", position: "relative", background: "var(--paper)" }}>
       <SubpageHeader />
       <main
         style={{

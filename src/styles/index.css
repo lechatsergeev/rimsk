@@ -11,7 +11,7 @@
   --font-logo: 'Libertinus Sans', serif;
   --ink: #1a1d20;
   --accent: #d95c3c;
-  --paper: #ffffff;
+  --paper: #faf9f6;
   --board: #ffffff;
   --line: #a8a39a;
   --sheet: #ffffff;
@@ -37,7 +37,7 @@
 }
 
 body {
-  background: #ffffff;
+  background: var(--paper);
   overflow-x: hidden;
   font-family: 'LT Amber', sans-serif;
   color: var(--ink);
@@ -69,6 +69,10 @@ main section[id] {
    ============================================ */
 
 .swiss-section {
+  /* flow-root удерживает отступы детей внутри секции: без него нижний
+     margin блока характеристик вытекал наружу и между секциями
+     проступала белая полоса фона body. */
+  display: flow-root;
   padding: clamp(28px, 3.4vw, 34px) clamp(20px, 4vw, 48px) 0;
 }
 
