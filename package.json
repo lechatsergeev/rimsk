@@ -6,8 +6,6 @@
   "homepage": "https://lechatsergeev.github.io/rimsk/",
   "scripts": {
     "build": "vite build && node scripts/prerender.mjs",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "dev": "vite"
   },
   "dependencies": {
