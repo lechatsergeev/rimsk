@@ -31,11 +31,25 @@ export type ProductSpec = {
   value: string;
 };
 
-/** Характеристики, одинаковые для всех позиций ассортимента. */
-export const PRODUCT_SPECS: ProductSpec[] = [
-  { label: "Масса нетто", value: NET_WEIGHT },
-  { label: "Срок годности", value: SHELF_LIFE },
-  { label: "Приготовление", value: BAKE_INSTRUCTION },
+export type KeyNumber = {
+  value: string;
+  unit: string;
+  caption: string;
+};
+
+/**
+ * Три числа, которые сканируют: масса, хранение, приготовление.
+ * Вынесены отдельно от прозы — их читают глазами по диагонали,
+ * поэтому в вёрстке они идут крупно и первыми.
+ */
+export const KEY_NUMBERS: KeyNumber[] = [
+  { value: "330", unit: "г", caption: "Масса нетто" },
+  { value: "6", unit: "месяцев", caption: "Хранение при −18 °C" },
+  { value: "11", unit: "минут", caption: "Допекание при 230 °C" },
+];
+
+/** Характеристики, которые читают текстом, а не сканируют. */
+export const DETAIL_SPECS: ProductSpec[] = [
   { label: "Тесто", value: DOUGH_METHOD },
   { label: "Состав", value: INGREDIENTS },
   { label: "Добавки", value: NO_ADDITIVES },

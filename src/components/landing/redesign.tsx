@@ -6,8 +6,9 @@ import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
   CONTACT_PHONE_HREF,
+  DETAIL_SPECS,
+  KEY_NUMBERS,
   NET_WEIGHT,
-  PRODUCT_SPECS,
 } from "@/content/brand";
 
 const MiniPizzaModel = React.lazy(() =>
@@ -49,7 +50,7 @@ const paperTexture = "var(--paper)";
 // чем на прежних бежевых градиентах.
 const cardAccents = [
   "radial-gradient(circle at 26% 18%, rgba(127,150,255,0.42), transparent 46%), linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%)",
-  "radial-gradient(circle at 74% 14%, rgba(247,133,203,0.34), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
+  "radial-gradient(circle at 74% 14%, rgba(255,193,69,0.34), transparent 44%), linear-gradient(180deg, #e3f2ff 0%, #c3e2f5 100%)",
   "radial-gradient(circle at 50% 6%, rgba(13,18,121,0.24), transparent 46%), linear-gradient(180deg, #d5e9fb 0%, #aed3f2 100%)",
 ];
 
@@ -197,16 +198,45 @@ function LineupCards({ items }: { items: LineupItem[] }) {
 }
 
 function SpecsBlock() {
-  // Без рамки, тени и разделительных линеек: характеристики читаются
-  // списком, порядок держится отступами.
+  // Плашка как у карточек и формы. Внутри два регистра: три числа,
+  // которые сканируют, — крупно и на акцентной подложке; три фразы,
+  // которые читают, — тише и ниже.
   return (
-    <div style={{ marginBottom: "clamp(24px, 3vw, 32px)" }}>
-      {PRODUCT_SPECS.map((spec) => (
-        <div key={spec.label} className="spec-row">
-          <div style={specLabelStyle}>{spec.label}</div>
-          <div style={specValueStyle}>{spec.value}</div>
-        </div>
-      ))}
+    <div
+      style={{
+        border: "1px solid rgba(17,19,21,0.14)",
+        borderRadius: 28,
+        overflow: "hidden",
+        background: "#fffdf9",
+        boxShadow: "0 10px 30px rgba(17,19,21,0.06)",
+        marginBottom: "clamp(24px, 3vw, 32px)",
+      }}
+    >
+      <div className="specs-numbers">
+        {KEY_NUMBERS.map((item) => (
+          <div key={item.caption} className="specs-number">
+            <div className="specs-number-value">
+              {item.value}
+              {/* Неразрывный пробел: без него число и единица слипаются
+                  при копировании и у скринридера — «330г», «6месяцев». */}
+              <span className="specs-number-unit">
+                {" "}
+                {item.unit}
+              </span>
+            </div>
+            <div className="specs-number-caption">{item.caption}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="specs-details">
+        {DETAIL_SPECS.map((spec) => (
+          <div key={spec.label} className="spec-row">
+            <div style={specLabelStyle}>{spec.label}</div>
+            <div style={specValueStyle}>{spec.value}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -456,7 +486,7 @@ const specLabelStyle: CSSProperties = {
 
 const specValueStyle: CSSProperties = {
   fontFamily: "'LT Amber', sans-serif",
-  fontSize: 13,
+  fontSize: 15,
   lineHeight: 1.6,
   color: "#111315",
 };

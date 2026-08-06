@@ -30,7 +30,7 @@
      даёт 3.17:1 — для мелкого текста мало, только неткстовые роли. */
   --sky: #7f96ff;
   --frost: #c9e9ff;
-  --signal: #f785cb;
+  --signal: #ffc145;
   --border-print: 1px solid #1a1d20;
   --border-soft: 1px solid #a8a39a;
   font-family: 'LT Amber', sans-serif;
@@ -106,12 +106,58 @@ main section[id] {
   gap: clamp(16px, 1.6vw, 18px);
 }
 
+/* Блок характеристик: два регистра чтения.
+   Числа сканируют — крупно, на акцентной подложке.
+   Фразы читают — тише, ниже, с воздухом между строк. */
+
+.specs-numbers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: rgba(17, 19, 21, 0.12);
+}
+
+.specs-number {
+  background: color-mix(in srgb, var(--signal) 26%, #fffdf9);
+  padding: clamp(20px, 2.6vw, 30px) clamp(20px, 2.6vw, 28px);
+}
+
+.specs-number-value {
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 5.4vw, 68px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.specs-number-unit {
+  font-size: 0.34em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.specs-number-caption {
+  margin-top: clamp(10px, 1.2vw, 14px);
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.specs-details {
+  padding: clamp(6px, 1vw, 10px) clamp(20px, 2.6vw, 28px)
+    clamp(18px, 2.2vw, 24px);
+}
+
 .spec-row {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 24px;
-  row-gap: 4px;
-  padding: clamp(12px, 1.4vw, 14px) 0;
+  row-gap: 6px;
+  padding: clamp(16px, 1.8vw, 20px) 0;
 }
 
 .order-fields {
@@ -158,6 +204,10 @@ main section[id] {
 
   .footer-brand {
     grid-column: auto;
+  }
+
+  .specs-numbers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .spec-row {
