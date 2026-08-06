@@ -37,11 +37,63 @@ function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
   return progress;
 }
 
-/** Линейная интерполяция с зажимом на краях отрезка. */
-function ramp(p: number, from: number, to: number) {
-  if (p <= from) return 0;
-  if (p >= to) return 1;
-  return (p - from) / (to - from);
+/**
+ * Номер шага по прогрессу прокрутки.
+ *
+ * Сцена идёт состояниями, а не плавно за колесом: внутри шага все
+ * значения зафиксированы, а переход между шагами делает CSS за своё
+ * время. Иначе при медленной прокрутке ничего не двигалось, а при
+ * быстрой числа пролетали так, что их не прочесть.
+ */
+const STEP_AT = [0, 0.26, 0.54, 0.82];
+
+function stepFor(p: number) {
+  let step = 0;
+  for (let i = 0; i < STEP_AT.length; i += 1) {
+    if (p >= STEP_AT[i]) step = i;
+  }
+  return step;
+}
+
+/**
+ * Отсчёт числа при входе в шаг. Длительность фиксированная, поэтому
+ * скорость прокрутки на читаемость не влияет. Страховка таймером: если
+ * кадры не идут, значение всё равно встанет на место.
+ */
+function useCountUp(target: number, active: boolean) {
+  const [value, setValue] = useState(target);
+
+  useEffect(() => {
+    if (!active) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setValue(target);
+      return;
+    }
+
+    const duration = 700;
+    const start = performance.now();
+    let frame = 0;
+
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      setValue(Math.round(target * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+
+    setValue(0);
+    frame = requestAnimationFrame(tick);
+    const safety = window.setTimeout(() => setValue(target), duration + 120);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(safety);
+      // Шаг может смениться до конца отсчёта — тогда число застыло бы
+      // на промежуточном значении или на нуле.
+      setValue(target);
+    };
+  }, [active, target]);
+
+  return value;
 }
 
 type FigurePair = {
@@ -59,15 +111,14 @@ const BAKE: FigurePair = { left: [11, "минут"], right: [230, "°C"] };
  */
 function Figures({
   data,
-  opacity,
-  count,
+  visible,
 }: {
   data: FigurePair;
-  opacity: number;
-  count: number;
+  visible: boolean;
 }) {
-  const left = Math.round(data.left[0] * count);
-  const right = Math.round(data.right[0] * count);
+  const left = useCountUp(data.left[0], visible);
+  const right = useCountUp(data.right[0], visible);
+  const opacity = visible ? 1 : 0;
 
   return (
     <div
@@ -158,16 +209,18 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const p = useScrollProgress(trackRef);
 
-  // Продукт остаётся на своём месте справа: отъезд в центр читался
-  // как чужое движение, не связанное ни с чем на экране.
-  const chill = ramp(p, 0.12, 0.24) - ramp(p, 0.54, 0.72);
-  const heat = ramp(p, 0.54, 0.72) - ramp(p, 0.84, 0.98);
+  // Шаг: 0 — шапка, 1 — заморозка, 2 — печь, 3 — готово.
+  // Внутри шага значения не меняются, поэтому числа всегда читаются,
+  // а плавность даёт CSS-переход, а не скорость колеса.
+  const step = stepFor(p);
 
-  const copyOpacity = 1 - ramp(p, 0.06, 0.18);
-  const freezeFigures = ramp(p, 0.14, 0.24) - ramp(p, 0.48, 0.58);
-  const bakeFigures = ramp(p, 0.56, 0.66) - ramp(p, 0.84, 0.94);
-  const freezeCount = ramp(p, 0.14, 0.3);
-  const bakeCount = ramp(p, 0.56, 0.72);
+  const chill = step === 1 ? 1 : 0;
+  const heat = step === 2 ? 1 : 0;
+  const copyOpacity = step === 0 ? 1 : 0;
+
+  // Продукт остаётся справа: отъезд в центр читался как чужое
+  // движение, не связанное ни с чем на экране. Обесцвечиваем умеренно —
+  // при сильном пицца выглядела серым тестом, а не замороженной.
 
   // Полёт в карточку ведём не по прогрессу трека, а по тому, как сама
   // карточка въезжает в кадр. Пока сцена приклеена, карточки на экране
@@ -176,8 +229,8 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   // измеряется на каждом обновлении. Тот же приём, что в GSAP Flip.
   const flight = useFlight(stageRef, p);
 
-  const saturate = (1 - chill * 0.72 + heat * 0.16).toFixed(2);
-  const brightness = (1 + chill * 0.14 - heat * 0.05).toFixed(2);
+  const saturate = (1 - chill * 0.38 + heat * 0.14).toFixed(2);
+  const brightness = (1 + chill * 0.1 - heat * 0.04).toFixed(2);
   const pizzaFilter = `saturate(${saturate}) brightness(${brightness})`;
 
   return (
@@ -196,18 +249,18 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
         <HeroSection />
 
         <div className="hero-overlay">
-          <Figures data={FREEZE} opacity={freezeFigures} count={freezeCount} />
-          <Figures data={BAKE} opacity={bakeFigures} count={bakeCount} />
+          <Figures data={FREEZE} visible={step === 1} />
+          <Figures data={BAKE} visible={step === 2} />
         </div>
 
         <div
           className="hero-frost"
-          style={{ opacity: Math.max(chill, 0) * 0.9 }}
+          style={{ opacity: chill * 0.85 }}
           aria-hidden
         />
         <div
           className="hero-heat"
-          style={{ opacity: Math.max(heat, 0) * 0.8 }}
+          style={{ opacity: heat * 0.8 }}
           aria-hidden
         />
 
