@@ -165,10 +165,16 @@ main section[id] {
   position: sticky;
   top: 0;
   height: 100vh;
-  /* Тот же градиент, что у поля шапки. Содержимое шапки короче сцены,
-     и в зазор над бегущей строкой светил фон страницы — светлая
-     полоса в четыре десятка пикселей. */
-  background: linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%);
+  /* Оба слоя поля — и заливка, и свечение — рисует сцена, на всю
+     свою высоту. Внутри шапки они заперты в её 780px и обрывались
+     ровно на этой отметке: сначала светлой полосой, потом швом. */
+  background:
+    radial-gradient(
+      circle at 72% 44%,
+      rgba(127, 150, 255, 0.5),
+      transparent 48%
+    ),
+    linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%);
   /* Не обрезаем: в финале продукт улетает за пределы экрана в
      карточку ассортимента, и overflow: hidden срезал бы полёт. */
 }
@@ -180,7 +186,8 @@ main section[id] {
   background: transparent;
 }
 
-.hero-stage .hero-field {
+.hero-stage .hero-field,
+.hero-stage .hero-glow {
   background: none !important;
 }
 
@@ -236,18 +243,27 @@ main section[id] {
   inset: 0;
   z-index: 4;
   display: grid;
-  align-content: center;
-  padding: 0 clamp(24px, 5vw, 72px);
+  /* На узком экране шапка однколоночная: текст сверху, продукт снизу.
+     Числа встают туда, где стоял заголовок, а не в центр кадра. */
+  align-content: start;
+  padding: 15vh clamp(20px, 5vw, 72px) 0;
   pointer-events: none;
 }
 
-/* Числа стоят по краям, продукт проходит между ними. */
+@media (min-width: 768px) {
+  .hero-overlay {
+    align-content: center;
+    padding-top: 0;
+  }
+}
+
+/* Числа собраны слева, продукт остаётся справа. */
 .hero-figures {
   grid-area: 1 / 1;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(24px, 6vw, 96px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(6px, 1vw, 14px);
   transition: opacity 240ms linear;
 }
 
@@ -260,10 +276,6 @@ main section[id] {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.hero-figure-right {
-  text-align: right;
 }
 
 .hero-figure-unit {

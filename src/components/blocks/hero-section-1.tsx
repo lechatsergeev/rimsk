@@ -85,7 +85,7 @@ export function HeroSection() {
             {/* Свечение за продуктом: отделяет тёплую корку от поля. */}
             <div
               aria-hidden
-              className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(127,150,255,0.5),transparent_48%)]"
+              className="hero-glow absolute inset-0 z-0 bg-[radial-gradient(circle_at_72%_48%,rgba(127,150,255,0.5),transparent_48%)]"
             />
             <div className="relative z-[2] mx-auto max-w-7xl px-6">
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">

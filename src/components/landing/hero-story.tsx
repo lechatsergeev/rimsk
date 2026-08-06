@@ -227,9 +227,6 @@ export function HeroStory({ marqueeText }: { marqueeText: string }) {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Только широкий экран: закреплённая прокрутка на телефоне отбирает
-    // управление у пальца, а числа по бокам туда не помещаются.
-    if (window.innerWidth < 768) return;
     setEnhanced(true);
   }, []);
 
