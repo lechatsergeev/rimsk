@@ -202,16 +202,7 @@ function SpecsBlock() {
   // которые сканируют, — крупно и на акцентной подложке; три фразы,
   // которые читают, — тише и ниже.
   return (
-    <div
-      style={{
-        border: "1px solid rgba(17,19,21,0.14)",
-        borderRadius: 28,
-        overflow: "hidden",
-        background: "#fffdf9",
-        boxShadow: "0 10px 30px rgba(17,19,21,0.06)",
-        marginBottom: "clamp(24px, 3vw, 32px)",
-      }}
-    >
+    <div className="specs-plate">
       <div className="specs-numbers">
         {KEY_NUMBERS.map((item) => (
           <div key={item.caption} className="specs-number">

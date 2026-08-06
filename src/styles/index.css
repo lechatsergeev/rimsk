@@ -106,20 +106,40 @@ main section[id] {
   gap: clamp(16px, 1.6vw, 18px);
 }
 
-/* Блок характеристик: два регистра чтения.
-   Числа сканируют — крупно, на акцентной подложке.
-   Фразы читают — тише, ниже, с воздухом между строк. */
+/* Блок характеристик.
+
+   Группировка держится расстояниями, а не линиями — правило
+   внутреннего и внешнего. Лестница отступов, снизу вверх:
+     12px  число -> его подпись        (внутри группы)
+      8px  подпись -> её значение      (внутри пары)
+     28px  между парами прозы
+     40px  между группами чисел
+     64px  между блоком чисел и прозой (внешнее для обоих)
+   Каждая ступень заметно больше предыдущей, поэтому объекты
+   собираются в группы сами, без разделителей. */
+
+.specs-plate {
+  border: 1px solid rgba(17, 19, 21, 0.14);
+  border-radius: 28px;
+  box-shadow: 0 10px 30px rgba(17, 19, 21, 0.06);
+  background: radial-gradient(
+      circle at 22% 12%,
+      rgba(127, 150, 255, 0.34),
+      transparent 48%
+    ),
+    linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%);
+  padding: clamp(26px, 3.4vw, 44px);
+  margin-bottom: clamp(24px, 3vw, 32px);
+}
 
 .specs-numbers {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1px;
-  background: rgba(17, 19, 21, 0.12);
-}
-
-.specs-number {
-  background: color-mix(in srgb, var(--signal) 26%, #fffdf9);
-  padding: clamp(20px, 2.6vw, 30px) clamp(20px, 2.6vw, 28px);
+  /* Нижний предел 36px, а не 30px: на узком экране числа встают в
+     столбец, и при 30px зазор между группами почти совпадал с 28px
+     между парами прозы — две ступени группировки сливались в одну. */
+  row-gap: clamp(36px, 3.4vw, 40px);
+  column-gap: clamp(32px, 4.4vw, 64px);
 }
 
 .specs-number-value {
@@ -131,14 +151,17 @@ main section[id] {
   color: var(--ink);
 }
 
+/* Единица набрана втрое мельче числа, поэтому пробел между ними
+   оптически проваливается — добавляем компенсацию. */
 .specs-number-unit {
+  margin-left: 0.3em;
   font-size: 0.34em;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
 .specs-number-caption {
-  margin-top: clamp(10px, 1.2vw, 14px);
+  margin-top: 12px;
   font-family: 'LT Amber', sans-serif;
   font-size: 10px;
   line-height: 1.5;
@@ -148,16 +171,18 @@ main section[id] {
 }
 
 .specs-details {
-  padding: clamp(6px, 1vw, 10px) clamp(20px, 2.6vw, 28px)
-    clamp(18px, 2.2vw, 24px);
+  margin-top: clamp(48px, 5.6vw, 64px);
+  display: grid;
+  row-gap: 28px;
 }
 
+/* Подпись стоит над своим значением, а не в отдельной колонке:
+   раньше пара разрывалась по горизонтали сильнее, чем строки
+   разделялись по вертикали, и глаз собирал подписи в столбец. */
 .spec-row {
   display: grid;
-  grid-template-columns: 1fr;
-  column-gap: 24px;
-  row-gap: 6px;
-  padding: clamp(16px, 1.8vw, 20px) 0;
+  row-gap: 8px;
+  max-width: 62ch;
 }
 
 .order-fields {
@@ -208,10 +233,6 @@ main section[id] {
 
   .specs-numbers {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .spec-row {
-    grid-template-columns: 180px minmax(0, 1fr);
   }
 
   .order-fields {
