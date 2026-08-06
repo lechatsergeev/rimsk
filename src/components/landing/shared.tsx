@@ -1,6 +1,6 @@
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { HeroSection } from "@/components/blocks/hero-section-1";
+import { HeroStory } from "@/components/landing/hero-story";
 import { getRouteHref } from "@/app/routes";
 import {
   BRAND_NAME_UPPER,
@@ -90,7 +90,7 @@ function Marquee({ text }: { text: string }) {
 function Hero({ marqueeText }: { marqueeText: string }) {
   return (
     <>
-      <HeroSection />
+      <HeroStory />
       <div style={{ marginTop: 0 }}>
         <Marquee text={marqueeText} />
       </div>

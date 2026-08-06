@@ -146,6 +146,120 @@ main section[id] {
   counter-reset: bake;
 }
 
+/* ── Первый экран как сцена превращения ───────────────────────────
+   Трек выше экрана, внутри липкая шапка. Пока трек проходит мимо,
+   текст уступает место числам, а продукт стынет и отогревается.
+   Без JS, при отключённых анимациях и на телефоне шапка обычная. */
+
+.hero-track {
+  position: relative;
+  height: 300vh;
+}
+
+.hero-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Значения приходят инлайном из сцены; вне её действуют значения по
+   умолчанию, поэтому обычная шапка не зависит от скрипта. */
+.hero-copy {
+  opacity: var(--hero-copy-opacity, 1);
+  transition: opacity 200ms linear;
+}
+
+.hero-pizza-holder {
+  filter: var(--pizza-filter, none);
+  transition: filter 200ms linear;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  align-content: center;
+  padding: 0 clamp(24px, 5vw, 72px);
+  pointer-events: none;
+}
+
+.hero-phase {
+  grid-area: 1 / 1;
+  max-width: 34ch;
+  transition: opacity 240ms linear;
+}
+
+.hero-phase-title {
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.hero-phase-figures {
+  margin-top: 14px;
+  display: grid;
+  row-gap: 4px;
+}
+
+.hero-phase-figure {
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(56px, 8vw, 116px);
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-phase-unit {
+  margin-left: 0.22em;
+  font-size: 0.26em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.hero-phase-note {
+  margin-top: 18px;
+  max-width: 30ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.hero-frost,
+.hero-heat {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition: opacity 240ms linear;
+}
+
+.hero-frost {
+  background: radial-gradient(
+    circle at 72% 48%,
+    rgba(214, 240, 255, 0.9),
+    rgba(201, 233, 255, 0.3) 42%,
+    transparent 66%
+  );
+}
+
+.hero-heat {
+  background: radial-gradient(
+    circle at 72% 54%,
+    rgba(255, 176, 74, 0.72),
+    rgba(255, 120, 40, 0.24) 40%,
+    transparent 68%
+  );
+}
+
 /* ── Сцена приготовления ──────────────────────────────────────────
    Трек выше экрана, внутри липкая сцена. Пока трек проходит мимо,
    продукт оттаивает, температура ползёт от −18 к 230, шаг сменяется.

@@ -91,7 +91,7 @@ export function HeroSection() {
               <div className="grid items-center gap-6 pb-1 md:min-h-[calc(100svh-9.5rem)] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.85fr)] md:gap-8 md:pb-4">
                 {/* Без entrance-анимации: первый экран должен быть читаемым
                     сразу в отрендеренном HTML, до загрузки и гидрации JS. */}
-                <div className="text-left">
+                <div className="hero-copy text-left">
                   <div className="mt-3 inline-flex w-fit items-center rounded-full border border-[var(--ink)] bg-[rgba(255,255,255,0.34)] px-4 py-1.5">
                     <span className="type-heading text-[0.82rem] uppercase tracking-[0.12em] text-[var(--ink)] md:text-[0.9rem]">
                       Замороженная римская пицца
@@ -140,7 +140,7 @@ export function HeroSection() {
                   className="relative"
                 >
                   <div className="flex flex-col items-start gap-4 md:items-end md:gap-5">
-                    <div className="relative h-[185px] w-full max-w-[420px] self-center md:h-[320px] md:max-w-[540px] md:self-auto lg:h-[360px] lg:max-w-[600px]">
+                    <div className="hero-pizza-holder relative h-[185px] w-full max-w-[420px] self-center md:h-[320px] md:max-w-[540px] md:self-auto lg:h-[360px] lg:max-w-[600px]">
                       {/* Контактная тень в два слоя: широкий мягкий ореол
                           сажает объект в сцену, плотное ядро под центром даёт
                           точку касания. Без них продукт читается как экспонат
