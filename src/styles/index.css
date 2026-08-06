@@ -146,22 +146,137 @@ main section[id] {
   counter-reset: bake;
 }
 
-/* Шаг по умолчанию видим. Прятать его берёмся только после того, как
-   компонент смонтировался и анимация гарантированно отработает
-   (класс is-armed) — иначе без JS блок остался бы пустым, как когда-то
-   первый экран. */
-.bake-step {
-  transition: opacity 420ms ease, transform 420ms ease;
+/* ── Сцена приготовления ──────────────────────────────────────────
+   Трек выше экрана, внутри липкая сцена. Пока трек проходит мимо,
+   продукт оттаивает, температура ползёт от −18 к 230, шаг сменяется.
+   Удержание ограничено одним экраном: длиннее — уже воровство
+   прокрутки у пользователя. */
+
+.bake-track {
+  position: relative;
+  height: 240vh;
 }
 
-.bake-steps.is-armed .bake-step {
-  opacity: 0;
-  transform: translateY(10px);
+.bake-stage {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(24px, 3vw, 40px);
+  padding: clamp(24px, 4vw, 48px) 0;
 }
 
-.bake-steps.is-armed.is-visible .bake-step {
+.bake-scene-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: clamp(24px, 3vw, 48px);
+}
+
+.bake-phase {
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.bake-figure {
+  margin-top: 12px;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(64px, 11vw, 148px);
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.bake-figure-unit {
+  margin-left: 0.24em;
+  font-size: 0.26em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.bake-note {
+  margin-top: 16px;
+  max-width: 28ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.bake-visual {
+  position: relative;
+  height: clamp(240px, 38vh, 400px);
+}
+
+.bake-model,
+.bake-model-slot {
+  position: absolute;
+  inset: 0;
+  transition: filter 180ms linear;
+}
+
+.bake-frost,
+.bake-heat {
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: screen;
+}
+
+.bake-frost {
+  background: radial-gradient(
+    circle at 50% 46%,
+    rgba(214, 240, 255, 0.85),
+    rgba(201, 233, 255, 0.28) 46%,
+    transparent 68%
+  );
+}
+
+.bake-heat {
+  background: radial-gradient(
+    circle at 50% 62%,
+    rgba(255, 176, 74, 0.7),
+    rgba(255, 120, 40, 0.22) 44%,
+    transparent 70%
+  );
+}
+
+.bake-ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(16px, 2.4vw, 32px);
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.bake-tick {
+  opacity: 0.32;
+  transition: opacity 260ms ease;
+}
+
+.bake-tick.is-passed {
   opacity: 1;
-  transform: none;
+}
+
+@media (min-width: 768px) {
+  .bake-scene-inner {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
 }
 
 .bake-step-name {

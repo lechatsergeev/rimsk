@@ -2,7 +2,7 @@ import React, { type CSSProperties, type FormEvent, type ReactNode, useState } f
 import { motion } from "motion/react";
 import { LandingPageShell } from "@/components/landing/shared";
 import { useMounted } from "@/lib/use-mounted";
-import { BakeSteps } from "@/components/landing/bake-steps";
+import { BakeScene } from "@/components/landing/bake-scene";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -202,7 +202,7 @@ function SpecsBlock() {
   // те же цифры, но поданные как инструкция; снизу проза, которую читают.
   return (
     <div className="specs-plate">
-      <BakeSteps />
+      <BakeScene />
 
       <div className="specs-details">
         {DETAIL_SPECS.map((spec) => (
