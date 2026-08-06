@@ -152,7 +152,12 @@ main section[id] {
    Без JS, при отключённых анимациях и на телефоне шапка обычная. */
 
 .hero-track {
+  /* Слой выше следующих секций: в ассортименте лежит motion.div с
+     трансформом, а трансформ создаёт контекст наложения. При равных
+     уровнях побеждал бы тот, кто ниже по документу, и секция
+     наезжала бы на приклеенную шапку. */
   position: relative;
+  z-index: 1;
   height: 300vh;
 }
 
@@ -183,10 +188,31 @@ main section[id] {
 .hero-pizza-holder {
   transform: var(--pizza-transform, none);
   filter: var(--pizza-filter, none);
-  opacity: var(--pizza-fade, 1);
   will-change: transform, filter;
   transition: transform 160ms linear, filter 200ms linear,
     opacity 200ms linear;
+}
+
+/* Полёт в карточку: продукт выходит из потока сцены в координаты
+   окна, иначе он уехал бы вверх вместе с открепившейся шапкой. */
+.hero-stage.is-flying .hero-pizza-holder {
+  position: fixed;
+  left: var(--fly-left);
+  top: var(--fly-top);
+  width: var(--fly-w);
+  height: var(--fly-h);
+  max-width: none;
+  transform: scale(var(--fly-scale));
+  opacity: var(--fly-opacity, 1);
+  z-index: 40;
+}
+
+/* Бегущая строка прижата к низу приклеенной сцены — видна с первого
+   экрана и всё время, пока идёт превращение. */
+.hero-marquee {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 5;
 }
 
 .hero-overlay {

@@ -52,50 +52,8 @@ export function useBreakpoint() {
   return { isMobile: resolved < 768, isTablet: resolved < 1024 };
 }
 
-function Marquee({ text }: { text: string }) {
-  return (
-    <div
-      style={{
-        background: "var(--signal)",
-        overflow: "hidden",
-        borderTop: `1px solid ${C.black}`,
-        borderBottom: `1px solid ${C.black}`,
-        padding: "10px 0",
-      }}
-    >
-      <div
-        className="marquee-track"
-        style={{ display: "flex", whiteSpace: "nowrap", width: "max-content" }}
-      >
-        <span
-          style={{
-            color: C.black,
-            fontFamily: "'LT Amber', sans-serif",
-            fontWeight: 400,
-            fontSize: "12px",
-            letterSpacing: "0.08em",
-            paddingRight: "40px",
-          }}
-        >
-          {text}
-          {text}
-          {text}
-          {text}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 function Hero({ marqueeText }: { marqueeText: string }) {
-  return (
-    <>
-      <HeroStory />
-      <div style={{ marginTop: 0 }}>
-        <Marquee text={marqueeText} />
-      </div>
-    </>
-  );
+  return <HeroStory marqueeText={marqueeText} />;
 }
 
 export function SectionHeader({

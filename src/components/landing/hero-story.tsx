@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { HeroSection } from "@/components/blocks/hero-section-1";
+import { Marquee } from "@/components/landing/marquee";
 import { useMounted } from "@/lib/use-mounted";
 
 /**
@@ -86,7 +87,73 @@ function Figures({
   );
 }
 
-function HeroTrack() {
+type Flight = {
+  active: boolean;
+  vars: Record<string, string>;
+};
+
+/**
+ * Перелёт продукта в карточку товара.
+ *
+ * Ведём его по положению самой карточки: как только она въезжает в
+ * кадр снизу, продукт переходит в position: fixed, запоминает своё
+ * место в координатах окна и едет к центру карточки, уменьшаясь до её
+ * размера. Пока карточки не видно, полёт не начинается.
+ */
+function useFlight(
+  stageRef: React.RefObject<HTMLDivElement | null>,
+  p: number
+): Flight {
+  const [flight, setFlight] = useState<Flight>({ active: false, vars: {} });
+  const originRef = useRef<DOMRect | null>(null);
+
+  useEffect(() => {
+    const holder = stageRef.current?.querySelector(
+      ".hero-pizza-holder"
+    ) as HTMLElement | null;
+    const target = document.querySelector(".lineup-card-media");
+    if (!holder || !target) return;
+
+    const t = target.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // 0 — карточка ещё под экраном, 1 — доехала до своего места.
+    const entry = Math.min(Math.max((vh - t.top) / (vh * 0.85), 0), 1);
+
+    if (entry <= 0 || p < 0.6) {
+      originRef.current = null;
+      setFlight({ active: false, vars: {} });
+      return;
+    }
+
+    if (!originRef.current) {
+      originRef.current = holder.getBoundingClientRect();
+    }
+
+    const from = originRef.current;
+    const toScale = Math.min(t.height / from.height, 1);
+    const left = from.left + (t.left + t.width / 2 - from.width / 2 - from.left) * entry;
+    const top = from.top + (t.top + t.height / 2 - from.height / 2 - from.top) * entry;
+    const scale = 1 + (toScale - 1) * entry;
+
+    setFlight({
+      active: true,
+      vars: {
+        "--fly-left": `${left.toFixed(1)}px`,
+        "--fly-top": `${top.toFixed(1)}px`,
+        "--fly-w": `${from.width}px`,
+        "--fly-h": `${from.height}px`,
+        "--fly-scale": scale.toFixed(3),
+        "--fly-opacity": String(
+          1 - Math.max(entry - 0.88, 0) / 0.12
+        ),
+      },
+    });
+  }, [p, stageRef]);
+
+  return flight;
+}
+
+function HeroTrack({ marqueeText }: { marqueeText: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const p = useScrollProgress(trackRef);
@@ -117,8 +184,6 @@ function HeroTrack() {
   const travel = ramp(p, 0.1, 0.22);
   const chill = ramp(p, 0.12, 0.24) - ramp(p, 0.54, 0.72);
   const heat = ramp(p, 0.54, 0.72) - ramp(p, 0.84, 0.98);
-  const leave = ramp(p, 0.78, 0.96);
-  const vanish = ramp(p, 0.9, 1);
 
   const copyOpacity = 1 - ramp(p, 0.06, 0.18);
   const freezeFigures = ramp(p, 0.14, 0.24) - ramp(p, 0.48, 0.58);
@@ -126,35 +191,20 @@ function HeroTrack() {
   const freezeCount = ramp(p, 0.14, 0.3);
   const bakeCount = ramp(p, 0.56, 0.72);
 
-  // Куда лететь: центр медиа-области первой карточки товара. Мерим
-  // каждый раз заново — карточка едет вместе со страницей.
-  let dx = shift * travel;
-  let dy = 0;
-  let scale = 1 + travel * 0.18;
+  // Полёт в карточку ведём не по прогрессу трека, а по тому, как сама
+  // карточка въезжает в кадр. Пока сцена приклеена, карточки на экране
+  // нет — лететь было бы некуда. Поэтому продукт на время полёта
+  // переводится в position: fixed и живёт в координатах окна, а цель
+  // измеряется на каждом обновлении. Тот же приём, что в GSAP Flip.
+  const flight = useFlight(stageRef, p);
 
-  if (leave > 0) {
-    const holder = stageRef.current?.querySelector(".hero-pizza-holder");
-    const target = document.querySelector(".lineup-card-media");
-    if (holder && target) {
-      const h = holder.getBoundingClientRect();
-      const t = target.getBoundingClientRect();
-      const naturalX = h.left + h.width / 2 - applied.current.dx;
-      const naturalY = h.top + h.height / 2 - applied.current.dy;
-      const toX = t.left + t.width / 2 - naturalX;
-      const toY = t.top + t.height / 2 - naturalY;
-      const toScale = Math.min(t.height / h.height, 1);
+  const dx = shift * travel;
+  applied.current = { dx, dy: 0 };
 
-      dx = shift * travel + (toX - shift * travel) * leave;
-      dy = toY * leave;
-      scale = scale + (toScale - scale) * leave;
-    }
-  }
-
-  applied.current = { dx, dy };
-
-  const pizzaTransform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(
-    1
-  )}px, 0) scale(${scale.toFixed(3)})`;
+  const scale = 1 + travel * 0.18;
+  const pizzaTransform = `translate3d(${dx.toFixed(1)}px, 0, 0) scale(${scale.toFixed(
+    3
+  )})`;
 
   const saturate = (1 - chill * 0.72 + heat * 0.16).toFixed(2);
   const brightness = (1 + chill * 0.14 - heat * 0.05).toFixed(2);
@@ -164,13 +214,13 @@ function HeroTrack() {
     <div ref={trackRef} className="hero-track">
       <div
         ref={stageRef}
-        className="hero-stage"
+        className={`hero-stage${flight.active ? " is-flying" : ""}`}
         style={
           {
             "--hero-copy-opacity": copyOpacity,
             "--pizza-transform": pizzaTransform,
             "--pizza-filter": pizzaFilter,
-            "--pizza-fade": 1 - vanish,
+            ...flight.vars,
           } as React.CSSProperties
         }
       >
@@ -191,12 +241,18 @@ function HeroTrack() {
           style={{ opacity: Math.max(heat, 0) * 0.8 }}
           aria-hidden
         />
+
+        {/* Внутри сцены, а не после трека: иначе строку было бы видно
+            только через три экрана прокрутки. */}
+        <div className="hero-marquee">
+          <Marquee text={marqueeText} />
+        </div>
       </div>
     </div>
   );
 }
 
-export function HeroStory() {
+export function HeroStory({ marqueeText }: { marqueeText: string }) {
   const mounted = useMounted();
   const [enhanced, setEnhanced] = useState(false);
 
@@ -210,6 +266,13 @@ export function HeroStory() {
 
   // Сервер, отсутствие JS, отключённые анимации и телефон получают
   // обычный первый экран — ровно такой, каким он был.
-  if (!mounted || !enhanced) return <HeroSection />;
-  return <HeroTrack />;
+  if (!mounted || !enhanced) {
+    return (
+      <>
+        <HeroSection />
+        <Marquee text={marqueeText} />
+      </>
+    );
+  }
+  return <HeroTrack marqueeText={marqueeText} />;
 }
