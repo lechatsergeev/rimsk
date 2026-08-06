@@ -80,7 +80,7 @@ export function HeroSection() {
             {/* То же поле, что под карточками товара. */}
             <div
               aria-hidden
-              className="absolute inset-0 z-0 [background:linear-gradient(180deg,#dcefff_0%,#b9dbf7_100%)]"
+              className="hero-field absolute inset-0 z-0 [background:linear-gradient(180deg,#dcefff_0%,#b9dbf7_100%)]"
             />
             {/* Свечение за продуктом: отделяет тёплую корку от поля. */}
             <div

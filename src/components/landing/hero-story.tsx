@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HeroSection } from "@/components/blocks/hero-section-1";
 import { Marquee } from "@/components/landing/marquee";
 import { useMounted } from "@/lib/use-mounted";
@@ -158,30 +158,8 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const p = useScrollProgress(trackRef);
 
-  // Сколько пикселей до центра экрана. Меряем реальное положение
-  // продукта, а не прикидываем в vw: колонка съезжает по-разному на
-  // разных ширинах. Смещение, уже applied, вычитаем — иначе замер
-  // поплывёт на второй итерации.
-  const [shift, setShift] = useState(0);
-  const applied = useRef({ dx: 0, dy: 0 });
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      const holder = stageRef.current?.querySelector(".hero-pizza-holder");
-      if (!holder) return;
-      const rect = holder.getBoundingClientRect();
-      const naturalCenter = rect.left + rect.width / 2 - applied.current.dx;
-      setShift(window.innerWidth / 2 - naturalCenter);
-    };
-
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  // Акты: шапка → быстрый отъезд в центр с заморозкой → выдержка →
-  // разморозка → полёт в первую карточку ассортимента.
-  const travel = ramp(p, 0.1, 0.22);
+  // Продукт остаётся на своём месте справа: отъезд в центр читался
+  // как чужое движение, не связанное ни с чем на экране.
   const chill = ramp(p, 0.12, 0.24) - ramp(p, 0.54, 0.72);
   const heat = ramp(p, 0.54, 0.72) - ramp(p, 0.84, 0.98);
 
@@ -198,14 +176,6 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   // измеряется на каждом обновлении. Тот же приём, что в GSAP Flip.
   const flight = useFlight(stageRef, p);
 
-  const dx = shift * travel;
-  applied.current = { dx, dy: 0 };
-
-  const scale = 1 + travel * 0.18;
-  const pizzaTransform = `translate3d(${dx.toFixed(1)}px, 0, 0) scale(${scale.toFixed(
-    3
-  )})`;
-
   const saturate = (1 - chill * 0.72 + heat * 0.16).toFixed(2);
   const brightness = (1 + chill * 0.14 - heat * 0.05).toFixed(2);
   const pizzaFilter = `saturate(${saturate}) brightness(${brightness})`;
@@ -218,7 +188,6 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
         style={
           {
             "--hero-copy-opacity": copyOpacity,
-            "--pizza-transform": pizzaTransform,
             "--pizza-filter": pizzaFilter,
             ...flight.vars,
           } as React.CSSProperties
