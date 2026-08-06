@@ -143,6 +143,7 @@ function LineupCards({ items }: { items: LineupItem[] }) {
           }}
         >
           <div
+            className="lineup-card-media"
             style={{
               position: "relative",
               minHeight: "clamp(220px, 24vw, 260px)",

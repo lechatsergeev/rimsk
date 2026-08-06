@@ -43,16 +43,31 @@ function ramp(p: number, from: number, to: number) {
   return (p - from) / (to - from);
 }
 
-const FREEZE = { left: ["6", "месяцев"], right: ["−18", "°C"] };
-const BAKE = { left: ["11", "минут"], right: ["230", "°C"] };
+type FigurePair = {
+  left: [number, string];
+  right: [number, string];
+};
 
+const FREEZE: FigurePair = { left: [6, "месяцев"], right: [-18, "°C"] };
+const BAKE: FigurePair = { left: [11, "минут"], right: [230, "°C"] };
+
+/**
+ * Числа набегают не по таймеру, а по самой прокрутке: пока идёт
+ * появление, значение растёт от нуля к цели. Так отсчёт связан с
+ * жестом пользователя и не зависит от кадров анимации.
+ */
 function Figures({
   data,
   opacity,
+  count,
 }: {
-  data: typeof FREEZE;
+  data: FigurePair;
   opacity: number;
+  count: number;
 }) {
+  const left = Math.round(data.left[0] * count);
+  const right = Math.round(data.right[0] * count);
+
   return (
     <div
       className="hero-figures"
@@ -60,11 +75,11 @@ function Figures({
       aria-hidden={opacity < 0.5}
     >
       <div className="hero-figure hero-figure-left">
-        {data.left[0]}
+        {left}
         <span className="hero-figure-unit"> {data.left[1]}</span>
       </div>
       <div className="hero-figure hero-figure-right">
-        {data.right[0]}
+        {right < 0 ? `−${Math.abs(right)}` : right}
         <span className="hero-figure-unit"> {data.right[1]}</span>
       </div>
     </div>
@@ -81,14 +96,14 @@ function HeroTrack() {
   // разных ширинах. Смещение, уже applied, вычитаем — иначе замер
   // поплывёт на второй итерации.
   const [shift, setShift] = useState(0);
-  const appliedRef = useRef(0);
+  const applied = useRef({ dx: 0, dy: 0 });
 
   useLayoutEffect(() => {
     const measure = () => {
       const holder = stageRef.current?.querySelector(".hero-pizza-holder");
       if (!holder) return;
       const rect = holder.getBoundingClientRect();
-      const naturalCenter = rect.left + rect.width / 2 - appliedRef.current;
+      const naturalCenter = rect.left + rect.width / 2 - applied.current.dx;
       setShift(window.innerWidth / 2 - naturalCenter);
     };
 
@@ -97,22 +112,46 @@ function HeroTrack() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Акты: шапка → отъезд в центр с заморозкой → выдержка →
-  // разморозка → улёт вниз, к ассортименту.
-  const travel = ramp(p, 0.12, 0.36);
-  const chill = ramp(p, 0.14, 0.36) - ramp(p, 0.56, 0.76);
-  const heat = ramp(p, 0.56, 0.78) - ramp(p, 0.86, 1);
-  const leave = ramp(p, 0.84, 1);
+  // Акты: шапка → быстрый отъезд в центр с заморозкой → выдержка →
+  // разморозка → полёт в первую карточку ассортимента.
+  const travel = ramp(p, 0.1, 0.22);
+  const chill = ramp(p, 0.12, 0.24) - ramp(p, 0.54, 0.72);
+  const heat = ramp(p, 0.54, 0.72) - ramp(p, 0.84, 0.98);
+  const leave = ramp(p, 0.78, 0.96);
+  const vanish = ramp(p, 0.9, 1);
 
-  const copyOpacity = 1 - ramp(p, 0.08, 0.26);
-  const freezeFigures = ramp(p, 0.2, 0.34) - ramp(p, 0.5, 0.6);
-  const bakeFigures = ramp(p, 0.58, 0.7) - ramp(p, 0.88, 1);
+  const copyOpacity = 1 - ramp(p, 0.06, 0.18);
+  const freezeFigures = ramp(p, 0.14, 0.24) - ramp(p, 0.48, 0.58);
+  const bakeFigures = ramp(p, 0.56, 0.66) - ramp(p, 0.84, 0.94);
+  const freezeCount = ramp(p, 0.14, 0.3);
+  const bakeCount = ramp(p, 0.56, 0.72);
 
-  const dx = shift * travel;
-  appliedRef.current = dx;
+  // Куда лететь: центр медиа-области первой карточки товара. Мерим
+  // каждый раз заново — карточка едет вместе со страницей.
+  let dx = shift * travel;
+  let dy = 0;
+  let scale = 1 + travel * 0.18;
 
-  const scale = 1 + travel * 0.16 - leave * 0.5;
-  const dy = leave * window.innerHeight * 0.55;
+  if (leave > 0) {
+    const holder = stageRef.current?.querySelector(".hero-pizza-holder");
+    const target = document.querySelector(".lineup-card-media");
+    if (holder && target) {
+      const h = holder.getBoundingClientRect();
+      const t = target.getBoundingClientRect();
+      const naturalX = h.left + h.width / 2 - applied.current.dx;
+      const naturalY = h.top + h.height / 2 - applied.current.dy;
+      const toX = t.left + t.width / 2 - naturalX;
+      const toY = t.top + t.height / 2 - naturalY;
+      const toScale = Math.min(t.height / h.height, 1);
+
+      dx = shift * travel + (toX - shift * travel) * leave;
+      dy = toY * leave;
+      scale = scale + (toScale - scale) * leave;
+    }
+  }
+
+  applied.current = { dx, dy };
+
   const pizzaTransform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(
     1
   )}px, 0) scale(${scale.toFixed(3)})`;
@@ -131,15 +170,15 @@ function HeroTrack() {
             "--hero-copy-opacity": copyOpacity,
             "--pizza-transform": pizzaTransform,
             "--pizza-filter": pizzaFilter,
-            "--pizza-fade": 1 - leave,
+            "--pizza-fade": 1 - vanish,
           } as React.CSSProperties
         }
       >
         <HeroSection />
 
         <div className="hero-overlay">
-          <Figures data={FREEZE} opacity={freezeFigures} />
-          <Figures data={BAKE} opacity={bakeFigures} />
+          <Figures data={FREEZE} opacity={freezeFigures} count={freezeCount} />
+          <Figures data={BAKE} opacity={bakeFigures} count={bakeCount} />
         </div>
 
         <div
