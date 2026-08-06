@@ -182,8 +182,8 @@ html.is-stepping {
      наезжала бы на приклеенную шапку. */
   position: relative;
   z-index: 1;
-  /* По экрану на каждый шаг: четыре точки прилипания. */
-  height: 400vh;
+  /* По экрану на каждый шаг: первый экран плюс четыре стадии. */
+  height: 500vh;
 }
 
 .hero-stage {
@@ -193,13 +193,14 @@ html.is-stepping {
   /* Оба слоя поля — и заливка, и свечение — рисует сцена, на всю
      свою высоту. Внутри шапки они заперты в её 780px и обрывались
      ровно на этой отметке: сначала светлой полосой, потом швом. */
-  background:
-    radial-gradient(
-      circle at 72% 44%,
-      rgba(127, 150, 255, 0.5),
-      transparent 48%
-    ),
-    linear-gradient(180deg, #dcefff 0%, #b9dbf7 100%);
+  /* Цвет приходит из активной стадии; переход длинный, чтобы смена
+     шага читалась как смена сцены, а не как мигание. */
+  background: linear-gradient(
+    180deg,
+    var(--stage-a, #dcefff) 0%,
+    var(--stage-b, #b9dbf7) 100%
+  );
+  transition: background 620ms ease;
   /* Не обрезаем: в финале продукт улетает за пределы экрана в
      карточку ассортимента, и overflow: hidden срезал бы полёт. */
 }
@@ -223,6 +224,12 @@ html.is-stepping {
 .hero-stage main,
 .hero-stage main > section > div {
   overflow: visible;
+}
+
+/* Внутри сцены продукт показывает очередь стадий — своя модель шапки
+   не нужна, иначе получилось бы два контекста WebGL на один кадр. */
+.hero-stage .hero-pizza-holder {
+  display: none;
 }
 
 /* Значения приходят инлайном из сцены; вне её действуют значения по
@@ -305,6 +312,74 @@ html.is-stepping {
   z-index: 5;
 }
 
+/* ── Презентация стадий ───────────────────────────────────────── */
+
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  align-content: center;
+  padding: 0 clamp(20px, 5vw, 72px);
+  pointer-events: none;
+  color: var(--stage-ink, #1a1d20);
+  transition: color 620ms ease;
+}
+
+.stage-card {
+  grid-area: 1 / 1;
+  max-width: 32ch;
+  transition: opacity 420ms ease;
+}
+
+.stage-index {
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.stage-title {
+  margin: 14px 0 0;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(46px, 7vw, 104px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.stage-note {
+  margin: 18px 0 0;
+  max-width: 30ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: clamp(13px, 1.2vw, 15px);
+  line-height: 1.6;
+}
+
+/* Очередь моделей стоит там же, где продукт в шапке. */
+.stage-queue {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 18vh 0;
+  height: 46vh;
+  pointer-events: none;
+}
+
+.pizza-queue {
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .stage-queue {
+    inset: 50% 0 auto auto;
+    width: 58vw;
+    height: 62vh;
+    transform: translateY(-50%);
+  }
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -318,7 +393,75 @@ html.is-stepping {
 }
 
 @media (min-width: 768px) {
-  .hero-overlay {
+  /* ── Презентация стадий ───────────────────────────────────────── */
+
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  align-content: center;
+  padding: 0 clamp(20px, 5vw, 72px);
+  pointer-events: none;
+  color: var(--stage-ink, #1a1d20);
+  transition: color 620ms ease;
+}
+
+.stage-card {
+  grid-area: 1 / 1;
+  max-width: 32ch;
+  transition: opacity 420ms ease;
+}
+
+.stage-index {
+  font-family: 'LT Amber', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.stage-title {
+  margin: 14px 0 0;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(46px, 7vw, 104px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+.stage-note {
+  margin: 18px 0 0;
+  max-width: 30ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: clamp(13px, 1.2vw, 15px);
+  line-height: 1.6;
+}
+
+/* Очередь моделей стоит там же, где продукт в шапке. */
+.stage-queue {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 18vh 0;
+  height: 46vh;
+  pointer-events: none;
+}
+
+.pizza-queue {
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .stage-queue {
+    inset: 50% 0 auto auto;
+    width: 58vw;
+    height: 62vh;
+    transform: translateY(-50%);
+  }
+}
+
+.hero-overlay {
     align-content: center;
     padding-top: 0;
   }
