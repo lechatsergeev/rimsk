@@ -155,8 +155,12 @@ main section[id] {
    поэтому на остальной странице прокрутка обычная. Режим proximity, а
    не mandatory — mandatory не даёт проскочить сцену, если человек
    просто хочет вниз. */
-html {
-  scroll-snap-type: y proximity;
+/* Жёсткое прилипание включается только на время сцены: точки есть
+   лишь внутри трека, и постоянный mandatory тянул бы человека назад
+   при прокрутке дальше по странице. proximity при колесе почти не
+   притягивает, поэтому на десктопе шагов не чувствовалось. */
+html.is-stepping {
+  scroll-snap-type: y mandatory;
 }
 
 .hero-snaps {
@@ -242,27 +246,21 @@ html {
    Продукт вынут из сетки шапки и поставлен в координаты сцены —
    иначе он зависел бы от высоты исчезающего текста. */
 @media (max-width: 767px) {
-  /* Текст гаснет по прозрачности, но коробку под собой сохраняет — на
-     телефоне это четыре сотни пикселей пустоты, под которыми стоял
-     продукт. Выводим его из потока, и продукт занимает освободившееся
-     место. Только на телефоне: на десктопе колонки сетки идут по
-     порядку, и без текста продукт стал бы первым элементом и уехал в
-     левую колонку. */
-  .hero-stage.is-transformed .hero-copy {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    pointer-events: none;
-  }
-
-  .hero-stage.is-transformed .hero-pizza-holder {
-    margin-top: 26vh;
+  /* Текст гаснет, но коробку под собой сохраняет — четыре сотни
+     пикселей пустоты, под которыми стоял продукт. Поднимаем продукт
+     на освободившееся место трансформом, а не сменой потока: поток
+     переключается мгновенно, и продукт прыгал рывком. Трансформ
+     анимируется. */
+  .hero-stage .hero-pizza-holder {
     height: 40vh;
     width: 84vw;
     max-width: none;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .hero-stage.is-transformed .hero-pizza-holder {
+    transform: translateY(-26vh);
   }
 
   /* Числа держат свою полосу и не растягиваются на всю ширину. */
@@ -279,8 +277,9 @@ html {
   transform: var(--pizza-transform, none);
   filter: var(--pizza-filter, none);
   will-change: transform, filter;
-  transition: transform 160ms linear, filter 200ms linear,
-    opacity 200ms linear;
+  /* Шаги, а не слежение за колесом: переход идёт своё время. */
+  transition: transform 460ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 400ms ease, opacity 300ms ease;
 }
 
 /* Полёт в карточку: продукт выходит из потока сцены в координаты

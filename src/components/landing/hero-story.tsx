@@ -23,6 +23,10 @@ function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
       const total = rect.height - window.innerHeight;
       if (total <= 0) return;
       setProgress(Math.min(Math.max(-rect.top / total, 0), 1));
+
+      // Прилипание держим включённым, только пока сцена занимает кадр.
+      const inScene = rect.top <= 1 && rect.bottom > window.innerHeight;
+      document.documentElement.classList.toggle("is-stepping", inScene);
     };
 
     update();
@@ -31,6 +35,7 @@ function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      document.documentElement.classList.remove("is-stepping");
     };
   }, [ref]);
 
