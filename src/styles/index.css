@@ -195,11 +195,16 @@ html.is-stepping {
      ровно на этой отметке: сначала светлой полосой, потом швом. */
   /* Цвет приходит из активной стадии; переход длинный, чтобы смена
      шага читалась как смена сцены, а не как мигание. */
-  background: linear-gradient(
-    180deg,
-    var(--stage-a, #dcefff) 0%,
-    var(--stage-b, #b9dbf7) 100%
-  );
+  background: radial-gradient(
+      circle at 72% 44%,
+      var(--stage-glow, rgba(127, 150, 255, 0.5)),
+      transparent 52%
+    ),
+    linear-gradient(
+      180deg,
+      var(--stage-a, #dcefff) 0%,
+      var(--stage-b, #b9dbf7) 100%
+    );
   transition: background 620ms ease;
   /* Не обрезаем: в финале продукт улетает за пределы экрана в
      карточку ассортимента, и overflow: hidden срезал бы полёт. */
@@ -328,7 +333,7 @@ html.is-stepping {
   z-index: 4;
   display: grid;
   align-content: start;
-  padding: 12vh clamp(20px, 5vw, 72px) 0;
+  padding: 12vh 0 0;
   pointer-events: none;
   color: var(--stage-ink, #1a1d20);
   transition: color 620ms ease;
@@ -339,6 +344,16 @@ html.is-stepping {
     align-content: center;
     padding-top: 0;
   }
+}
+
+/* Та же сетка, что у текста шапки: max-w-7xl с отступом 1.5rem.
+   Слайды стояли на 40px правее и выглядели съехавшими. */
+.stage-inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: grid;
 }
 
 .stage-card {
@@ -419,7 +434,7 @@ html.is-stepping {
   z-index: 4;
   display: grid;
   align-content: start;
-  padding: 12vh clamp(20px, 5vw, 72px) 0;
+  padding: 12vh 0 0;
   pointer-events: none;
   color: var(--stage-ink, #1a1d20);
   transition: color 620ms ease;
@@ -430,6 +445,16 @@ html.is-stepping {
     align-content: center;
     padding-top: 0;
   }
+}
+
+/* Та же сетка, что у текста шапки: max-w-7xl с отступом 1.5rem.
+   Слайды стояли на 40px правее и выглядели съехавшими. */
+.stage-inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: grid;
 }
 
 .stage-card {

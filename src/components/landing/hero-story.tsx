@@ -46,6 +46,7 @@ function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
 
 /** Поле первого экрана — то же, что было до презентации. */
 const HERO_BG: [string, string] = ["#dcefff", "#b9dbf7"];
+const HERO_GLOW = "rgba(127,150,255,0.5)";
 
 /** Шаг 0 — первый экран, дальше по стадии на шаг. */
 const STEP_COUNT = STAGES.length + 1;
@@ -66,6 +67,7 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   const active = Math.max(step - 1, 0);
   // Первый экран держит своё поле, а не наследует последнюю стадию.
   const bg = stage ? stage.bg : HERO_BG;
+  const glow = stage ? stage.glow : HERO_GLOW;
   const ink = stage ? stage.ink : "#1a1d20";
 
   return (
@@ -77,6 +79,7 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
             "--hero-copy-opacity": step === 0 ? 1 : 0,
             "--stage-a": bg[0],
             "--stage-b": bg[1],
+            "--stage-glow": glow,
             "--stage-ink": ink,
           } as React.CSSProperties
         }
@@ -84,6 +87,7 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
         <HeroSection />
 
         <div className="stage-overlay">
+          <div className="stage-inner">
           {STAGES.map((s, i) => (
             <div
               key={s.key}
@@ -98,6 +102,7 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
               <p className="stage-note">{s.note}</p>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Очередь появляется со второго шага: на первом экране
