@@ -44,6 +44,9 @@ function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
   return progress;
 }
 
+/** Поле первого экрана — то же, что было до презентации. */
+const HERO_BG: [string, string] = ["#dcefff", "#b9dbf7"];
+
 /** Шаг 0 — первый экран, дальше по стадии на шаг. */
 const STEP_COUNT = STAGES.length + 1;
 
@@ -56,13 +59,14 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
   const p = useScrollProgress(trackRef);
   const step = stepFor(p);
 
-  // На первом экране показываем готовый продукт — то, что лежит на
-  // полке. Дальше рассказ отматывает назад: тесто, формовка, печь,
-  // заморозка, и очередь возвращается к тому же кадру.
+  // Первый экран остаётся прежним — со своей моделью готовой пиццы.
+  // Презентация начинается со второго шага и заканчивается тем же
+  // продуктом, только уже допечённым.
   const stage = step === 0 ? null : STAGES[step - 1];
-  const active = step === 0 ? STAGES.length - 1 : step - 1;
-  const bg = stage ? stage.bg : STAGES[STAGES.length - 1].bg;
-  const ink = stage ? stage.ink : STAGES[STAGES.length - 1].ink;
+  const active = Math.max(step - 1, 0);
+  // Первый экран держит своё поле, а не наследует последнюю стадию.
+  const bg = stage ? stage.bg : HERO_BG;
+  const ink = stage ? stage.ink : "#1a1d20";
 
   return (
     <div ref={trackRef} className="hero-track">
@@ -96,7 +100,12 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
           ))}
         </div>
 
-        <div className="stage-queue">
+        {/* Очередь появляется со второго шага: на первом экране
+            работает своя модель шапки. */}
+        <div
+          className="stage-queue"
+          style={{ opacity: step === 0 ? 0 : 1 }}
+        >
           <PizzaQueue active={active} />
         </div>
 

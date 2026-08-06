@@ -182,8 +182,8 @@ html.is-stepping {
      наезжала бы на приклеенную шапку. */
   position: relative;
   z-index: 1;
-  /* По экрану на каждый шаг: первый экран плюс четыре стадии. */
-  height: 500vh;
+  /* По экрану на каждый шаг: первый экран плюс пять стадий. */
+  height: 600vh;
 }
 
 .hero-stage {
@@ -226,10 +226,15 @@ html.is-stepping {
   overflow: visible;
 }
 
-/* Внутри сцены продукт показывает очередь стадий — своя модель шапки
-   не нужна, иначе получилось бы два контекста WebGL на один кадр. */
-.hero-stage .hero-pizza-holder {
-  display: none;
+/* На первом экране работает своя модель шапки, дальше её сменяет
+   очередь стадий — поэтому прячем не совсем, а по шагу. */
+.hero-stage.is-transformed .hero-pizza-holder {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stage-queue {
+  transition: opacity 420ms ease;
 }
 
 /* Значения приходят инлайном из сцены; вне её действуют значения по
@@ -314,16 +319,26 @@ html.is-stepping {
 
 /* ── Презентация стадий ───────────────────────────────────────── */
 
+/* На телефоне текст и модели делят экран по вертикали: рассказ
+   сверху, очередь снизу. Оба стояли по центру и налезали друг на
+   друга почти двумя сотнями пикселей. */
 .stage-overlay {
   position: absolute;
   inset: 0;
   z-index: 4;
   display: grid;
-  align-content: center;
-  padding: 0 clamp(20px, 5vw, 72px);
+  align-content: start;
+  padding: 12vh clamp(20px, 5vw, 72px) 0;
   pointer-events: none;
   color: var(--stage-ink, #1a1d20);
   transition: color 620ms ease;
+}
+
+@media (min-width: 768px) {
+  .stage-overlay {
+    align-content: center;
+    padding-top: 0;
+  }
 }
 
 .stage-card {
@@ -341,16 +356,16 @@ html.is-stepping {
 }
 
 .stage-title {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   font-family: 'LT Amber', sans-serif;
   font-weight: 400;
-  font-size: clamp(46px, 7vw, 104px);
+  font-size: clamp(40px, 7vw, 104px);
   line-height: 0.88;
   letter-spacing: -0.04em;
 }
 
 .stage-note {
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   max-width: 30ch;
   font-family: 'LT Amber', sans-serif;
   font-size: clamp(13px, 1.2vw, 15px);
@@ -361,8 +376,8 @@ html.is-stepping {
 .stage-queue {
   position: absolute;
   z-index: 3;
-  inset: auto 0 18vh 0;
-  height: 46vh;
+  inset: auto 0 15vh 0;
+  height: 40vh;
   pointer-events: none;
 }
 
@@ -395,16 +410,26 @@ html.is-stepping {
 @media (min-width: 768px) {
   /* ── Презентация стадий ───────────────────────────────────────── */
 
+/* На телефоне текст и модели делят экран по вертикали: рассказ
+   сверху, очередь снизу. Оба стояли по центру и налезали друг на
+   друга почти двумя сотнями пикселей. */
 .stage-overlay {
   position: absolute;
   inset: 0;
   z-index: 4;
   display: grid;
-  align-content: center;
-  padding: 0 clamp(20px, 5vw, 72px);
+  align-content: start;
+  padding: 12vh clamp(20px, 5vw, 72px) 0;
   pointer-events: none;
   color: var(--stage-ink, #1a1d20);
   transition: color 620ms ease;
+}
+
+@media (min-width: 768px) {
+  .stage-overlay {
+    align-content: center;
+    padding-top: 0;
+  }
 }
 
 .stage-card {
@@ -422,16 +447,16 @@ html.is-stepping {
 }
 
 .stage-title {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   font-family: 'LT Amber', sans-serif;
   font-weight: 400;
-  font-size: clamp(46px, 7vw, 104px);
+  font-size: clamp(40px, 7vw, 104px);
   line-height: 0.88;
   letter-spacing: -0.04em;
 }
 
 .stage-note {
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   max-width: 30ch;
   font-family: 'LT Amber', sans-serif;
   font-size: clamp(13px, 1.2vw, 15px);
@@ -442,8 +467,8 @@ html.is-stepping {
 .stage-queue {
   position: absolute;
   z-index: 3;
-  inset: auto 0 18vh 0;
-  height: 46vh;
+  inset: auto 0 15vh 0;
+  height: 40vh;
   pointer-events: none;
 }
 

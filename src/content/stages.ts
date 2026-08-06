@@ -2,6 +2,7 @@ import doughModel from "../../images/dough-opt.glb";
 import rawModel from "../../images/raw-opt.glb";
 import parBakeModel from "../../images/par-bake-opt.glb";
 import frozenModel from "../../images/frozen-opt.glb";
+import readyModel from "../../images/pizza.glb";
 
 export type Stage = {
   key: string;
@@ -56,6 +57,15 @@ export const STAGES: Stage[] = [
     note: "Сразу после печи, чтобы удержать влагу в тесте. Дальше — только холод, до вашей духовки.",
     modelSrc: frozenModel,
     bg: ["#dcefff", "#b9dbf7"],
+    ink: "#1a1d20",
+  },
+  {
+    key: "ready",
+    index: "05",
+    title: "Готово",
+    note: "Одиннадцать минут при 230 °C — и та самая корка, ради которой всё это затевалось.",
+    modelSrc: readyModel,
+    bg: ["#faf9f6", "#f1ede4"],
     ink: "#1a1d20",
   },
 ];

@@ -5,10 +5,10 @@ import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { STAGES } from "@/content/stages";
 
-/** Расстояние между соседями в очереди и глубина ухода назад. */
-const GAP = 2;
-const DEPTH = 1.6;
-const DIM = 0.28;
+/** Шеренга: соседи стоят друг за другом вглубь, чуть выглядывая вбок. */
+const DEPTH = 1.45;
+const PEEK = 0.5;
+const DIM = 0.3;
 
 function fit(model: THREE.Object3D, target: number) {
   const box = new THREE.Box3().setFromObject(model);
@@ -81,7 +81,8 @@ export function PizzaQueue({ active }: { active: number }) {
           fit(gltf.scene, 2.4);
           gltf.scene.rotation.x = 0.72;
           group.add(gltf.scene);
-          group.position.set((i - activeRef.current) * GAP, 0, 0);
+          const off0 = i - activeRef.current;
+          group.position.set(off0 * PEEK, 0, -off0 * DEPTH);
           slots[i] = group;
           scene.add(group);
         },
@@ -111,28 +112,35 @@ export function PizzaQueue({ active }: { active: number }) {
         if (!group) return;
         const offset = i - a;
         const isActive = offset === 0;
+        const passed = offset < 0;
 
-        // Целевое место в очереди; подъезжаем к нему плавно, поэтому
-        // смена шага читается как движение конвейера.
-        const tx = offset * GAP;
-        const tz = -Math.abs(offset) * DEPTH;
-        const ts = isActive ? 1 : 0.62;
+        // Шеренга: следующие стоят за активной, каждая чуть в сторону,
+        // чтобы наружу выходил только силуэт. Пройденные уезжают на
+        // зрителя и растворяются — очередь двигается, а не толпится.
+        const tx = passed ? offset * 0.8 : offset * PEEK;
+        const tz = passed ? 2.2 : -offset * DEPTH;
+        const ts = isActive ? 1 : passed ? 1.1 : 0.86;
 
-        group.position.x += (tx - group.position.x) * 0.08;
-        group.position.z += (tz - group.position.z) * 0.08;
-        group.position.y = isActive ? Math.sin(t * 1.1) * 0.06 : -0.1;
-        const s = group.scale.x + (ts - group.scale.x) * 0.08;
+        group.position.x += (tx - group.position.x) * 0.09;
+        group.position.z += (tz - group.position.z) * 0.09;
+        group.position.y = isActive ? Math.sin(t * 1.1) * 0.05 : -0.06;
+        const s = group.scale.x + (ts - group.scale.x) * 0.09;
         group.scale.setScalar(s);
-        group.rotation.y += isActive ? 0.004 : 0.001;
 
-        // Соседи уходят в тень: множитель цвета по текстуре.
-        const targetTint = isActive ? 1 : DIM;
+        // Лёгкое покачивание вместо оборота: продукт не показывает
+        // зрителю обратную сторону.
+        group.rotation.y = isActive ? Math.sin(t * 0.5) * 0.13 : 0.05;
+
+        const tint = isActive ? 1 : DIM;
+        const alpha = passed ? 0 : 1;
         group.traverse((o) => {
           const mesh = o as THREE.Mesh;
           const mat = mesh.material as THREE.MeshStandardMaterial | undefined;
           if (!mat || !mat.color) return;
-          const c = mat.color.r + (targetTint - mat.color.r) * 0.08;
-          mat.color.setScalar(c);
+          mat.color.setScalar(mat.color.r + (tint - mat.color.r) * 0.09);
+          mat.transparent = true;
+          mat.opacity += (alpha - mat.opacity) * 0.09;
+          mat.depthWrite = mat.opacity > 0.9;
         });
       });
 
