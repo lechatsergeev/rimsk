@@ -151,6 +151,26 @@ main section[id] {
    текст уступает место числам, а продукт стынет и отогревается.
    Без JS, при отключённых анимациях и на телефоне шапка обычная. */
 
+/* Прилипание только в пределах сцены: точки есть лишь внутри трека,
+   поэтому на остальной странице прокрутка обычная. Режим proximity, а
+   не mandatory — mandatory не даёт проскочить сцену, если человек
+   просто хочет вниз. */
+html {
+  scroll-snap-type: y proximity;
+}
+
+.hero-snaps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-snap {
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 .hero-track {
   /* Слой выше следующих секций: в ассортименте лежит motion.div с
      трансформом, а трансформ создаёт контекст наложения. При равных
@@ -158,7 +178,8 @@ main section[id] {
      наезжала бы на приклеенную шапку. */
   position: relative;
   z-index: 1;
-  height: 300vh;
+  /* По экрану на каждый шаг: четыре точки прилипания. */
+  height: 400vh;
 }
 
 .hero-stage {
@@ -207,11 +228,50 @@ main section[id] {
   transition: opacity 200ms linear;
 }
 
+/* ── Композиция первого экрана на телефоне ────────────────────────
+
+   Числа лежат в абсолютном оверлее, продукт — в сетке шапки, то есть
+   в разных системах координат: их взаимное положение получалось
+   случайным. Здесь оно задано явно, долями экрана.
+
+     0–11vh   навигация
+     15vh     числа, по левому полю страницы
+     40–82vh  продукт, крупно и по центру
+     низ      бегущая строка
+
+   Продукт вынут из сетки шапки и поставлен в координаты сцены —
+   иначе он зависел бы от высоты исчезающего текста. */
 @media (max-width: 767px) {
-  /* Между числами и продуктом зияла пустота: сцена высотой в экран, а
-     содержимое шапки заметно короче. Подтягиваем продукт вверх. */
-  .hero-stage .hero-pizza-holder {
-    margin-top: -6vh;
+  /* Текст гаснет по прозрачности, но коробку под собой сохраняет — на
+     телефоне это четыре сотни пикселей пустоты, под которыми стоял
+     продукт. Выводим его из потока, и продукт занимает освободившееся
+     место. Только на телефоне: на десктопе колонки сетки идут по
+     порядку, и без текста продукт стал бы первым элементом и уехал в
+     левую колонку. */
+  .hero-stage.is-transformed .hero-copy {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .hero-stage.is-transformed .hero-pizza-holder {
+    margin-top: 26vh;
+    height: 40vh;
+    width: 84vw;
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Числа держат свою полосу и не растягиваются на всю ширину. */
+  .hero-figures {
+    max-width: 78vw;
+  }
+
+  .hero-figure {
+    font-size: clamp(46px, 15vw, 68px);
   }
 }
 
@@ -254,7 +314,7 @@ main section[id] {
   /* На узком экране шапка однколоночная: текст сверху, продукт снизу.
      Числа встают туда, где стоял заголовок, а не в центр кадра. */
   align-content: start;
-  padding: 13vh clamp(20px, 5vw, 72px) 0;
+  padding: 15vh clamp(20px, 5vw, 72px) 0;
   pointer-events: none;
 }
 
@@ -278,8 +338,8 @@ main section[id] {
 .hero-figure {
   font-family: 'LT Amber', sans-serif;
   font-weight: 400;
-  font-size: clamp(52px, 6.4vw, 104px);
-  line-height: 0.9;
+  font-size: clamp(46px, 6.4vw, 104px);
+  line-height: 1;
   letter-spacing: -0.05em;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -291,16 +351,18 @@ main section[id] {
 /* Единица была вчетверо мельче числа и садилась на базовую линию —
    читалась как подстрочный индекс. Крупнее и с нормальным пробелом. */
 .hero-figure-unit {
-  margin-left: 0.14em;
-  font-size: 0.3em;
+  margin-left: 0.16em;
+  font-size: 0.36em;
   letter-spacing: 0.04em;
 }
 
+/* За продуктом, а не поверх: с mix-blend-mode: screen сверху они
+   засвечивали пиццу до бледного теста. */
 .hero-frost,
 .hero-heat {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 1;
   pointer-events: none;
   mix-blend-mode: screen;
   transition: opacity 240ms linear;

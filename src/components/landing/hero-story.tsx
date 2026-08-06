@@ -237,7 +237,9 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
     <div ref={trackRef} className="hero-track">
       <div
         ref={stageRef}
-        className={`hero-stage${flight.active ? " is-flying" : ""}`}
+        className={`hero-stage${step > 0 ? " is-transformed" : ""}${
+          flight.active ? " is-flying" : ""
+        }`}
         style={
           {
             "--hero-copy-opacity": copyOpacity,
@@ -269,6 +271,15 @@ function HeroTrack({ marqueeText }: { marqueeText: string }) {
         <div className="hero-marquee">
           <Marquee text={marqueeText} />
         </div>
+      </div>
+
+      {/* Точки прилипания — по одной на шаг. Без них прокрутка идёт
+          насквозь и остановок не чувствуется: значения-то менялись
+          ступенями, а сам скролл оставался непрерывным. */}
+      <div className="hero-snaps" aria-hidden>
+        {STEP_AT.map((at) => (
+          <div key={at} className="hero-snap" />
+        ))}
       </div>
     </div>
   );
