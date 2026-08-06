@@ -280,24 +280,17 @@ const HeroHeader = ({ isScrolled }: { isScrolled: boolean }) => {
                   ))}
                 </ul>
               </div>
-              <AnimatePresence initial={false}>
-                {isScrolled ? (
-                  <motion.div
-                    key="header-cta"
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.22, ease: "easeOut" }}
-                    className="hidden lg:block"
-                  >
-                    <Button asChild size="sm">
-                      <a href="#order">
-                        <span>Написать нам</span>
-                      </a>
-                    </Button>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
+              <div className="hidden lg:block">
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-[var(--signal)] text-[var(--ink)] hover:bg-[var(--signal)]/85"
+                >
+                  <a href="#order">
+                    <span>Написать нам</span>
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
