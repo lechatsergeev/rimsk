@@ -31,25 +31,46 @@ export type ProductSpec = {
   value: string;
 };
 
-export type KeyNumber = {
-  value: string;
+export type BakeStep = {
+  /** Число, которое отсчитывается при появлении блока. */
+  target: number;
+  /** Как показать число: знак и единица вокруг него. */
+  prefix?: string;
   unit: string;
+  step: string;
   caption: string;
 };
 
 /**
- * Три числа, которые сканируют: масса, хранение, приготовление.
- * Вынесены отдельно от прозы — их читают глазами по диагонали,
- * поэтому в вёрстке они идут крупно и первыми.
+ * Сценарий от морозильника до стола. Те же цифры, что были в таблице,
+ * но поданные как инструкция: покупателю важно не «срок годности»,
+ * а «что мне сделать».
  */
-export const KEY_NUMBERS: KeyNumber[] = [
-  { value: "330", unit: "г", caption: "Масса нетто" },
-  { value: "6", unit: "месяцев", caption: "Хранение при −18 °C" },
-  { value: "11", unit: "минут", caption: "Допекание при 230 °C" },
+export const BAKE_STEPS: BakeStep[] = [
+  {
+    target: 18,
+    prefix: "−",
+    unit: "°C",
+    step: "Хранить",
+    caption: "В морозильной камере, до 6 месяцев",
+  },
+  {
+    target: 230,
+    unit: "°C",
+    step: "Разогреть",
+    caption: "Духовку заранее, до полного прогрева",
+  },
+  {
+    target: 11,
+    unit: "мин",
+    step: "Допечь",
+    caption: "И сразу подавать",
+  },
 ];
 
 /** Характеристики, которые читают текстом, а не сканируют. */
 export const DETAIL_SPECS: ProductSpec[] = [
+  { label: "Масса нетто", value: NET_WEIGHT },
   { label: "Тесто", value: DOUGH_METHOD },
   { label: "Состав", value: INGREDIENTS },
   { label: "Добавки", value: NO_ADDITIVES },

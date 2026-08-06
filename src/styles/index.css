@@ -132,42 +132,89 @@ main section[id] {
   margin-bottom: clamp(24px, 3vw, 32px);
 }
 
-.specs-numbers {
+/* Сценарий приготовления. Та же лестница отступов, что и раньше:
+   8px внутри пары, 12px число->подпись, 36-56px между шагами. */
+
+.bake-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  /* Нижний предел 36px, а не 30px: на узком экране числа встают в
-     столбец, и при 30px зазор между группами почти совпадал с 28px
-     между парами прозы — две ступени группировки сливались в одну. */
   row-gap: clamp(36px, 3.4vw, 40px);
   column-gap: clamp(32px, 4.4vw, 64px);
+  counter-reset: bake;
 }
 
-.specs-number-value {
-  font-family: 'LT Amber', sans-serif;
-  font-weight: 400;
-  font-size: clamp(44px, 5.4vw, 68px);
-  line-height: 0.86;
-  letter-spacing: -0.04em;
-  color: var(--ink);
+/* Шаг по умолчанию видим. Прятать его берёмся только после того, как
+   компонент смонтировался и анимация гарантированно отработает
+   (класс is-armed) — иначе без JS блок остался бы пустым, как когда-то
+   первый экран. */
+.bake-step {
+  transition: opacity 420ms ease, transform 420ms ease;
 }
 
-/* Единица набрана втрое мельче числа, поэтому пробел между ними
-   оптически проваливается — добавляем компенсацию. */
-.specs-number-unit {
-  margin-left: 0.3em;
-  font-size: 0.34em;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+.bake-steps.is-armed .bake-step {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
-.specs-number-caption {
-  margin-top: 12px;
+.bake-steps.is-armed.is-visible .bake-step {
+  opacity: 1;
+  transform: none;
+}
+
+.bake-step-name {
+  counter-increment: bake;
   font-family: 'LT Amber', sans-serif;
   font-size: 10px;
   line-height: 1.5;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
+}
+
+.bake-step-name::before {
+  content: counter(bake) " — ";
+  opacity: 0.5;
+}
+
+.bake-step-value {
+  margin-top: 12px;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 5.4vw, 68px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  /* Цифры не пляшут по ширине во время отсчёта. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Единица набрана втрое мельче числа, поэтому пробел между ними
+   оптически проваливается — добавляем компенсацию. */
+.bake-step-unit {
+  margin-left: 0.3em;
+  font-size: 0.34em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.bake-step-caption {
+  margin-top: 12px;
+  max-width: 24ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bake-step {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .specs-details {
@@ -231,7 +278,7 @@ main section[id] {
     grid-column: auto;
   }
 
-  .specs-numbers {
+  .bake-steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 

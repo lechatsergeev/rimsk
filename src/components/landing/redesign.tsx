@@ -2,12 +2,12 @@ import React, { type CSSProperties, type FormEvent, type ReactNode, useState } f
 import { motion } from "motion/react";
 import { LandingPageShell } from "@/components/landing/shared";
 import { useMounted } from "@/lib/use-mounted";
+import { BakeSteps } from "@/components/landing/bake-steps";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
   CONTACT_PHONE_HREF,
   DETAIL_SPECS,
-  KEY_NUMBERS,
   NET_WEIGHT,
 } from "@/content/brand";
 
@@ -70,8 +70,8 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
 
       <SwissSection
         id="specs"
-        title="Состав и хранение"
-        description="Одинаково для всех позиций ассортимента. Полный комплект документов отправляем по запросу."
+        title="Как хранить и готовить"
+        description="Пицца допекается из морозильника. Одинаково для всех позиций ассортимента."
       >
         <SpecsBlock />
       </SwissSection>
@@ -198,27 +198,11 @@ function LineupCards({ items }: { items: LineupItem[] }) {
 }
 
 function SpecsBlock() {
-  // Плашка как у карточек и формы. Внутри два регистра: три числа,
-  // которые сканируют, — крупно и на акцентной подложке; три фразы,
-  // которые читают, — тише и ниже.
+  // Плашка как у карточек и формы. Сверху сценарий приготовления —
+  // те же цифры, но поданные как инструкция; снизу проза, которую читают.
   return (
     <div className="specs-plate">
-      <div className="specs-numbers">
-        {KEY_NUMBERS.map((item) => (
-          <div key={item.caption} className="specs-number">
-            <div className="specs-number-value">
-              {item.value}
-              {/* Неразрывный пробел: без него число и единица слипаются
-                  при копировании и у скринридера — «330г», «6месяцев». */}
-              <span className="specs-number-unit">
-                {" "}
-                {item.unit}
-              </span>
-            </div>
-            <div className="specs-number-caption">{item.caption}</div>
-          </div>
-        ))}
-      </div>
+      <BakeSteps />
 
       <div className="specs-details">
         {DETAIL_SPECS.map((spec) => (
