@@ -3,12 +3,14 @@ import { motion } from "motion/react";
 import { LandingPageShell } from "@/components/landing/shared";
 import { useMounted } from "@/lib/use-mounted";
 import { BakeScene } from "@/components/landing/bake-scene";
+import { ProcessFloor } from "@/components/landing/process-floor";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
   CONTACT_PHONE_HREF,
   DETAIL_SPECS,
   NET_WEIGHT,
+  OBJECTIONS,
 } from "@/content/brand";
 
 const MiniPizzaModel = React.lazy(() =>
@@ -68,12 +70,25 @@ export function SegmentRedesignPage(props: SegmentRedesignProps) {
         <LineupCards items={props.lineupItems} />
       </SwissSection>
 
+      {/* Отдельным этажом, а не колонкой рядом с товаром: бок о бок
+          презентация спорила с ассортиментом за внимание и выигрывала.
+          Стоит после товара — ради него сюда и пришли. */}
+      <ProcessFloor />
+
       <SwissSection
         id="specs"
         title="Как хранить и готовить"
         description="Пицца допекается из морозильника. Одинаково для всех позиций ассортимента."
       >
         <SpecsBlock />
+      </SwissSection>
+
+      <SwissSection
+        id="answers"
+        title="Что обычно смущает"
+        description="Пять сомнений, которые возникают перед первой покупкой. Отвечаем без рекламных оборотов."
+      >
+        <ObjectionsBlock />
       </SwissSection>
 
       <SwissSection
@@ -214,6 +229,27 @@ function SpecsBlock() {
         ))}
       </div>
     </div>
+  );
+}
+
+/**
+ * Возражения покупателя.
+ *
+ * Группировка держится расстояниями, а не рамками: сомнение и ответ на
+ * него стоят вплотную, между парами расстояние в несколько раз больше.
+ * По закону близости глаз собирает такие пары сам — разделительные
+ * линии тут только мешали бы.
+ */
+function ObjectionsBlock() {
+  return (
+    <dl className="objections">
+      {OBJECTIONS.map((item) => (
+        <div key={item.doubt} className="objection">
+          <dt className="objection-doubt">{item.doubt}</dt>
+          <dd className="objection-answer">{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

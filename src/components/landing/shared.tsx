@@ -1,6 +1,7 @@
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { HeroStory } from "@/components/landing/hero-story";
+import { HeroSection } from "@/components/blocks/hero-section-1";
+import { Marquee } from "@/components/landing/marquee";
 import { getRouteHref } from "@/app/routes";
 import {
   BRAND_NAME_UPPER,
@@ -52,8 +53,17 @@ export function useBreakpoint() {
   return { isMobile: resolved < 768, isTablet: resolved < 1024 };
 }
 
+/**
+ * Первый экран во всю ширину и без прикрас: презентация переехала
+ * ниже, в сплит, и делить с ней шапку больше не нужно.
+ */
 function Hero({ marqueeText }: { marqueeText: string }) {
-  return <HeroStory marqueeText={marqueeText} />;
+  return (
+    <>
+      <HeroSection />
+      <Marquee text={marqueeText} />
+    </>
+  );
 }
 
 export function SectionHeader({

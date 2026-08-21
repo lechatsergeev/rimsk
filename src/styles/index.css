@@ -146,439 +146,188 @@ main section[id] {
   counter-reset: bake;
 }
 
-/* ── Первый экран как сцена превращения ───────────────────────────
-   Трек выше экрана, внутри липкая шапка. Пока трек проходит мимо,
-   текст уступает место числам, а продукт стынет и отогревается.
-   Без JS, при отключённых анимациях и на телефоне шапка обычная. */
+/* ── Этаж приготовления ───────────────────────────────────────────
 
-/* Прилипание только в пределах сцены: точки есть лишь внутри трека,
-   поэтому на остальной странице прокрутка обычная. Режим proximity, а
-   не mandatory — mandatory не даёт проскочить сцену, если человек
-   просто хочет вниз. */
-/* Жёсткое прилипание включается только на время сцены: точки есть
-   лишь внутри трека, и постоянный mandatory тянул бы человека назад
-   при прокрутке дальше по странице. proximity при колесе почти не
-   притягивает, поэтому на десктопе шагов не чувствовалось. */
-html.is-stepping {
-  scroll-snap-type: y mandatory;
-}
+   Отдельная полоса во всю ширину. Колонкой рядом с товаром презентация
+   спорила с ним за внимание и выигрывала — три крупных модели сбоку
+   перетягивали взгляд с карточек, ради которых сюда и приходят.
 
-.hero-snaps {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero-snap {
-  height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.hero-track {
-  /* Слой выше следующих секций: в ассортименте лежит motion.div с
-     трансформом, а трансформ создаёт контекст наложения. При равных
-     уровнях побеждал бы тот, кто ниже по документу, и секция
-     наезжала бы на приклеенную шапку. */
+   Панель застыла и работает окном: сквозь неё слева направо едет лента
+   шагов. Раскладку держит CSS, скрипт считает только смещение — без
+   него лента просто стоит в начале. */
+.floor {
   position: relative;
-  z-index: 1;
-  /* По экрану на каждый шаг: первый экран плюс пять стадий. */
-  height: 600vh;
+  /* Запасная высота: настоящую ставит скрипт, панель плюс ход ленты.
+     Здесь она нужна на случай, когда замера ещё нет — до гидрации и
+     без JS. */
+  height: 260svh;
+  background: var(--paper);
 }
 
-.hero-stage {
+.floor-panel {
   position: sticky;
   top: 0;
-  height: 100vh;
-  /* Оба слоя поля — и заливка, и свечение — рисует сцена, на всю
-     свою высоту. Внутри шапки они заперты в её 780px и обрывались
-     ровно на этой отметке: сначала светлой полосой, потом швом. */
-  /* Цвет приходит из активной стадии; переход длинный, чтобы смена
-     шага читалась как смена сцены, а не как мигание. */
-  background: radial-gradient(
-      circle at 72% 44%,
-      var(--stage-glow, rgba(127, 150, 255, 0.5)),
-      transparent 52%
-    ),
-    linear-gradient(
-      180deg,
-      var(--stage-a, #dcefff) 0%,
-      var(--stage-b, #b9dbf7) 100%
-    );
-  transition: background 620ms ease;
-  /* Не обрезаем: в финале продукт улетает за пределы экрана в
-     карточку ассортимента, и overflow: hidden срезал бы полёт. */
-}
-
-/* Внутри сцены поле рисует сама сцена — на всю её высоту. Своё поле
-   шапки гасим: оно короче на 80px, и на стыке двух одинаковых
-   градиентов разной длины проступал бы шов. */
-.hero-stage main {
-  background: transparent;
-}
-
-.hero-stage .hero-field,
-.hero-stage .hero-glow {
-  background: none !important;
-}
-
-/* Шапка обрезает себя двумя overflow: hidden — снаружи сцены это
-   правильно, но внутри неё продукт улетает за границы экрана в
-   карточку ассортимента, и обрезка срезала бы полёт. Горизонтальный
-   разгон при этом держит overflow-x: hidden на body. */
-.hero-stage main,
-.hero-stage main > section > div {
-  overflow: visible;
-}
-
-/* На первом экране работает своя модель шапки, дальше её сменяет
-   очередь стадий — поэтому прячем не совсем, а по шагу. */
-.hero-stage.is-transformed .hero-pizza-holder {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.stage-queue {
-  transition: opacity 420ms ease;
-}
-
-/* Значения приходят инлайном из сцены; вне её действуют значения по
-   умолчанию, поэтому обычная шапка не зависит от скрипта. */
-.hero-copy {
-  opacity: var(--hero-copy-opacity, 1);
-  transition: opacity 200ms linear;
-}
-
-/* ── Композиция первого экрана на телефоне ────────────────────────
-
-   Числа лежат в абсолютном оверлее, продукт — в сетке шапки, то есть
-   в разных системах координат: их взаимное положение получалось
-   случайным. Здесь оно задано явно, долями экрана.
-
-     0–11vh   навигация
-     15vh     числа, по левому полю страницы
-     40–82vh  продукт, крупно и по центру
-     низ      бегущая строка
-
-   Продукт вынут из сетки шапки и поставлен в координаты сцены —
-   иначе он зависел бы от высоты исчезающего текста. */
-@media (max-width: 767px) {
-  /* Текст гаснет, но коробку под собой сохраняет — четыре сотни
-     пикселей пустоты, под которыми стоял продукт. Поднимаем продукт
-     на освободившееся место трансформом, а не сменой потока: поток
-     переключается мгновенно, и продукт прыгал рывком. Трансформ
-     анимируется. */
-  .hero-stage .hero-pizza-holder {
-    height: 40vh;
-    width: 84vw;
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero-stage.is-transformed .hero-pizza-holder {
-    transform: translateY(-26vh);
-  }
-
-  /* Числа держат свою полосу и не растягиваются на всю ширину. */
-  .hero-figures {
-    max-width: 78vw;
-  }
-
-  .hero-figure {
-    font-size: clamp(46px, 15vw, 68px);
-  }
-}
-
-.hero-pizza-holder {
-  transform: var(--pizza-transform, none);
-  filter: var(--pizza-filter, none);
-  will-change: transform, filter;
-  /* Шаги, а не слежение за колесом: переход идёт своё время. */
-  transition: transform 460ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    filter 400ms ease, opacity 300ms ease;
-}
-
-/* Полёт в карточку: продукт выходит из потока сцены в координаты
-   окна, иначе он уехал бы вверх вместе с открепившейся шапкой. */
-.hero-stage.is-flying .hero-pizza-holder {
-  position: fixed;
-  left: var(--fly-left);
-  top: var(--fly-top);
-  width: var(--fly-w);
-  height: var(--fly-h);
-  max-width: none;
-  transform: scale(var(--fly-scale));
-  opacity: var(--fly-opacity, 1);
-  /* Ниже панели меню (z-20): иначе продукт пролетал поверх неё. */
-  z-index: 10;
-}
-
-/* Бегущая строка прижата к низу приклеенной сцены — видна с первого
-   экрана и всё время, пока идёт превращение. */
-.hero-marquee {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 5;
-}
-
-/* ── Презентация стадий ───────────────────────────────────────── */
-
-/* На телефоне текст и модели делят экран по вертикали: рассказ
-   сверху, очередь снизу. Оба стояли по центру и налезали друг на
-   друга почти двумя сотнями пикселей. */
-.stage-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
+  /* На телефоне ниже экрана: при полной высоте под коротким кадром
+     модели оставалась треть пустого поля. */
+  height: 78svh;
   display: grid;
-  align-content: start;
-  padding: 12vh 0 0;
-  pointer-events: none;
-  color: var(--stage-ink, #1a1d20);
-  transition: color 620ms ease;
+  grid-template-rows: auto minmax(0, 1fr);
+  row-gap: clamp(18px, 2.6vh, 32px);
+  /* Панель меню плавает над кадром (fixed) — отступ сверху не даёт
+     заголовку уехать под неё. */
+  padding: clamp(92px, 12vh, 128px) 0 clamp(28px, 4vh, 48px);
+  overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .stage-overlay {
-    align-content: center;
-    padding-top: 0;
-  }
+.floor-head {
+  padding: 0 clamp(20px, 4vw, 48px);
 }
 
-/* Та же сетка, что у текста шапки: max-w-7xl с отступом 1.5rem.
-   Слайды стояли на 40px правее и выглядели съехавшими. */
-.stage-inner {
-  width: 100%;
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  display: grid;
-}
-
-.stage-card {
-  grid-area: 1 / 1;
-  max-width: 32ch;
-  transition: opacity 420ms ease;
-}
-
-.stage-index {
-  font-family: 'LT Amber', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-.stage-title {
-  margin: 12px 0 0;
-  font-family: 'LT Amber', sans-serif;
-  font-weight: 400;
-  font-size: clamp(40px, 7vw, 104px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-}
-
-.stage-note {
+.floor-lead {
   margin: 14px 0 0;
-  max-width: 30ch;
+  max-width: 46ch;
   font-family: 'LT Amber', sans-serif;
   font-size: clamp(13px, 1.2vw, 15px);
   line-height: 1.6;
-}
-
-/* Очередь моделей стоит там же, где продукт в шапке. */
-.stage-queue {
-  position: absolute;
-  z-index: 3;
-  inset: auto 0 15vh 0;
-  height: 40vh;
-  pointer-events: none;
-}
-
-.pizza-queue {
-  width: 100%;
-  height: 100%;
-}
-
-@media (min-width: 768px) {
-  .stage-queue {
-    inset: 50% 0 auto auto;
-    width: 58vw;
-    height: 62vh;
-    transform: translateY(-50%);
-  }
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  display: grid;
-  /* На узком экране шапка однколоночная: текст сверху, продукт снизу.
-     Числа встают туда, где стоял заголовок, а не в центр кадра. */
-  align-content: start;
-  padding: 15vh clamp(20px, 5vw, 72px) 0;
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  /* ── Презентация стадий ───────────────────────────────────────── */
-
-/* На телефоне текст и модели делят экран по вертикали: рассказ
-   сверху, очередь снизу. Оба стояли по центру и налезали друг на
-   друга почти двумя сотнями пикселей. */
-.stage-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  display: grid;
-  align-content: start;
-  padding: 12vh 0 0;
-  pointer-events: none;
-  color: var(--stage-ink, #1a1d20);
-  transition: color 620ms ease;
-}
-
-@media (min-width: 768px) {
-  .stage-overlay {
-    align-content: center;
-    padding-top: 0;
-  }
-}
-
-/* Та же сетка, что у текста шапки: max-w-7xl с отступом 1.5rem.
-   Слайды стояли на 40px правее и выглядели съехавшими. */
-.stage-inner {
-  width: 100%;
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  display: grid;
-}
-
-.stage-card {
-  grid-area: 1 / 1;
-  max-width: 32ch;
-  transition: opacity 420ms ease;
-}
-
-.stage-index {
-  font-family: 'LT Amber', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-.stage-title {
-  margin: 12px 0 0;
-  font-family: 'LT Amber', sans-serif;
-  font-weight: 400;
-  font-size: clamp(40px, 7vw, 104px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-}
-
-.stage-note {
-  margin: 14px 0 0;
-  max-width: 30ch;
-  font-family: 'LT Amber', sans-serif;
-  font-size: clamp(13px, 1.2vw, 15px);
-  line-height: 1.6;
-}
-
-/* Очередь моделей стоит там же, где продукт в шапке. */
-.stage-queue {
-  position: absolute;
-  z-index: 3;
-  inset: auto 0 15vh 0;
-  height: 40vh;
-  pointer-events: none;
-}
-
-.pizza-queue {
-  width: 100%;
-  height: 100%;
-}
-
-@media (min-width: 768px) {
-  .stage-queue {
-    inset: 50% 0 auto auto;
-    width: 58vw;
-    height: 62vh;
-    transform: translateY(-50%);
-  }
-}
-
-.hero-overlay {
-    align-content: center;
-    padding-top: 0;
-  }
-}
-
-/* Числа собраны слева, продукт остаётся справа. */
-.hero-figures {
-  grid-area: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(6px, 1vw, 14px);
-  transition: opacity 240ms linear;
-}
-
-.hero-figure {
-  font-family: 'LT Amber', sans-serif;
-  font-weight: 400;
-  font-size: clamp(46px, 6.4vw, 104px);
-  line-height: 1;
-  letter-spacing: -0.05em;
   color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  /* Числа появляются шагами, поэтому переход времени фиксированный. */
-  transition: opacity 320ms ease;
 }
 
-/* Единица была вчетверо мельче числа и садилась на базовую линию —
-   читалась как подстрочный индекс. Крупнее и с нормальным пробелом. */
-.hero-figure-unit {
-  margin-left: 0.16em;
-  font-size: 0.36em;
-  letter-spacing: 0.04em;
+/* Окно: за его краями лента обрезается. */
+.stage-window {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* За продуктом, а не поверх: с mix-blend-mode: screen сверху они
-   засвечивали пиццу до бледного теста. */
-.hero-frost,
-.hero-heat {
+.stage-canvas {
   position: absolute;
   inset: 0;
-  z-index: 1;
   pointer-events: none;
-  mix-blend-mode: screen;
-  transition: opacity 240ms linear;
 }
 
-.hero-frost {
-  background: radial-gradient(
-    circle at 72% 48%,
-    rgba(214, 240, 255, 0.9),
-    rgba(201, 233, 255, 0.3) 42%,
-    transparent 66%
-  );
+/* Лента едет вбок. Первый шаг начинается на том же поле, что и
+   заголовок этажа, — иначе он висел бы у самого края кадра. */
+.stage-chain {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 clamp(20px, 4vw, 48px);
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  position: relative;
+  will-change: transform;
 }
 
-.hero-heat {
-  background: radial-gradient(
-    circle at 72% 54%,
-    rgba(255, 176, 74, 0.72),
-    rgba(255, 120, 40, 0.24) 40%,
-    transparent 68%
-  );
+/* Шаг: модель и подпись — одна группа, поэтому между ними расстояние
+   заметно меньше, чем до следующего шага (отступ справа). Закон
+   близости: внутреннее меньше внешнего, и глаз собирает пары сам. */
+.stage-step {
+  width: 78vw;
+  flex: none;
+  display: grid;
+  /* Высота коробки задана долей, а не 1fr: при 1fr строка подписи
+     подстраивалась под её содержимое, и заголовок шага с примечанием в
+     три строки вставал на два десятка пикселей выше соседнего с двумя.
+     Теперь все подписи начинаются с одной линии, а разной длины
+     примечания расходятся вниз. */
+  grid-template-rows: 66% auto;
+  align-content: start;
+  row-gap: clamp(10px, 1.4vh, 16px);
+  padding-right: clamp(48px, 8vw, 128px);
+  opacity: 0.22;
+  transition: opacity 560ms ease;
+}
+
+.stage-step[data-reached] {
+  opacity: 1;
+}
+
+/* Пустая коробка: место под модель держит разметка, рисует сцена. */
+.stage-figure {
+  min-height: 0;
+}
+
+/* Номер и заголовок стоят ещё теснее друг к другу, чем подпись к
+   модели: это группа внутри группы. */
+.stage-caption {
+  display: grid;
+  row-gap: 2px;
+}
+
+.stage-index {
+  font-family: 'LT Amber', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.stage-title {
+  margin: 0;
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.stage-note {
+  margin: 10px 0 0;
+  max-width: 42ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: clamp(12px, 1.05vw, 15px);
+  line-height: 1.55;
+}
+
+/* Возражения. Та же лестница отступов, что и в блоке характеристик:
+   10px внутри пары, впятеро больше между парами. */
+.objections {
+  margin: 0;
+  display: grid;
+  row-gap: clamp(40px, 4.6vw, 58px);
+}
+
+.objection {
+  display: grid;
+  row-gap: 10px;
+}
+
+.objection-doubt {
+  font-family: 'LT Amber', sans-serif;
+  font-weight: 400;
+  font-size: clamp(21px, 2.4vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  max-width: 24ch;
+  color: var(--ink);
+}
+
+.objection-answer {
+  margin: 0;
+  max-width: 62ch;
+  font-family: 'LT Amber', sans-serif;
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.65;
+  color: var(--ink);
 }
 
 @media (min-width: 768px) {
+  .floor-panel {
+    height: 100svh;
+  }
+
+  /* На широком экране в кадре помещается два шага сразу: видно, что
+     это цепочка, а не отдельные картинки. */
+  .stage-step {
+    width: 46vw;
+  }
+}
+
+@media (min-width: 1280px) {
+  .stage-step {
+    width: 38vw;
+  }
 }
 
 .bake-step-name {
